@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: geeknito-backend
+
+  # Database Configuration (Connecting to local PostgreSQL container)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/enterprise_lms_db
+    username: lms_admin
+    password: admin_secure_pass_2026
+    driver-class-name: org.postgresql.Driver
+
+  # JPA & Hibernate Settings
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        # Enable statistics to track and troubleshoot N+1 issues
+        generate_statistics: true
+
+  # Redis Configuration (For second-level query caching and active session storage)
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 2000
+
+# Logging Configurations to audit queries and optimization behaviors
+logging:
+  level:
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG                      # Logs actual SQL queries
+    org.hibernate.orm.jdbc.bind: TRACE            # Logs query parameter binding values
+    org.springframework.cache: TRACE              # Logs cache hits/misses for Redis
+
+# Server port configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
