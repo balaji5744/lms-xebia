@@ -46,6 +46,10 @@ export interface ContentBlock {
   contentOrder?: number;
   isActive?: boolean;
 
+  // File attachment fields (PDF, DOCX, ZIP, or any other downloadable file)
+  fileUrl?: string;
+  fileName?: string;
+
   // Backward compatibility fields:
   value?: string;
   metadata?: {
@@ -55,6 +59,8 @@ export interface ContentBlock {
     caption?: string;
     calloutType?: string;
     imageUrl?: string;
+    fileUrl?: string;
+    fileName?: string;
   };
 }
 

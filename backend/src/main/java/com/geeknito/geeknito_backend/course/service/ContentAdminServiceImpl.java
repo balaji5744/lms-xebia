@@ -35,6 +35,8 @@ public class ContentAdminServiceImpl implements ContentAdminService {
                 .language(dto.getLanguage())
                 .videoUrl(dto.getVideoUrl())
                 .imageUrl(dto.getImageUrl())
+                .fileUrl(dto.getFileUrl())
+                .fileName(dto.getFileName())
                 .alt(dto.getAlt())
                 .caption(dto.getCaption())
                 .headingLevel(dto.getHeadingLevel())
@@ -60,6 +62,8 @@ public class ContentAdminServiceImpl implements ContentAdminService {
         content.setLanguage(dto.getLanguage());
         content.setVideoUrl(dto.getVideoUrl());
         content.setImageUrl(dto.getImageUrl());
+        content.setFileUrl(dto.getFileUrl());
+        content.setFileName(dto.getFileName());
         content.setAlt(dto.getAlt());
         content.setCaption(dto.getCaption());
         content.setHeadingLevel(dto.getHeadingLevel());
@@ -106,6 +110,8 @@ public class ContentAdminServiceImpl implements ContentAdminService {
                 .language(entity.getLanguage())
                 .videoUrl(entity.getVideoUrl())
                 .imageUrl(entity.getImageUrl())
+                .fileUrl(entity.getFileUrl())
+                .fileName(entity.getFileName())
                 .alt(entity.getAlt())
                 .caption(entity.getCaption())
                 .headingLevel(entity.getHeadingLevel())

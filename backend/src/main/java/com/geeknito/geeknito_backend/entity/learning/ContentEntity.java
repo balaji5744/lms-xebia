@@ -44,6 +44,12 @@ public class ContentEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @Column(name = "file_url")
+    private String fileUrl;
+
+    @Column(name = "file_name")
+    private String fileName;
+
     private String alt;
 
     private String caption;

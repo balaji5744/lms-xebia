@@ -6,6 +6,10 @@ import {
   FileText,
   Code as CodeIcon,
   Video as VideoIcon,
+  Image as ImageIcon,
+  Upload,
+  Paperclip,
+  Download,
   Loader2,
   AlertCircle,
   HelpCircle,
@@ -19,6 +23,66 @@ import {
 import { Module, Submodule, ContentBlock } from "../../types";
 import contentService from "../../services/contentService";
 import { useApp } from "../../context/AppContext"; // <-- Added for Toast Notifications
+
+const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as
+  | string
+  | undefined;
+const CLOUDINARY_UPLOAD_PRESET = import.meta.env
+  .VITE_CLOUDINARY_UPLOAD_PRESET as string | undefined;
+const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024; // 25MB
+
+/**
+ * Uploads a single file to Cloudinary's unsigned upload endpoint and
+ * returns the resulting secure (https) URL. Throws on failure so the caller
+ * can show an appropriate toast instead of silently storing a broken value.
+ *
+ * @param resourceType - "image" for image blocks, "auto" for arbitrary
+ * file types (PDF, DOCX, ZIP, etc). Cloudinary's "auto" endpoint detects
+ * the right resource type (image/video/raw) for whatever is uploaded, which
+ * is what lets PDFs and Office docs upload successfully â€” the dedicated
+ * /image/upload endpoint rejects non-image files.
+ */
+async function uploadToCloudinary(
+  file: File,
+  resourceType: "image" | "auto" = "image",
+): Promise<string> {
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+    throw new Error(
+      "Cloudinary is not configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET.",
+    );
+  }
+
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const response = await fetch(
+    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
+    {
+      method: "POST",
+      body: formData,
+    },
+  );
+
+  if (!response.ok) {
+    const errBody = await response.json().catch(() => null);
+    throw new Error(
+      errBody?.error?.message || "Cloudinary upload failed. Please retry.",
+    );
+  }
+
+  const data = await response.json();
+  if (!data.secure_url) {
+    throw new Error("Cloudinary did not return a file URL.");
+  }
+  return data.secure_url as string;
+}
+
+// Thin wrapper kept for the image-block call sites.
+async function uploadImageToCloudinary(file: File): Promise<string> {
+  return uploadToCloudinary(file, "image");
+}
 
 interface WizardStep3Props {
   courseData: any;
@@ -68,9 +132,9 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
   }, [activeSubmoduleId, allSubmodules]);
 
   // Form states for creating a new block
-  const [selectedType, setSelectedType] = useState<"text" | "video" | "code">(
-    "text",
-  );
+  const [selectedType, setSelectedType] = useState<
+    "text" | "video" | "code" | "image" | "file"
+  >("text");
 
   // Specific fields
   const [textVal, setTextVal] = useState("");
@@ -78,6 +142,71 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
   const [codeLang, setCodeLang] = useState("JavaScript");
   const [videoUrlVal, setVideoUrlVal] = useState("");
   const [videoCaptionVal, setVideoCaptionVal] = useState("");
+
+  // Image block fields
+  const [imageUrlVal, setImageUrlVal] = useState("");
+  const [imageAltVal, setImageAltVal] = useState("");
+  const [imageCaptionVal, setImageCaptionVal] = useState("");
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isDraggingImage, setIsDraggingImage] = useState(false);
+
+  // File block fields (PDF, DOCX, ZIP, or any other attachment)
+  const [fileUrlVal, setFileUrlVal] = useState("");
+  const [fileNameVal, setFileNameVal] = useState("");
+  const [fileCaptionVal, setFileCaptionVal] = useState("");
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
+  const [isDraggingFile, setIsDraggingFile] = useState(false);
+
+  const handleImageFileSelected = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      showToast("Please upload a valid image file (PNG, JPG).", "error");
+      return;
+    }
+    if (file.size > MAX_IMAGE_SIZE_BYTES) {
+      showToast("Image must be under 5MB.", "error");
+      return;
+    }
+
+    setIsUploadingImage(true);
+    try {
+      const secureUrl = await uploadImageToCloudinary(file);
+      setImageUrlVal(secureUrl);
+      showToast("Image uploaded successfully!", "success");
+    } catch (err: any) {
+      console.error("[WizardStep3] Cloudinary upload failed:", err);
+      showToast(
+        err?.message || "Image upload failed. Please try again.",
+        "error",
+      );
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleDocumentFileSelected = async (file: File) => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      showToast("File must be under 25MB.", "error");
+      return;
+    }
+
+    setIsUploadingFile(true);
+    try {
+      // "auto" lets Cloudinary route PDFs/DOCX/ZIP/etc to the correct
+      // resource type; the dedicated /image/upload endpoint rejects them.
+      const secureUrl = await uploadToCloudinary(file, "auto");
+      setFileUrlVal(secureUrl);
+      setFileNameVal(file.name);
+      showToast("File uploaded successfully!", "success");
+    } catch (err: any) {
+      console.error("[WizardStep3] Cloudinary file upload failed:", err);
+      showToast(
+        err?.message || "File upload failed. Please try again.",
+        "error",
+      );
+    } finally {
+      setIsUploadingFile(false);
+    }
+  };
 
   // 1. Query: Fetch all content blocks for active submodule
   const {
@@ -96,6 +225,25 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
   useEffect(() => {
     if (activeSubmodule && fetchedBlocks) {
       setCourseData((prev: any) => {
+        const targetModule = (prev.modules || []).find(
+          (m: any) => m.id === activeSubmodule.moduleId,
+        );
+        const targetSubmodule = targetModule?.submodules?.find(
+          (s: any) => s.id === activeSubmodule.id,
+        );
+
+        // Skip the update entirely if the blocks haven't actually changed.
+        // Without this guard, setCourseData creates new array/object
+        // references on every run, which recomputes allSubmodules/
+        // activeSubmodule (via useMemo), which re-triggers this effect,
+        // causing an infinite render loop ("Maximum update depth exceeded").
+        const alreadyInSync =
+          JSON.stringify(targetSubmodule?.contentBlocks) ===
+          JSON.stringify(fetchedBlocks);
+        if (alreadyInSync) {
+          return prev;
+        }
+
         const updatedModules = (prev.modules || []).map((m: any) => {
           if (m.id === activeSubmodule.moduleId) {
             return {
@@ -138,6 +286,12 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       setCodeVal("");
       setVideoUrlVal("");
       setVideoCaptionVal("");
+      setImageUrlVal("");
+      setImageAltVal("");
+      setImageCaptionVal("");
+      setFileUrlVal("");
+      setFileNameVal("");
+      setFileCaptionVal("");
 
       showToast("Content block successfully added to lesson!", "success"); // <-- Added Toast
     },
@@ -180,6 +334,14 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       showToast("Please enter a valid Video link.", "error");
       return;
     }
+    if (selectedType === "image" && !imageUrlVal.trim()) {
+      showToast("Please upload an image before saving the block.", "error");
+      return;
+    }
+    if (selectedType === "file" && !fileUrlVal.trim()) {
+      showToast("Please upload a file before saving the block.", "error");
+      return;
+    }
 
     const nextOrder = sortedBlocks.length + 1;
 
@@ -195,7 +357,18 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       code: selectedType === "code" ? codeVal.trim() : undefined,
       language: selectedType === "code" ? codeLang : undefined,
       videoUrl: selectedType === "video" ? videoUrlVal.trim() : undefined,
-      caption: selectedType === "video" ? videoCaptionVal.trim() : undefined,
+      caption:
+        selectedType === "video"
+          ? videoCaptionVal.trim()
+          : selectedType === "image"
+            ? imageCaptionVal.trim()
+            : selectedType === "file"
+              ? fileCaptionVal.trim()
+              : undefined,
+      imageUrl: selectedType === "image" ? imageUrlVal.trim() : undefined,
+      alt: selectedType === "image" ? imageAltVal.trim() : undefined,
+      fileUrl: selectedType === "file" ? fileUrlVal.trim() : undefined,
+      fileName: selectedType === "file" ? fileNameVal.trim() : undefined,
 
       // Backward compatible fields for other preview renderers
       value:
@@ -203,11 +376,26 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
           ? textVal.trim()
           : selectedType === "code"
             ? codeVal.trim()
-            : videoUrlVal.trim(),
+            : selectedType === "image"
+              ? imageUrlVal.trim()
+              : selectedType === "file"
+                ? fileUrlVal.trim()
+                : videoUrlVal.trim(),
       metadata: {
         language: selectedType === "code" ? codeLang : undefined,
         videoUrl: selectedType === "video" ? videoUrlVal.trim() : undefined,
-        caption: selectedType === "video" ? videoCaptionVal.trim() : undefined,
+        caption:
+          selectedType === "video"
+            ? videoCaptionVal.trim()
+            : selectedType === "image"
+              ? imageCaptionVal.trim()
+              : selectedType === "file"
+                ? fileCaptionVal.trim()
+                : undefined,
+        imageUrl: selectedType === "image" ? imageUrlVal.trim() : undefined,
+        altText: selectedType === "image" ? imageAltVal.trim() : undefined,
+        fileUrl: selectedType === "file" ? fileUrlVal.trim() : undefined,
+        fileName: selectedType === "file" ? fileNameVal.trim() : undefined,
       },
     };
 
@@ -379,6 +567,16 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                           <VideoIcon className="w-4 h-4" />
                         </div>
                       )}
+                      {bType === "image" && (
+                        <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                          <ImageIcon className="w-4 h-4" />
+                        </div>
+                      )}
+                      {bType === "file" && (
+                        <div className="w-8 h-8 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center shrink-0">
+                          <Paperclip className="w-4 h-4" />
+                        </div>
+                      )}
                     </div>
 
                     {/* Block content description preview */}
@@ -424,6 +622,59 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                               {block.videoUrl || block.metadata?.videoUrl}
                             </p>
                           </div>
+                        </div>
+                      )}
+
+                      {bType === "image" && (
+                        <div className="bg-amber-50/30 border border-amber-100/50 rounded-xl p-3 flex items-center gap-3">
+                          <img
+                            src={block.imageUrl || block.metadata?.imageUrl}
+                            alt={
+                              block.alt ||
+                              block.metadata?.altText ||
+                              "Lesson image"
+                            }
+                            className="w-12 h-10 object-cover rounded shrink-0 bg-amber-100"
+                          />
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-gray-800 truncate">
+                              {block.caption ||
+                                block.metadata?.caption ||
+                                "Lesson Image"}
+                            </p>
+                            <p className="text-[10px] text-gray-400 font-mono truncate">
+                              {block.imageUrl || block.metadata?.imageUrl}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {bType === "file" && (
+                        <div className="bg-sky-50/30 border border-sky-100/50 rounded-xl p-3 flex items-center gap-3">
+                          <div className="w-10 h-10 bg-sky-100 rounded flex items-center justify-center text-sky-600 shrink-0">
+                            <Paperclip className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs font-semibold text-gray-800 truncate">
+                              {block.fileName ||
+                                block.metadata?.fileName ||
+                                block.caption ||
+                                block.metadata?.caption ||
+                                "Attached File"}
+                            </p>
+                            <p className="text-[10px] text-gray-400 font-mono truncate">
+                              {block.fileUrl || block.metadata?.fileUrl}
+                            </p>
+                          </div>
+                          <a
+                            href={block.fileUrl || block.metadata?.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="p-1.5 text-sky-600 hover:bg-sky-100 rounded-lg transition-colors shrink-0"
+                            title="Open file"
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                          </a>
                         </div>
                       )}
                     </div>
@@ -473,7 +724,7 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
             </div>
 
             {/* Block Type Selection tabs */}
-            <div className="grid grid-cols-3 gap-1 bg-gray-200/50 p-1 rounded-xl">
+            <div className="grid grid-cols-5 gap-1 bg-gray-200/50 p-1 rounded-xl">
               <button
                 type="button"
                 onClick={() => setSelectedType("text")}
@@ -502,6 +753,19 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
 
               <button
                 type="button"
+                onClick={() => setSelectedType("image")}
+                className={`py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                  selectedType === "image"
+                    ? "bg-[#510047] text-white shadow-sm"
+                    : "text-gray-500 hover:bg-white/50 hover:text-gray-800"
+                }`}
+              >
+                <ImageIcon className="w-3.5 h-3.5" />
+                Image
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setSelectedType("code")}
                 className={`py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                   selectedType === "code"
@@ -511,6 +775,19 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
               >
                 <CodeIcon className="w-3.5 h-3.5" />
                 Code
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSelectedType("file")}
+                className={`py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                  selectedType === "file"
+                    ? "bg-[#510047] text-white shadow-sm"
+                    : "text-gray-500 hover:bg-white/50 hover:text-gray-800"
+                }`}
+              >
+                <Paperclip className="w-3.5 h-3.5" />
+                File
               </button>
             </div>
 
@@ -565,6 +842,125 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                 </div>
               )}
 
+              {/* Image Block Inputs */}
+              {selectedType === "image" && (
+                <div className="space-y-4 animate-fade-in">
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Lesson Image
+                    </label>
+                    <div
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setIsDraggingImage(true);
+                      }}
+                      onDragLeave={() => setIsDraggingImage(false)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setIsDraggingImage(false);
+                        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                          handleImageFileSelected(e.dataTransfer.files[0]);
+                        }
+                      }}
+                      className={`relative group border-2 border-dashed rounded-xl overflow-hidden transition-all duration-200 bg-white flex flex-col items-center justify-center ${
+                        isDraggingImage
+                          ? "border-[#01AC9F] bg-emerald-50/50"
+                          : "border-gray-200 hover:border-[#510047]"
+                      } ${imageUrlVal ? "h-40" : "h-32"}`}
+                    >
+                      {isUploadingImage ? (
+                        <div className="flex flex-col items-center gap-2 text-gray-500">
+                          <Loader2 className="w-5 h-5 text-[#510047] animate-spin" />
+                          <p className="text-[11px]">
+                            Uploading to Cloudinary...
+                          </p>
+                        </div>
+                      ) : imageUrlVal ? (
+                        <>
+                          <img
+                            src={imageUrlVal}
+                            alt="Image block preview"
+                            className="absolute inset-0 w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                            <label className="cursor-pointer bg-white text-gray-800 px-3 py-1.5 rounded-lg text-xs font-bold shadow-lg hover:bg-gray-100 transition-colors">
+                              Change Image
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) =>
+                                  e.target.files &&
+                                  handleImageFileSelected(e.target.files[0])
+                                }
+                                className="hidden"
+                              />
+                            </label>
+                            <button
+                              type="button"
+                              onClick={() => setImageUrlVal("")}
+                              className="bg-red-500 text-white p-1.5 rounded-lg shadow-lg hover:bg-red-600 transition-colors"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </>
+                      ) : (
+                        <label className="cursor-pointer flex flex-col items-center p-4 w-full h-full justify-center">
+                          <Upload
+                            className={`w-5 h-5 mb-1.5 ${
+                              isDraggingImage
+                                ? "text-[#01AC9F]"
+                                : "text-gray-400"
+                            }`}
+                          />
+                          <p className="text-xs font-bold text-gray-600">
+                            Drag & drop or click to upload
+                          </p>
+                          <p className="text-[10px] text-gray-400 mt-1">
+                            PNG/JPG, Max 5MB
+                          </p>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) =>
+                              e.target.files &&
+                              handleImageFileSelected(e.target.files[0])
+                            }
+                            className="hidden"
+                          />
+                        </label>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Alt Text (Accessibility)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Diagram of the request lifecycle"
+                      value={imageAltVal}
+                      onChange={(e) => setImageAltVal(e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#510047] focus:ring-1 focus:ring-[#ffd7f0] transition-all"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Image Caption
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Figure 1: System Architecture"
+                      value={imageCaptionVal}
+                      onChange={(e) => setImageCaptionVal(e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#510047] focus:ring-1 focus:ring-[#ffd7f0] transition-all"
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Code Block Inputs */}
               {selectedType === "code" && (
                 <div className="space-y-4 animate-fade-in">
@@ -605,11 +1001,126 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                 </div>
               )}
 
+              {/* File Block Inputs */}
+              {selectedType === "file" && (
+                <div className="space-y-4 animate-fade-in">
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Lesson Attachment
+                    </label>
+                    <div
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setIsDraggingFile(true);
+                      }}
+                      onDragLeave={() => setIsDraggingFile(false)}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        setIsDraggingFile(false);
+                        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                          handleDocumentFileSelected(e.dataTransfer.files[0]);
+                        }
+                      }}
+                      className={`relative border-2 border-dashed rounded-xl overflow-hidden transition-all duration-200 bg-white flex flex-col items-center justify-center h-32 ${
+                        isDraggingFile
+                          ? "border-[#01AC9F] bg-emerald-50/50"
+                          : "border-gray-200 hover:border-[#510047]"
+                      }`}
+                    >
+                      {isUploadingFile ? (
+                        <div className="flex flex-col items-center gap-2 text-gray-500">
+                          <Loader2 className="w-5 h-5 text-[#510047] animate-spin" />
+                          <p className="text-[11px]">
+                            Uploading to Cloudinary...
+                          </p>
+                        </div>
+                      ) : fileUrlVal ? (
+                        <div className="flex items-center gap-3 px-4 w-full">
+                          <div className="w-10 h-10 bg-sky-100 rounded flex items-center justify-center text-sky-600 shrink-0">
+                            <Paperclip className="w-4 h-4" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-xs font-semibold text-gray-800 truncate">
+                              {fileNameVal || "Uploaded file"}
+                            </p>
+                            <p className="text-[10px] text-gray-400 truncate">
+                              Uploaded successfully
+                            </p>
+                          </div>
+                          <label className="cursor-pointer bg-white text-gray-800 border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-gray-50 transition-colors shrink-0">
+                            Replace
+                            <input
+                              type="file"
+                              onChange={(e) =>
+                                e.target.files &&
+                                handleDocumentFileSelected(e.target.files[0])
+                              }
+                              className="hidden"
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFileUrlVal("");
+                              setFileNameVal("");
+                            }}
+                            className="bg-red-500 text-white p-1.5 rounded-lg shadow-sm hover:bg-red-600 transition-colors shrink-0"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="cursor-pointer flex flex-col items-center p-4 w-full h-full justify-center">
+                          <Upload
+                            className={`w-5 h-5 mb-1.5 ${
+                              isDraggingFile
+                                ? "text-[#01AC9F]"
+                                : "text-gray-400"
+                            }`}
+                          />
+                          <p className="text-xs font-bold text-gray-600">
+                            Drag & drop or click to upload
+                          </p>
+                          <p className="text-[10px] text-gray-400 mt-1">
+                            PDF, DOCX, ZIP, or any file â€” Max 25MB
+                          </p>
+                          <input
+                            type="file"
+                            onChange={(e) =>
+                              e.target.files &&
+                              handleDocumentFileSelected(e.target.files[0])
+                            }
+                            className="hidden"
+                          />
+                        </label>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                      Attachment Caption
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Module 3 Worksheet (PDF)"
+                      value={fileCaptionVal}
+                      onChange={(e) => setFileCaptionVal(e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-xs focus:outline-none focus:border-[#510047] focus:ring-1 focus:ring-[#ffd7f0] transition-all"
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Submission CTA Button */}
               <button
                 type="submit"
-                disabled={createBlockMutation.isPending}
-                className="w-full py-2.5 bg-[#01AC9F] hover:bg-[#008f84] text-white font-bold text-xs rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+                disabled={
+                  createBlockMutation.isPending ||
+                  isUploadingImage ||
+                  isUploadingFile
+                }
+                className="w-full py-2.5 bg-[#01AC9F] hover:bg-[#008f84] text-white font-bold text-xs rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {createBlockMutation.isPending ? (
                   <>

@@ -22,6 +22,8 @@ public class ContentRequestDTO implements Serializable {
     private String language;
     private String videoUrl;
     private String imageUrl;
+    private String fileUrl;
+    private String fileName;
     private String alt;
     private String caption;
     private Integer headingLevel;

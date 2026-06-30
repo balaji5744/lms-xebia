@@ -21,6 +21,10 @@ import {
   Loader2,
   Code as CodeIcon,
   Video as VideoIcon,
+  Image as ImageIcon,
+  Paperclip,
+  Download,
+  AlertCircle,
 } from "lucide-react";
 import { Module, ContentBlock } from "../types";
 
@@ -442,7 +446,12 @@ export const CourseDetailView: React.FC = () => {
 const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
   submoduleId,
 }) => {
-  const { data: blocks = [], isLoading } = useQuery<ContentBlock[], Error>({
+  const {
+    data: blocks = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery<ContentBlock[], Error>({
     queryKey: ["submoduleContents", submoduleId],
     queryFn: () => contentService.getContentBySubmodule(submoduleId),
   });
@@ -452,6 +461,15 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
       <div className="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-[#01AC9F]">
         <Loader2 className="w-3.5 h-3.5 animate-spin" /> Fetching lesson
         blocks...
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-red-500">
+        <AlertCircle className="w-3.5 h-3.5" />
+        {error?.message || "Failed to load lesson content."}
       </div>
     );
   }
@@ -479,6 +497,12 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
             )}
             {block.type === "video" && (
               <VideoIcon className="w-3.5 h-3.5 text-rose-400" />
+            )}
+            {block.type === "image" && (
+              <ImageIcon className="w-3.5 h-3.5 text-amber-400" />
+            )}
+            {block.type === "file" && (
+              <Paperclip className="w-3.5 h-3.5 text-sky-400" />
             )}
             <span className="text-[10px] uppercase font-bold tracking-wider text-gray-500">
               {block.type} Block
@@ -514,6 +538,62 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
                 {block.caption || "Watch Instructional Video Clip"}
               </a>
             </div>
+          )}
+
+          {/* Image Block */}
+          {block.type === "image" && (
+            <figure>
+              <img
+                src={block.imageUrl || block.metadata?.imageUrl || block.value}
+                alt={
+                  block.alt ||
+                  block.metadata?.altText ||
+                  block.caption ||
+                  "Lesson image"
+                }
+                className="w-full max-h-96 object-contain rounded-lg border border-gray-200 bg-white"
+                referrerPolicy="no-referrer"
+              />
+              {(block.caption || block.metadata?.caption) && (
+                <figcaption className="text-[11px] text-gray-500 mt-2 text-center italic">
+                  {block.caption || block.metadata?.caption}
+                </figcaption>
+              )}
+            </figure>
+          )}
+
+          {/* File Block */}
+          {block.type === "file" && (
+            <a
+              href={block.fileUrl || block.metadata?.fileUrl || block.value}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-3 bg-white border border-sky-100 rounded-xl p-3 hover:border-sky-300 hover:bg-sky-50/40 transition-colors group"
+            >
+              <div className="w-10 h-10 bg-sky-100 rounded flex items-center justify-center text-sky-600 shrink-0">
+                <Paperclip className="w-4 h-4" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-bold text-gray-800 truncate">
+                  {block.fileName ||
+                    block.metadata?.fileName ||
+                    block.caption ||
+                    block.metadata?.caption ||
+                    "Download Attachment"}
+                </p>
+                <p className="text-[10px] text-gray-400 truncate">
+                  Click to open or download
+                </p>
+              </div>
+              <Download className="w-4 h-4 text-sky-500 group-hover:translate-y-0.5 transition-transform shrink-0" />
+            </a>
+          )}
+
+          {/* Fallback for any other/unknown block type */}
+          {!["text", "code", "video", "image", "file"].includes(block.type) && (
+            <p className="text-xs text-gray-400 italic">
+              Unsupported block type: {block.type}
+            </p>
           )}
         </div>
       ))}
