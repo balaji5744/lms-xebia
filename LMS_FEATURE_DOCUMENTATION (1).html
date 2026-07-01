@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>EduCorp LMS — Feature Documentation</title>
+<style>
+  :root {
+    --accent: #510047;
+    --accent2: #01AC9F;
+    --bg: #ffffff;
+    --text: #1f2328;
+    --muted: #57606a;
+    --border: #d8dee4;
+    --code-bg: #f6f8fa;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+    line-height: 1.65;
+    font-size: 16px;
+  }
+  h1, h2, h3, h4 { color: var(--accent); line-height: 1.3; }
+  h1 { font-size: 2.1em; border-bottom: 3px solid var(--accent2); padding-bottom: .3em; margin-top: 0; }
+  h2 { font-size: 1.5em; border-bottom: 1px solid var(--border); padding-bottom: .25em; margin-top: 2.4em; scroll-margin-top: 20px; }
+  h3 { font-size: 1.15em; margin-top: 1.8em; color: #3c0034; scroll-margin-top: 20px; }
+  h4 { font-size: 1em; color: var(--accent2); }
+  p { margin: 0.8em 0; }
+  a { color: var(--accent2); }
+  code {
+    background: var(--code-bg);
+    padding: .15em .4em;
+    border-radius: 4px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: .88em;
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    line-height: 1.5;
+  }
+  pre code { background: none; padding: 0; font-size: .85em; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.2em 0;
+    font-size: .92em;
+  }
+  th, td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #f7f0f5; color: var(--accent); }
+  tr:nth-child(even) { background: #fafbfc; }
+  blockquote {
+    border-left: 4px solid var(--accent2);
+    margin: 1.2em 0;
+    padding: .4em 1.2em;
+    background: #f0fbfa;
+    color: var(--muted);
+  }
+  hr { border: none; border-top: 2px solid var(--border); margin: 3em 0; }
+  ul, ol { padding-left: 1.6em; }
+  li { margin: .3em 0; }
+
+  .index-box {
+    background: linear-gradient(180deg, #faf7fb 0%, #f5f0f8 100%);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent);
+    border-radius: 10px;
+    padding: 22px 28px 26px;
+    margin: 1.5em 0 3em;
+  }
+  .index-box h2 { margin-top: 0; border-bottom: none; font-size: 1.3em; }
+  .index-box ol { padding-left: 1.4em; }
+  .index-box li { margin: .55em 0; font-size: 1.02em; }
+  .index-box a { text-decoration: none; color: var(--accent); font-weight: 600; }
+  .index-box a:hover { text-decoration: underline; color: var(--accent2); }
+
+  .back-to-top {
+    display: inline-block;
+    margin-top: 2.5em;
+    font-size: .85em;
+    color: var(--accent2);
+    text-decoration: none;
+  }
+  strong { color: #2d2230; }
+</style>
+</head>
+<body>
+<h1 id="top">EduCorp LMS — Feature Documentation</h1>
+
+<div class="index-box">
+<h2>📑 Index of Features</h2>
+<ol><li><a href="#0-system-wide-notes-read-this-first">0. System-Wide Notes (read this first)</a></li><li><a href="#feature-1-category-management">Feature 1: Category Management</a></li><li><a href="#feature-2-course-management-catalog-admin-course-crud">Feature 2: Course Management (Catalog &amp; Admin Course CRUD)</a></li><li><a href="#feature-3-course-authoring-wizard-step-1-basic-details">Feature 3: Course Authoring Wizard — Step 1: Basic Details</a></li><li><a href="#feature-4-course-authoring-wizard-step-2-curriculum-modules-submodules">Feature 4: Course Authoring Wizard — Step 2: Curriculum (Modules &amp; Submodules)</a></li><li><a href="#feature-5-course-authoring-wizard-step-3-content-block-management">Feature 5: Course Authoring Wizard — Step 3: Content Block Management</a></li><li><a href="#feature-6-course-authoring-wizard-step-4-settings-seo">Feature 6: Course Authoring Wizard — Step 4: Settings &amp; SEO</a></li><li><a href="#feature-7-course-detail-view-learner-facing-curriculum-simulated-enrollment">Feature 7: Course Detail View (Learner-Facing Curriculum &amp; Simulated Enrollment)</a></li><li><a href="#feature-8-application-shell-navigation-toasts-and-global-state-appcontext">Feature 8: Application Shell — Navigation, Toasts, and Global State (AppContext)</a></li><li><a href="#feature-9-database-seeding">Feature 9: Database Seeding</a></li><li><a href="#feature-10-cross-cutting-infrastructure">Feature 10: Cross-Cutting Infrastructure</a></li><li><a href="#appendix-a-backend-rest-endpoint-reference-effective-paths-incl-apiv1-context-prefix">Appendix A: Backend REST Endpoint Reference (effective paths, incl. /api/v1 context prefix)</a></li><li><a href="#appendix-b-entity-relationship-summary">Appendix B: Entity-Relationship Summary</a></li></ol>
+</div>
+
+
+<p><strong>Project:</strong> <code>lms-xebia</code> (backend artifact <code>geeknito-backend</code>)
+<strong>Stack:</strong> React 19 + Vite + TypeScript + TanStack Query (frontend) · Spring Boot 3.2.4 + PostgreSQL + Redis + MapStruct (backend)
+<strong>Audience:</strong> New developers joining the project</p>
+<blockquote>
+<p>This document was generated by analyzing the actual source code in <code>frontend/src</code> and <code>backend/src/main/java/com/geeknito/geeknito_backend</code>. No features were invented; where the code contains dead/duplicate logic this is explicitly called out so new developers don't get confused by it.</p>
+</blockquote>
+<h2 id="0-system-wide-notes-read-this-first">0. System-Wide Notes (read this first)</h2>
+<ul>
+<li><strong>Backend context path:</strong> <code>server.servlet.context-path = /api/v1</code> (<code>application.yml</code>). Every <code>@RequestMapping</code> in a controller is therefore prefixed with <code>/api/v1</code> at runtime. E.g. <code>CategoryAdminController</code> declares <code>/categories</code> → real URL is <code>/api/v1/categories</code>.</li>
+<li><strong>Frontend base URL:</strong> <code>apiClient.ts</code> sets <code>baseURL = http://localhost:8080/api/v1</code>, so frontend service calls like <code>apiClient.get("/categories")</code> correctly resolve to <code>/api/v1/categories</code>.</li>
+<li><strong>Two parallel Category controllers exist:</strong> <code>CategoryAdminController</code> (<code>/categories</code>) is the one actually consumed by the frontend (<code>categoryService.ts</code>). <code>CategoryController</code> (<code>/api/categories</code>, with <code>@Valid</code> validation) is <strong>not called by any frontend code</strong> — it produces dead URL <code>/api/v1/api/categories</code> and appears to be leftover/duplicate code from an earlier iteration. Both ultimately hit the same <code>categories</code> table via different service stacks (<code>CategoryAdminService</code> vs <code>CategoryService</code>).</li>
+<li><strong><code>FileUploadController</code></strong> (<code>/api/v1/files/upload</code>, local disk storage) is also <strong>not used by the frontend</strong>. Media uploads in the wizard instead go directly from the browser to <strong>Cloudinary</strong> (see Feature 5: Content Block Management). This controller is dead code / an earlier prototype.</li>
+<li><strong>No authentication/authorization is implemented.</strong> <code>apiClient.ts</code> injects a <code>Bearer</code> token from <code>localStorage.getItem("token")</code> if present, but nothing in the app ever writes that key, and the backend has no Spring Security dependency, no JWT filter, and no <code>@PreAuthorize</code> checks. All endpoints are open. The Header/Sidebar "Sign Out", "Security", "Developer Console" actions are UI-only <code>alert()</code> simulations.</li>
+<li><strong>Soft deletes:</strong> Categories, Courses, and Content blocks are never hard-deleted; <code>DELETE</code> endpoints flip <code>is_active</code> to <code>false</code>.</li>
+<li><strong>App is a single-page, state-machine SPA</strong> — there is no React Router. Navigation is a <code>currentView</code> string (<code>"courses" | "categories" | "wizard" | "course-detail"</code>) held in <code>AppContext</code> and persisted to <code>localStorage</code>.</li>
+</ul>
+<hr />
+<h2 id="feature-1-category-management">Feature 1: Category Management</h2>
+<h3 id="1-feature-name">1. Feature Name</h3>
+<p>Category Management (Course Taxonomy / Curriculum Categories)</p>
+<h3 id="2-feature-purpose">2. Feature Purpose</h3>
+<p>Lets an LMS administrator create, list, edit, and soft-delete the <strong>categories</strong> that courses are grouped under (e.g. "Cloud Architecture", "Cybersecurity", "Software Engineering"). Categories carry a display icon, brand color, and description, and are used throughout the catalog UI for filter chips and color-coded badges. There is no end-user/learner role in this codebase — every screen is effectively an admin console.</p>
+<h3 id="3-feature-location">3. Feature Location</h3>
+<p><strong>Frontend</strong>
+- Page (wired/active): <code>frontend/src/pages/CategoryManagement.tsx</code>
+- Service: <code>frontend/src/services/categoryService.ts</code>
+- Types: <code>frontend/src/types.ts</code> (<code>Category</code> interface)
+- ⚠️ Dead/unused alternative UI: <code>frontend/src/components/CategoryManagementView.tsx</code> (reads/writes via <code>AppContext</code>, never imported by <code>App.tsx</code>)
+- ⚠️ Dead/unused alternative form: <code>frontend/src/components/CreateCategoryForm_NextJS.tsx</code></p>
+<p><strong>Backend</strong>
+- Controller (active): <code>backend/.../category/controller/CategoryAdminController.java</code> → <code>/categories</code>
+- Controller (dead): <code>backend/.../category/controller/CategoryController.java</code> → <code>/api/categories</code>
+- Service interface/impl (active): <code>CategoryAdminService.java</code> / <code>CategoryAdminServiceImpl.java</code>
+- Service interface/impl (dead, Redis-cached): <code>CategoryService.java</code> / <code>CategoryServiceImpl.java</code>
+- Repository: <code>CategoryRepository.java</code>
+- Entity: <code>entity/learning/CategoryEntity.java</code>
+- DTOs: <code>CategoryRequestDTO.java</code>, <code>CategoryResponseDTO.java</code>
+- Mapper: <code>CategoryMapper.java</code> (MapStruct, only used by the dead <code>CategoryServiceImpl</code>)</p>
+<h3 id="4-related-files">4. Related Files</h3>
+<p>Frontend
+- ✓ <code>pages/CategoryManagement.tsx</code>
+- ✓ <code>services/categoryService.ts</code>
+- ✓ <code>lib/apiClient.ts</code>
+- ✓ <code>types.ts</code>
+- ✓ <code>context/AppContext.tsx</code> (consumes <code>categoryService</code> for sidebar/global category list &amp; catalog filter chips)</p>
+<p>Backend
+- ✓ <code>CategoryAdminController.java</code>
+- ✓ <code>CategoryAdminService.java</code> / <code>CategoryAdminServiceImpl.java</code>
+- ✓ <code>CategoryRepository.java</code>
+- ✓ <code>CategoryEntity.java</code>
+- ✓ <code>CategoryRequestDTO.java</code> / <code>CategoryResponseDTO.java</code>
+- ✓ <code>CategoryMapper.java</code> (unused by the active path)
+- ✓ <code>config/GlobalExceptionHandler.java</code></p>
+<p>Database
+- ✓ <code>categories</code> table</p>
+<h3 id="5-feature-entry-point">5. Feature Entry Point</h3>
+<pre><code>Admin clicks &quot;Create Category&quot; button (CategoryManagement.tsx)
+        ↓
+Opens local &lt;Modal&gt; component, fills form (name, description, icon, color, isActive)
+        ↓
+handleSubmit() → categoryService.create() via TanStack Query useMutation
+        ↓
+Axios POST /categories  (apiClient baseURL + /api/v1 context path → /api/v1/categories)
+        ↓
+CategoryAdminController.create()
+        ↓
+CategoryAdminServiceImpl.create()
+        ↓
+CategoryRepository.save()
+        ↓
+PostgreSQL `categories` table
+</code></pre>
+<h3 id="6-complete-feature-lifecycle-create-flow">6. Complete Feature Lifecycle (Create flow)</h3>
+<pre><code>User fills Modal form in CategoryManagement.tsx
+        ↓
+handleSubmit() builds payload { name, description, icon, color, active, isActive }
+        ↓
+createMutation.mutate(payload)   [@tanstack/react-query useMutation]
+        ↓
+categoryService.create(data) → apiClient.post(&quot;/categories&quot;, data)
+        ↓
+CategoryAdminController.create(@RequestBody CategoryRequestDTO)
+        ↓
+CategoryAdminServiceImpl.create()
+   - builds CategoryEntity via builder, defaults isActive=true if null
+        ↓
+CategoryRepository.save(entity)   → INSERT INTO categories
+        ↓
+mapToResponse() builds CategoryResponseDTO, courseCount forced to 0 (brand-new category)
+        ↓
+201 CREATED returned to Axios
+        ↓
+onSuccess(): queryClient.invalidateQueries([&quot;categories&quot;]) → list re-fetches
+        ↓
+Modal closes, form resets, table re-renders with new row
+</code></pre>
+<h3 id="7-api-details">7. API Details</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint (effective, incl. <code>/api/v1</code>)</th>
+<th>Request Body</th>
+<th>Response</th>
+<th>Auth</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/categories</code></td>
+<td>—</td>
+<td><code>CategoryResponseDTO[]</code></td>
+<td>None</td>
+<td>Returns <strong>all</strong> categories (active + inactive), each with <code>courseCount</code></td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/categories/{id}</code></td>
+<td>—</td>
+<td><code>CategoryResponseDTO</code></td>
+<td>None</td>
+<td>404 if not found</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/categories</code></td>
+<td><code>CategoryRequestDTO</code> (<code>name</code>, <code>icon</code>, <code>description</code>, <code>color</code>, <code>isActive</code>)</td>
+<td><code>CategoryResponseDTO</code> (201)</td>
+<td>None</td>
+<td><code>courseCount</code> forced to <code>0</code> on create</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/categories/{id}</code></td>
+<td><code>CategoryRequestDTO</code></td>
+<td><code>CategoryResponseDTO</code></td>
+<td>None</td>
+<td>Recomputes <code>courseCount</code> via <code>courseRepository.countByCategoryId</code></td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/categories/{id}</code></td>
+<td>—</td>
+<td><code>204 No Content</code></td>
+<td>None</td>
+<td>Soft delete — sets <code>isActive=false</code>, row remains</td>
+</tr>
+</tbody>
+</table>
+<p>Error responses: <code>404 Not Found</code> (category missing — <code>EntityNotFoundException</code> → mapped by <code>GlobalExceptionHandler</code>), <code>500 Internal Server Error</code> (generic fallback).</p>
+<h3 id="8-database-flow">8. Database Flow</h3>
+<p>Table: <code>categories</code> (<code>id</code>, <code>name</code> UNIQUE, <code>icon</code>, <code>description</code>, <code>color</code>, <code>is_active</code>, <code>created_at</code>, <code>updated_at</code>).
+Relationship: one-to-many with <code>courses</code> (<code>courses.category_id</code> FK, nullable, no cascade — deleting a category does not delete/cascade its courses; <code>courseCount</code> is computed on the fly with a correlated subquery <code>SELECT COUNT(co) FROM CourseEntity co WHERE co.category = c</code>).
+- <strong>Insert:</strong> <code>CategoryAdminServiceImpl.create()</code> → <code>categoryRepository.save()</code>.
+- <strong>Read (list):</strong> <code>findAllWithCourseCount()</code> — custom JPQL returning <code>Object[]</code> pairs of <code>(CategoryEntity, Long count)</code>.
+- <strong>Read (active only):</strong> <code>findByIsActiveTrue()</code> (unused directly by admin path) / <code>findByIsActiveTrueWithCourseCount()</code> (used by the dead <code>CategoryServiceImpl</code>, cached in Redis).
+- <strong>Update:</strong> field-by-field mutation on the managed entity, then <code>save()</code>.
+- <strong>Delete:</strong> soft delete only (<code>is_active=false</code>); no FK cascade is configured.</p>
+<h3 id="9-state-management">9. State Management</h3>
+<ul>
+<li><strong>Server state:</strong> TanStack Query <code>useQuery(["categories"], categoryService.getAll)</code> — single source of truth for the category table on this page.</li>
+<li><strong>Mutations:</strong> <code>createMutation</code>, <code>updateMutation</code>, <code>deleteMutation</code> via <code>useMutation</code>, each calling <code>queryClient.invalidateQueries({queryKey:["categories"]})</code> on success — no optimistic updates, the page always shows server-confirmed state.</li>
+<li><strong>Local UI state:</strong> <code>useState</code> for search query, modal open/close, editing target, and form fields.</li>
+<li>Separately, <code>AppContext.tsx</code> keeps its <strong>own</strong> copy of <code>categories</code> in React state + <code>localStorage</code> (<code>educorp_categories</code>) for use by the Sidebar/Catalog/Wizard — this is <strong>not</strong> synced with TanStack Query's cache; the two state stores can drift until both fetch independently.</li>
+</ul>
+<h3 id="10-component-hierarchy">10. Component Hierarchy</h3>
+<pre><code>CategoryManagement (page, default export)
+   └─ Modal (internal, local component)
+        └─ &lt;form&gt; (name, description, icon picker, color picker, active toggle)
+   └─ &lt;table&gt; rows (Edit / Delete actions)
+</code></pre>
+<h3 id="11-sequence-diagram-text">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → CategoryManagement.tsx → categoryService → apiClient(Axios)
+   → CategoryAdminController → CategoryAdminServiceImpl → CategoryRepository
+   → PostgreSQL → CategoryRepository → CategoryAdminServiceImpl
+   → CategoryAdminController → apiClient → categoryService → TanStack Query cache
+   → CategoryManagement.tsx (re-render) → Admin
+</code></pre>
+<h3 id="12-dependencies">12. Dependencies</h3>
+<p><code>@tanstack/react-query</code>, <code>axios</code>, <code>lucide-react</code> icons. Backend: Spring Web, Spring Data JPA, Lombok, <code>jakarta.persistence.EntityNotFoundException</code>.</p>
+<h3 id="13-validation-rules">13. Validation Rules</h3>
+<ul>
+<li>Frontend: <code>name</code> required (<code>required</code> attribute + <code>formData.name.trim()</code> guard before submit). No other field is mandatory.</li>
+<li>Backend (active <code>CategoryAdminController</code>): <strong>no <code>@Valid</code>/<code>@RequestBody</code> validation annotations</strong> — any payload shape is accepted; <code>name</code> UNIQUE constraint at the DB level will throw on duplicate names (surfaces as a generic 500 today, since no <code>DataIntegrityViolationException</code> handler exists).</li>
+<li>Backend (dead <code>CategoryController</code>): uses <code>@Valid</code>, but the DTO itself (<code>CategoryRequestDTO</code>) has no Bean Validation annotations (<code>@NotBlank</code>, etc.), so <code>@Valid</code> is effectively a no-op here too.</li>
+</ul>
+<h3 id="14-error-handling">14. Error Handling</h3>
+<ul>
+<li>Frontend: <code>isError</code> state from <code>useQuery</code> renders a "Server Communication Failed" panel with a Retry button; mutation errors render a small red alert banner in the modal ("Failed to submit form...").</li>
+<li>Backend: <code>GlobalExceptionHandler</code> converts <code>EntityNotFoundException</code>/<code>ResourceNotFoundException</code> → 404, <code>IllegalArgumentException</code> → 400, <code>MethodArgumentNotValidException</code> → 400 with joined field error messages, anything else → 500 generic message.</li>
+</ul>
+<h3 id="15-security">15. Security</h3>
+<p>None implemented (see System-Wide Notes). CORS is open via <code>@CrossOrigin(origins = "*")</code> on the controller, in addition to the global <code>WebConfig</code> CORS mapping which restricts <code>/api/**</code> to <code>localhost:5173</code>/<code>localhost:3000</code> — the controller-level annotation effectively overrides/widens this for this specific endpoint.</p>
+<h3 id="16-important-classes-and-methods">16. Important Classes and Methods</h3>
+<ul>
+<li><code>CategoryAdminController.create/getAll/getById/update/delete</code> — REST entry points.</li>
+<li><code>CategoryAdminServiceImpl.create()</code> — builds entity, defaults <code>isActive</code>.</li>
+<li><code>CategoryAdminServiceImpl.softDelete()</code> — flips <code>isActive=false</code>.</li>
+<li><code>CategoryRepository.findAllWithCourseCount()</code> / <code>findByIdWithCourseCount()</code> — JPQL with correlated course-count subquery.</li>
+<li><code>categoryService.getAll/create/update/delete</code> (frontend) — thin Axios wrappers.</li>
+</ul>
+<h3 id="17-feature-dependencies">17. Feature Dependencies</h3>
+<p>Course Management (course count rollup, category dropdown in course wizard), no auth dependency.</p>
+<h3 id="18-possible-improvements">18. Possible Improvements</h3>
+<ul>
+<li>Remove dead <code>CategoryController</code>/<code>CategoryService</code>/<code>CategoryMapper</code> or actually route the frontend to the validated, cached path.</li>
+<li>Add <code>@NotBlank</code>/<code>@Size</code> Bean Validation to <code>CategoryRequestDTO</code> and enable <code>@Valid</code> on the active admin controller.</li>
+<li>Add a <code>DataIntegrityViolationException</code> handler to return a clean 409 on duplicate category names.</li>
+<li>Replace the two divergent in-memory state stores (<code>AppContext</code> vs <code>TanStack Query</code>) with a single source of truth.</li>
+<li>Add pagination/server-side search once the category list grows.</li>
+</ul>
+<h3 id="19-summary">19. Summary</h3>
+<ul>
+<li>Admin-only CRUD over <code>categories</code>, no auth enforced.</li>
+<li>Active code path: <code>CategoryManagement.tsx</code> → <code>categoryService</code> → <code>CategoryAdminController</code> → <code>CategoryAdminServiceImpl</code> → <code>CategoryRepository</code>.</li>
+<li>A second, unused, validated + Redis-cached implementation (<code>CategoryController</code>/<code>CategoryService</code>) exists as dead code.</li>
+<li>Soft delete only; <code>courseCount</code> is computed live via a correlated subquery.</li>
+<li>TanStack Query drives all server-state caching/invalidation on this page.</li>
+<li>No Bean Validation actually enforced server-side today.</li>
+</ul>
+<hr />
+<h2 id="feature-2-course-management-catalog-admin-course-crud">Feature 2: Course Management (Catalog &amp; Admin Course CRUD)</h2>
+<h3 id="1-feature-name_1">1. Feature Name</h3>
+<p>Course Management (Course Catalog View + Admin Course CRUD)</p>
+<h3 id="2-feature-purpose_1">2. Feature Purpose</h3>
+<p>Provides the main landing screen of the application: a searchable, filterable grid of all courses, plus the ability to create, edit (via the wizard), and soft-delete a course. This is the primary "home" experience for the LMS administrator.</p>
+<h3 id="3-feature-location_1">3. Feature Location</h3>
+<p><strong>Frontend</strong>
+- Page/View: <code>frontend/src/components/CourseCatalogView.tsx</code>
+- Card component: <code>frontend/src/components/CourseCard.tsx</code>
+- Service: <code>frontend/src/services/courseService.ts</code>
+- Types: <code>Course</code> in <code>types.ts</code></p>
+<p><strong>Backend</strong>
+- Admin Controller: <code>course/controller/CourseAdminController.java</code> → <code>/admin/courses</code>
+- Catalog Controller (public-style, paginated): <code>course/controller/CourseCatalogController.java</code> → <code>/catalog/courses</code>
+- Service: <code>CourseAdminService.java</code> / <code>CourseAdminServiceImpl.java</code>, <code>CourseCatalogService.java</code> / <code>CourseCatalogServiceImpl.java</code>
+- Repository: <code>CourseRepository.java</code>
+- Entity: <code>entity/learning/CourseEntity.java</code>
+- DTOs: <code>CourseRequestDTO.java</code>, <code>CourseResponseDTO.java</code>, <code>CourseCatalogCardDTO.java</code>, <code>CourseCatalogDetailDTO.java</code>
+- Mapper: <code>CourseMapper.java</code> (MapStruct — used for catalog DTOs, <strong>not</strong> used by <code>CourseAdminServiceImpl</code>, which maps manually)</p>
+<h3 id="4-related-files_1">4. Related Files</h3>
+<p>Frontend
+- ✓ <code>CourseCatalogView.tsx</code>
+- ✓ <code>CourseCard.tsx</code>
+- ✓ <code>services/courseService.ts</code>
+- ✓ <code>services/categoryService.ts</code> (used to enrich cards with category color/icon)
+- ✓ <code>context/AppContext.tsx</code> (<code>addCourse</code>, <code>updateCourse</code>, <code>deleteCourse</code>, <code>viewCourseDetail</code>, <code>startNewCourseWizard</code>, <code>startEditCourseWizard</code>)</p>
+<p>Backend
+- ✓ <code>CourseAdminController.java</code>
+- ✓ <code>CourseCatalogController.java</code>
+- ✓ <code>CourseAdminServiceImpl.java</code>
+- ✓ <code>CourseCatalogServiceImpl.java</code>
+- ✓ <code>CourseRepository.java</code>
+- ✓ <code>CourseEntity.java</code>
+- ✓ <code>CourseRequestDTO.java</code> / <code>CourseResponseDTO.java</code> / <code>CourseCatalogCardDTO.java</code> / <code>CourseCatalogDetailDTO.java</code>
+- ✓ <code>CourseMapper.java</code></p>
+<p>Database
+- ✓ <code>courses</code> table (FK → <code>categories</code>, one-to-many → <code>modules</code>)</p>
+<h3 id="5-feature-entry-point_1">5. Feature Entry Point</h3>
+<pre><code>App loads → currentView === &quot;courses&quot; → &lt;CourseCatalogView/&gt; mounts
+        ↓
+useEffect → fetchCatalogData() → Promise.all([courseService.getAll(), categoryService.getAll()])
+        ↓
+GET /admin/courses  &amp;  GET /categories   (both prefixed with /api/v1)
+        ↓
+CourseAdminController.getAll() / CategoryAdminController.getAll()
+        ↓
+Grid renders CourseCard per course (admin grid, not the read-optimized /catalog/courses paginated endpoint)
+</code></pre>
+<h3 id="6-complete-feature-lifecycle-delete-flow-as-an-example-of-full-round-trip">6. Complete Feature Lifecycle (Delete flow, as an example of full round-trip)</h3>
+<pre><code>Admin clicks &quot;⋮&quot; on a CourseCard → dropdown → &quot;Delete Course&quot;
+        ↓
+handleDelete() → window.confirm()
+        ↓
+courseService.delete(id) → Axios DELETE /admin/courses/{id}
+        ↓
+CourseAdminController.delete()
+        ↓
+CourseAdminServiceImpl.softDelete()  → entity.setActive(false) → save()
+        ↓
+204 No Content
+        ↓
+deleteCourse(id) on AppContext (in-memory list filter) AND fetchCatalogData() re-run (local state refresh)
+        ↓
+Grid re-renders without the deleted course (it is filtered server-side from /catalog/courses,
+   but the ADMIN grid (/admin/courses) returns ALL courses including inactive ones —
+   so on `/admin/courses` a soft-deleted course will still re-appear unless explicitly filtered;
+   the UI relies on the local optimistic removal from state for the visible effect)
+</code></pre>
+<h3 id="7-api-details_1">7. API Details</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Request Body</th>
+<th>Response</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/admin/courses</code></td>
+<td>—</td>
+<td><code>CourseResponseDTO[]</code></td>
+<td>Returns <strong>all</strong> courses, active and inactive</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/admin/courses/{id}</code></td>
+<td>—</td>
+<td><code>CourseResponseDTO</code></td>
+<td>404 if missing</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/admin/courses</code></td>
+<td><code>CourseRequestDTO</code></td>
+<td><code>CourseResponseDTO</code> (201)</td>
+<td><code>categoryId</code> optional; resolves <code>CategoryEntity</code> if present</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/admin/courses/{id}</code></td>
+<td><code>CourseRequestDTO</code></td>
+<td><code>CourseResponseDTO</code></td>
+<td>Full overwrite of all mutable fields</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/admin/courses/{id}</code></td>
+<td>—</td>
+<td><code>204</code></td>
+<td>Soft delete</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/catalog/courses?page&amp;size&amp;sortBy&amp;direction</code></td>
+<td>—</td>
+<td><code>Page&lt;CourseCatalogCardDTO&gt;</code></td>
+<td>Active-only, paginated, sortable; <strong>not used by the current frontend</strong>, but available for a future public catalog</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/catalog/courses/{slug}</code></td>
+<td>—</td>
+<td><code>CourseCatalogDetailDTO</code></td>
+<td>⚠️ <code>CourseCatalogServiceImpl.getCourseDetailBySlug()</code> currently returns <strong><code>null</code></strong> — incomplete/stubbed implementation (comment: <em>"We will test the catalog grid first, so we'll leave this empty for just a moment!"</em>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8-database-flow_1">8. Database Flow</h3>
+<p>Table <code>courses</code> (<code>id</code>, <code>title</code>, <code>slug</code> UNIQUE, <code>thumbnail_url</code>, <code>short_description</code>, <code>description</code>, <code>level</code>, <code>duration</code>, <code>is_active</code>, <code>category_id</code> FK, <code>created_at</code>, <code>updated_at</code>). One-to-many to <code>modules</code> with <code>cascade = ALL, orphanRemoval = true</code> — <strong>deleting a <code>CourseEntity</code> via JPA would cascade-delete its modules/submodules/content</strong>, but the admin path never hard-deletes (only soft-delete), so this cascade is currently dormant. <code>findCourseDetailBySlug()</code> uses <code>LEFT JOIN FETCH</code> to eagerly pull <code>modules</code> and <code>submodules</code> in one query (avoids N+1) — but its consuming service method is unimplemented (see above).</p>
+<h3 id="9-state-management_1">9. State Management</h3>
+<ul>
+<li><code>CourseCatalogView</code> keeps its own <code>localCourses</code>/<code>localCategories</code> state (fetched independently of <code>AppContext</code>), plus <code>useMemo</code>-derived <code>mappedCourses</code> (joins category color/icon onto each course) and <code>filteredCourses</code> (search + category filter).</li>
+<li><code>AppContext.addCourse/updateCourse/deleteCourse</code> perform <strong>optimistic local mutation</strong> of its own <code>courses</code> array (using <code>Date.now()</code> as a temporary client-side id on create) <em>and</em> fire the real network call in parallel — meaning the UI can briefly show a fake numeric ID before the real DB id is reconciled by a follow-up <code>fetchCategoriesAndCourses()</code>.</li>
+<li>No TanStack Query is used on this specific view (unlike Category Management) — manual <code>useState</code>/<code>useEffect</code> fetching instead.</li>
+</ul>
+<h3 id="10-component-hierarchy_1">10. Component Hierarchy</h3>
+<pre><code>CourseCatalogView
+ ├─ Stats cards (Total / Beginner / Intermediate / Advanced — computed client-side)
+ ├─ Search input + Category filter chips
+ └─ Grid of CourseCard (per course)
+      └─ dropdown menu (Edit → startEditCourseWizard, Delete → handleDelete)
+</code></pre>
+<h3 id="11-sequence-diagram-text_1">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → CourseCatalogView → courseService/categoryService → apiClient
+   → CourseAdminController/CategoryAdminController → ServiceImpl → Repository
+   → PostgreSQL → Repository → ServiceImpl → Controller → apiClient
+   → CourseCatalogView (setState) → Admin sees grid
+</code></pre>
+<h3 id="12-dependencies_1">12. Dependencies</h3>
+<p><code>lucide-react</code>, <code>axios</code>, category color/icon join logic. Backend: Spring Data JPA <code>Pageable</code>/<code>Sort</code> (catalog controller), <code>EntityNotFoundException</code>.</p>
+<h3 id="13-validation-rules_1">13. Validation Rules</h3>
+<ul>
+<li>Frontend: none enforced on this screen directly (validation happens in the Wizard, Feature 3).</li>
+<li>Backend: no Bean Validation on <code>CourseRequestDTO</code>; <code>slug</code> has a DB-level <code>UNIQUE</code> constraint (violation surfaces as a 500 today).</li>
+</ul>
+<h3 id="14-error-handling_1">14. Error Handling</h3>
+<ul>
+<li><code>try/catch</code> around <code>fetchCatalogData()</code>/<code>handleDelete()</code> with <code>console.error</code> logging — no visible error UI on this screen beyond a loading spinner state; failures fail silently to the user.</li>
+<li>Backend: same <code>GlobalExceptionHandler</code> as all other features.</li>
+</ul>
+<h3 id="15-security_1">15. Security</h3>
+<p>None (see System-Wide Notes).</p>
+<h3 id="16-important-classes-and-methods_1">16. Important Classes and Methods</h3>
+<ul>
+<li><code>CourseAdminServiceImpl.create/update/softDelete/getById/getAll</code> — manual entity↔DTO mapping (<code>mapToResponse</code>).</li>
+<li><code>CourseCatalogServiceImpl.getCatalogCourses()</code> — maps <code>Page&lt;CourseEntity&gt;</code> → <code>Page&lt;CourseCatalogCardDTO&gt;</code> via <code>.map()</code>.</li>
+<li><code>CourseRepository.findByIsActiveTrue(Pageable)</code>, <code>.findCourseDetailBySlug()</code>, <code>.countByCategoryId()</code>.</li>
+<li><code>fetchCatalogData()</code> (frontend) — parallel fetch + join.</li>
+</ul>
+<h3 id="17-feature-dependencies_1">17. Feature Dependencies</h3>
+<p>Category Management (category dropdown/badge data), Course Wizard (create/edit entry point), Course Detail View (click-through).</p>
+<h3 id="18-possible-improvements_1">18. Possible Improvements</h3>
+<ul>
+<li>Implement <code>CourseCatalogServiceImpl.getCourseDetailBySlug()</code> (currently returns <code>null</code>).</li>
+<li>Switch the admin grid to the paginated <code>/catalog/courses</code> (or add an admin-equivalent paginated endpoint) once the course count grows — <code>/admin/courses</code> has no pagination today.</li>
+<li>Filter inactive (soft-deleted) courses out of <code>/admin/courses</code> by default, or add a status filter toggle, since the UI currently relies purely on local optimistic state to "hide" deleted rows.</li>
+<li>Add <code>@Valid</code> + Bean Validation annotations to <code>CourseRequestDTO</code> (e.g. <code>@NotBlank title</code>, <code>@Pattern slug</code>).</li>
+<li>Consolidate <code>CourseCatalogView</code>'s manual fetch logic with TanStack Query for consistent caching/error UI.</li>
+</ul>
+<h3 id="19-summary_1">19. Summary</h3>
+<ul>
+<li>Primary landing screen; grid of <code>CourseCard</code>s sourced from <code>/admin/courses</code>.</li>
+<li>A separate, paginated, active-only <code>/catalog/courses</code> endpoint exists but is unused by the current UI.</li>
+<li>Course deletion is soft (flag flip), not cascading.</li>
+<li>Manual <code>useState</code>/<code>useEffect</code> data fetching (no TanStack Query) on this screen.</li>
+<li>Category data is joined client-side for color/icon badges.</li>
+<li>Course detail-by-slug backend logic is an unfinished stub.</li>
+</ul>
+<hr />
+<h2 id="feature-3-course-authoring-wizard-step-1-basic-details">Feature 3: Course Authoring Wizard — Step 1: Basic Details</h2>
+<h3 id="1-feature-name_2">1. Feature Name</h3>
+<p>Course Wizard — Basic Details (Step 1 of 4)</p>
+<h3 id="2-feature-purpose_2">2. Feature Purpose</h3>
+<p>First step of the multi-step course authoring flow. Captures the course's identity: title, auto-generated/editable slug, parent category, short/long description, thumbnail, difficulty level, and duration. Also auto-saves a draft course row to the database as soon as the admin proceeds, so subsequent steps (curriculum, content) have a real <code>courseId</code> to attach child records to.</p>
+<h3 id="3-feature-location_2">3. Feature Location</h3>
+<p><strong>Frontend</strong>
+- Wizard shell: <code>frontend/src/components/CourseWizard/CourseWizardParent.tsx</code>
+- Step component: <code>frontend/src/components/CourseWizard/WizardStep1.tsx</code>
+- Services used: <code>courseService.ts</code>, <code>categoryService.ts</code></p>
+<p><strong>Backend</strong> (re-uses Course Management's endpoints)
+- <code>CourseAdminController.java</code> (<code>POST</code>/<code>PUT /admin/courses</code>)
+- <code>CategoryAdminController.java</code> (<code>GET /categories</code> for the dropdown)</p>
+<h3 id="4-related-files_2">4. Related Files</h3>
+<p>Frontend: ✓ <code>CourseWizardParent.tsx</code>, ✓ <code>WizardStep1.tsx</code>, ✓ <code>services/courseService.ts</code>, ✓ <code>services/categoryService.ts</code>, ✓ <code>context/AppContext.tsx</code> (<code>wizardCourseId</code>, <code>wizardStep</code>, <code>showToast</code>)
+Backend: ✓ <code>CourseAdminController.java</code>, ✓ <code>CourseAdminServiceImpl.java</code>, ✓ <code>CourseRequestDTO.java</code>, ✓ <code>CourseEntity.java</code>, ✓ <code>CategoryRepository.java</code></p>
+<h3 id="5-feature-entry-point_2">5. Feature Entry Point</h3>
+<pre><code>Sidebar &quot;Create Course&quot; button → startNewCourseWizard() (AppContext)
+   sets wizardCourseId=null, wizardStep=1, currentView=&quot;wizard&quot;
+        ↓
+CourseWizardParent renders WizardStep1 with empty courseDraft
+        ↓
+Admin fills Title/Category/Description/Thumbnail/Level/Duration
+        ↓
+Clicks &quot;Continue&quot; → handleNextStep()
+</code></pre>
+<h3 id="6-complete-feature-lifecycle">6. Complete Feature Lifecycle</h3>
+<pre><code>Admin fills WizardStep1 form fields (local useState `localForm`, synced up via setCourseData)
+        ↓
+Clicks &quot;Continue&quot; → CourseWizardParent.handleNextStep()
+        ↓
+Step-1 client-side guard: title required, categoryId required (else showToast error, blocks advance)
+        ↓
+handleSaveDraftSilent() builds CourseRequestDTO-shaped payload (auto-slugifies title if no slug set)
+        ↓
+IF wizardCourseId is null  → courseService.create() → POST /admin/courses
+ELSE                       → courseService.update() → PUT  /admin/courses/{id}
+        ↓
+CourseAdminController.create()/update() → CourseAdminServiceImpl → CourseRepository.save()
+        ↓
+Response returns the real DB-generated course id
+        ↓
+setWizardCourseId(newCourse.id) — wizard now &quot;knows&quot; the real course row
+        ↓
+setWizardStep(2) → WizardStep2 (Curriculum) renders, using the new real courseId
+</code></pre>
+<h3 id="7-api-details_2">7. API Details</h3>
+<p>Re-uses Course Management's <code>POST/PUT /api/v1/admin/courses</code> (see Feature 2 §7). Category options come from <code>GET /api/v1/categories</code> (TanStack Query, <code>categoryService.getAll</code>).</p>
+<h3 id="8-database-flow_2">8. Database Flow</h3>
+<p>Same <code>courses</code> table as Feature 2. This step is the <strong>only place</strong> a brand-new <code>courses</code> row is actually inserted; subsequent wizard steps always operate against the now-known <code>courseId</code>.</p>
+<h3 id="9-state-management_2">9. State Management</h3>
+<ul>
+<li><code>WizardStep1</code> keeps a local <code>localForm</code> (<code>useState</code>) seeded from the parent's <code>courseDraft</code>, with its own <code>isManualSlug</code> flag (auto slug-from-title generation stops once the admin manually edits the slug field).</li>
+<li>The parent <code>CourseWizardParent</code> owns the canonical <code>courseDraft</code> object (plain <code>useState&lt;any&gt;</code>, <strong>not strongly typed</strong>) which is threaded down as props (<code>courseData</code>/<code>setCourseData</code>) to all four steps — a single shared draft object pattern rather than per-step isolated state.</li>
+<li><code>wizardCourseId</code> and <code>wizardStep</code> are persisted to <code>localStorage</code> (<code>educorp_wizard_id</code>, <code>educorp_wizard_step</code>) via <code>AppContext</code>, so a page refresh resumes the wizard where it left off.</li>
+</ul>
+<h3 id="10-component-hierarchy_2">10. Component Hierarchy</h3>
+<pre><code>CourseWizardParent
+ └─ WizardStep1 (courseData, setCourseData)
+      ├─ Title/Slug inputs
+      ├─ Category select (from categoryService.getAll via useQuery)
+      ├─ Description fields
+      ├─ Thumbnail input/drag-drop area
+      └─ Level/Duration selectors
+</code></pre>
+<h3 id="11-sequence-diagram-text_2">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → WizardStep1 (local form) → CourseWizardParent.handleSaveDraftSilent()
+   → courseService.create/update → apiClient → CourseAdminController
+   → CourseAdminServiceImpl → CourseRepository → PostgreSQL
+   → CourseAdminServiceImpl → CourseAdminController → apiClient
+   → CourseWizardParent (setWizardCourseId, setWizardStep) → WizardStep2 renders
+</code></pre>
+<h3 id="12-dependencies_2">12. Dependencies</h3>
+<p><code>@tanstack/react-query</code> (category dropdown), <code>lucide-react</code>, <code>courseService</code>, <code>categoryService</code>.</p>
+<h3 id="13-validation-rules_2">13. Validation Rules</h3>
+<ul>
+<li>Frontend only: <code>title</code> and <code>categoryId</code> required before advancing past Step 1 (<code>showToast</code> error otherwise); no format validation on slug/description.</li>
+<li>Backend: none (same as Feature 2).</li>
+</ul>
+<h3 id="14-error-handling_2">14. Error Handling</h3>
+<ul>
+<li><code>handleSaveDraftSilent()</code> catches network errors and shows a toast: <em>"Database rejected save. Ensure title and category are set."</em></li>
+<li>No retry mechanism; the admin must click "Continue" again.</li>
+</ul>
+<h3 id="15-security_2">15. Security</h3>
+<p>None.</p>
+<h3 id="16-important-classes-and-methods_2">16. Important Classes and Methods</h3>
+<ul>
+<li><code>CourseWizardParent.handleSaveDraftSilent()</code> — the central "upsert" used by every step transition and by "Save Draft"/"Publish".</li>
+<li><code>CourseWizardParent.handleNextStep()</code> — Step-1-specific validation + advance.</li>
+<li><code>WizardStep1</code>'s slug auto-generation (<code>title.toLowerCase().replace(/[^a-z0-9]+/g, "-")...</code>).</li>
+</ul>
+<h3 id="17-feature-dependencies_2">17. Feature Dependencies</h3>
+<p>Category Management (dropdown data source); feeds Course Curriculum (Step 2), Content (Step 3), Settings/SEO (Step 4).</p>
+<h3 id="18-possible-improvements_2">18. Possible Improvements</h3>
+<ul>
+<li>Type <code>courseDraft</code> with a proper <code>Course</code>-shaped interface instead of <code>any</code>.</li>
+<li>Add slug uniqueness pre-check (debounced <code>GET</code>) before save to give earlier feedback than a 500 from the DB unique constraint.</li>
+<li>Add client-side schema validation (e.g. zod) shared across all four wizard steps.</li>
+</ul>
+<h3 id="19-summary_2">19. Summary</h3>
+<ul>
+<li>Step 1 of 4 in the course authoring wizard.</li>
+<li>Creates the course row in the DB on first "Continue" (or "Save Draft"), giving downstream steps a real ID.</li>
+<li>Slug auto-generated from title unless manually overridden.</li>
+<li>Shares one mutable draft object across all wizard steps via props drilling.</li>
+<li>Re-uses the same backend endpoints as the main Course Management feature.</li>
+</ul>
+<hr />
+<h2 id="feature-4-course-authoring-wizard-step-2-curriculum-modules-submodules">Feature 4: Course Authoring Wizard — Step 2: Curriculum (Modules &amp; Submodules)</h2>
+<h3 id="1-feature-name_3">1. Feature Name</h3>
+<p>Curriculum Management (Modules &amp; Submodules) — Course Wizard Step 2</p>
+<h3 id="2-feature-purpose_3">2. Feature Purpose</h3>
+<p>Lets the admin build the course's structural outline: ordered <strong>Modules</strong> (chapters), each containing ordered <strong>Submodules</strong> (lessons). This is the skeleton that Step 3 (Content) later fills with actual learning material, and that learners navigate in the Course Detail view.</p>
+<h3 id="3-feature-location_3">3. Feature Location</h3>
+<p><strong>Frontend</strong>
+- <code>frontend/src/components/CourseWizard/WizardStep2.tsx</code>
+- Service: <code>frontend/src/services/curriculumService.ts</code></p>
+<p><strong>Backend</strong>
+- Controller: <code>course/controller/CurriculumAdminController.java</code> → <code>/admin/courses/{courseId}/modules</code>
+- Service: <code>CurriculumAdminService.java</code> / <code>CurriculumAdminServiceImpl.java</code>
+- Repositories: <code>ModuleRepository.java</code>, <code>SubmoduleRepository.java</code>, <code>CourseRepository.java</code>
+- Entities: <code>ModuleEntity.java</code>, <code>SubmoduleEntity.java</code>
+- DTOs: <code>ModuleRequestDTO.java</code>, <code>ModuleResponseDTO.java</code>, <code>SubmoduleRequestDTO.java</code>, <code>SubmoduleResponseDTO.java</code></p>
+<h3 id="4-related-files_3">4. Related Files</h3>
+<p>Frontend: ✓ <code>WizardStep2.tsx</code>, ✓ <code>curriculumService.ts</code>, ✓ <code>types.ts</code> (<code>Module</code>, <code>Submodule</code>)
+Backend: ✓ <code>CurriculumAdminController.java</code>, ✓ <code>CurriculumAdminServiceImpl.java</code>, ✓ <code>ModuleRepository.java</code>, ✓ <code>SubmoduleRepository.java</code>, ✓ <code>ModuleEntity.java</code>, ✓ <code>SubmoduleEntity.java</code>, ✓ <code>ModuleRequestDTO/ResponseDTO.java</code>, ✓ <code>SubmoduleRequestDTO/ResponseDTO.java</code>
+Database: ✓ <code>modules</code> table, ✓ <code>submodules</code> table</p>
+<h3 id="5-feature-entry-point_3">5. Feature Entry Point</h3>
+<pre><code>Wizard reaches Step 2 with a known courseId (from Step 1)
+        ↓
+useQuery([&quot;curriculum&quot;, courseId], curriculumService.getCourseCurriculum)
+        ↓
+GET /admin/courses/{courseId}/modules
+        ↓
+Admin clicks &quot;+ Add Module&quot; → inline form (NOT window.prompt) → submitNewModule()
+</code></pre>
+<h3 id="6-complete-feature-lifecycle-add-module-add-submodule">6. Complete Feature Lifecycle (Add Module → Add Submodule)</h3>
+<pre><code>Admin clicks &quot;+ Add Module&quot;, types title inline, confirms
+        ↓
+submitNewModule() → createModuleMutation.mutate({title, moduleOrder})
+        ↓
+POST /admin/courses/{courseId}/modules
+        ↓
+CurriculumAdminController.createModule()
+        ↓
+CurriculumAdminServiceImpl.createModule()
+   - looks up CourseEntity (404 if missing)
+   - builds ModuleEntity with empty submodules list
+        ↓
+ModuleRepository.save() → INSERT INTO modules
+        ↓
+mapToModuleResponse() → ModuleResponseDTO
+        ↓
+onSuccess: invalidateQueries([&quot;curriculum&quot;, courseId]) + optimistic append to local courseData.modules
+        ↓
+--- Admin then clicks &quot;+ Add Submodule&quot; under that module ---
+        ↓
+createSubmoduleMutation.mutate({moduleId, data:{title, slug, submoduleOrder}})
+        ↓
+POST /admin/courses/{courseId}/modules/{moduleId}/submodules
+        ↓
+CurriculumAdminController.createSubmodule()
+        ↓
+CurriculumAdminServiceImpl.createSubmodule()
+   - looks up ModuleEntity (404 if missing)
+   - builds SubmoduleEntity
+        ↓
+SubmoduleRepository.save() → INSERT INTO submodules
+        ↓
+mapToSubmoduleResponse() → SubmoduleResponseDTO
+        ↓
+queryClient.invalidateQueries([&quot;curriculum&quot;, courseId])
+</code></pre>
+<h3 id="7-api-details_3">7. API Details</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Body</th>
+<th>Response</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/admin/courses/{courseId}/modules</code></td>
+<td>—</td>
+<td><code>ModuleResponseDTO[]</code> (each with nested <code>submodules[]</code>)</td>
+<td>404 if course doesn't exist</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/admin/courses/{courseId}/modules</code></td>
+<td><code>ModuleRequestDTO</code> (<code>title</code>,<code>description</code>,<code>moduleOrder</code>)</td>
+<td><code>ModuleResponseDTO</code> (201)</td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/admin/courses/{courseId}/modules/{moduleId}/submodules</code></td>
+<td><code>SubmoduleRequestDTO</code> (<code>title</code>,<code>description</code>,<code>slug</code>,<code>submoduleOrder</code>)</td>
+<td><code>SubmoduleResponseDTO</code> (201)</td>
+<td><code>courseId</code> in the path is not actually used for the lookup — only <code>moduleId</code> is resolved</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8-database-flow_3">8. Database Flow</h3>
+<p><code>modules</code> (<code>course_id</code> FK, <code>module_order</code>, <code>is_active</code>) → one-to-many → <code>submodules</code> (<code>module_id</code> FK, <code>slug</code>, <code>submodule_order</code>, <code>is_active</code>). <code>CourseEntity.modules</code> and <code>ModuleEntity.submodules</code> use <code>cascade=ALL, orphanRemoval=true</code> (dormant today since these features never hard-delete). Modules and submodules are always returned ordered (<code>@OrderBy("moduleOrder ASC")</code> / <code>findByCourseIdOrderByModuleOrderAsc</code>, similarly for submodule order — note: submodules are returned in entity-default JPA collection order at the repository level inside <code>getCourseCurriculum</code>, while the entity-level <code>@OrderBy("submoduleOrder ASC")</code> only applies when navigating <code>module.getSubmodules()</code> directly, which is the path actually used here).</p>
+<h3 id="9-state-management_3">9. State Management</h3>
+<p>TanStack Query (<code>["curriculum", courseId]</code>) is the source of truth, refetched on every mutation; a <code>useEffect</code> mirrors <code>fetchedModules</code> into the wizard's shared <code>courseData.modules</code> so Steps 3/4 can read the same structure without a second fetch. Local component state tracks which modules are collapsed/expanded and which inline "add" forms are open.</p>
+<h3 id="10-component-hierarchy_3">10. Component Hierarchy</h3>
+<pre><code>WizardStep2
+ └─ List of Module rows
+      ├─ collapse/expand toggle
+      ├─ inline &quot;Add Submodule&quot; form
+      ├─ List of Submodule rows
+      │    └─ &quot;Edit Content&quot; shortcut → onEditSubmoduleContent(submoduleId) → jumps to Step 3
+      └─ inline &quot;Add Module&quot; form (top-level)
+</code></pre>
+<h3 id="11-sequence-diagram-text_3">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → WizardStep2 → curriculumService → apiClient → CurriculumAdminController
+   → CurriculumAdminServiceImpl → ModuleRepository/SubmoduleRepository → PostgreSQL
+   → ServiceImpl → Controller → apiClient → TanStack Query cache → WizardStep2 re-render
+</code></pre>
+<h3 id="12-dependencies_3">12. Dependencies</h3>
+<p><code>@tanstack/react-query</code>, <code>curriculumService</code>, parent wizard's shared <code>courseData</code>.</p>
+<h3 id="13-validation-rules_3">13. Validation Rules</h3>
+<ul>
+<li>Frontend: module/submodule title required (<code>showToast</code> error if blank) before mutation fires.</li>
+<li>Backend: none beyond entity existence checks (<code>EntityNotFoundException</code> if <code>courseId</code>/<code>moduleId</code> invalid).</li>
+</ul>
+<h3 id="14-error-handling_3">14. Error Handling</h3>
+<p><code>onError</code> toasts: <em>"Failed to create module. Ensure server is online."</em> / <em>"Failed to create submodule."</em> Query-level <code>isError</code>/<code>error</code> state renders an inline error panel with retry.</p>
+<h3 id="15-security_3">15. Security</h3>
+<p>None.</p>
+<h3 id="16-important-classes-and-methods_3">16. Important Classes and Methods</h3>
+<ul>
+<li><code>CurriculumAdminServiceImpl.createModule()</code> / <code>createSubmodule()</code> / <code>getCourseCurriculum()</code>.</li>
+<li><code>mapToModuleResponse()</code> / <code>mapToSubmoduleResponse()</code> — manual nested DTO assembly.</li>
+<li><code>submitNewModule()</code> / inline submodule submit handler (frontend).</li>
+</ul>
+<h3 id="17-feature-dependencies_3">17. Feature Dependencies</h3>
+<p>Course Management (needs a valid <code>courseId</code> from Step 1); feeds Content Block Management (Step 3, which attaches content to a <code>submoduleId</code>); feeds Course Detail View (learner-facing curriculum tree).</p>
+<h3 id="18-possible-improvements_3">18. Possible Improvements</h3>
+<ul>
+<li>Add drag-and-drop reordering with a dedicated <code>PATCH .../reorder</code> endpoint (currently <code>moduleOrder</code>/<code>submoduleOrder</code> can only be set at creation time — there's no update/reorder endpoint at all).</li>
+<li>Add module/submodule edit and delete endpoints (currently only Create + Read exist at this layer; no <code>PUT</code>/<code>DELETE</code> for modules or submodules).</li>
+<li>Fix the inconsistency between <code>@OrderBy</code> annotation and the repository-level ordering used in <code>getCourseCurriculum</code>.</li>
+</ul>
+<h3 id="19-summary_3">19. Summary</h3>
+<ul>
+<li>Builds the Module → Submodule hierarchy under a course.</li>
+<li>Only Create + Read operations exist server-side — no update/delete/reorder endpoints for modules or submodules today.</li>
+<li>Inline forms replace <code>window.prompt()</code> for a better UX.</li>
+<li>Drives the courseId-scoped curriculum tree consumed by both the wizard and the learner-facing Course Detail View.</li>
+<li>TanStack Query keeps curriculum data fresh via <code>invalidateQueries</code> after every mutation.</li>
+</ul>
+<hr />
+<h2 id="feature-5-course-authoring-wizard-step-3-content-block-management">Feature 5: Course Authoring Wizard — Step 3: Content Block Management</h2>
+<h3 id="1-feature-name_4">1. Feature Name</h3>
+<p>Content Block Management (Lesson Content Authoring) — Course Wizard Step 3</p>
+<h3 id="2-feature-purpose_4">2. Feature Purpose</h3>
+<p>Lets the admin attach rich, ordered content blocks to a specific submodule (lesson): headings, paragraphs of text, syntax-highlighted code, embedded video, images, and downloadable files (PDF/DOCX/ZIP/etc). This is the actual instructional material learners consume in the Course Detail View.</p>
+<h3 id="3-feature-location_4">3. Feature Location</h3>
+<p><strong>Frontend</strong>
+- <code>frontend/src/components/CourseWizard/WizardStep3.tsx</code> (largest component in the app — 1,143 lines)
+- Service: <code>frontend/src/services/contentService.ts</code></p>
+<p><strong>Backend</strong>
+- Controller: <code>course/controller/ContentAdminController.java</code> → <code>/admin/submodules/{submoduleId}/contents</code>
+- Service: <code>ContentAdminService.java</code> / <code>ContentAdminServiceImpl.java</code>
+- Repository: <code>ContentRepository.java</code>
+- Entity: <code>entity/learning/ContentEntity.java</code>
+- DTOs: <code>ContentRequestDTO.java</code>, <code>ContentResponseDTO.java</code></p>
+<h3 id="4-related-files_4">4. Related Files</h3>
+<p>Frontend: ✓ <code>WizardStep3.tsx</code>, ✓ <code>contentService.ts</code>, ✓ <code>types.ts</code> (<code>ContentBlock</code>, <code>BlockType</code>)
+Backend: ✓ <code>ContentAdminController.java</code>, ✓ <code>ContentAdminServiceImpl.java</code>, ✓ <code>ContentRepository.java</code>, ✓ <code>ContentEntity.java</code>, ✓ <code>ContentRequestDTO/ResponseDTO.java</code>
+External: Cloudinary (unsigned upload API, called directly from the browser)
+Database: ✓ <code>contents</code> table</p>
+<h3 id="5-feature-entry-point_4">5. Feature Entry Point</h3>
+<pre><code>Admin clicks &quot;Edit Content&quot; on a submodule in Step 2 (or navigates directly within Step 3)
+        ↓
+onEditSubmoduleContent(submoduleId) → setActiveSubmoduleId + setWizardStep(3)
+        ↓
+WizardStep3 useQuery([&quot;submoduleContents&quot;, activeSubmoduleId], contentService.getContentBySubmodule)
+        ↓
+GET /admin/submodules/{submoduleId}/contents
+</code></pre>
+<h3 id="6-complete-feature-lifecycle-add-an-image-block-illustrating-the-cloudinary-path">6. Complete Feature Lifecycle (Add an Image block, illustrating the Cloudinary path)</h3>
+<pre><code>Admin selects block type &quot;image&quot; → chooses a file via file picker / drag-drop
+        ↓
+uploadToCloudinary(file, &quot;image&quot;)
+   - builds FormData(file, upload_preset)
+   - fetch() POST directly to Cloudinary's unsigned upload endpoint
+        ↓
+Cloudinary returns secure_url (HTTPS CDN URL)
+        ↓
+imageUrlVal state set to the returned URL (preview shown immediately)
+        ↓
+Admin fills alt text/caption, clicks &quot;Add Block&quot;
+        ↓
+handleAddBlockSubmit() validates required fields per block type
+        ↓
+createBlockMutation.mutate({type:&quot;image&quot;, imageUrl, alt, caption, contentOrder})
+        ↓
+POST /admin/submodules/{submoduleId}/contents
+        ↓
+ContentAdminController.createContent()
+        ↓
+ContentAdminServiceImpl.createContent()
+   - looks up SubmoduleEntity (404 if missing)
+   - builds ContentEntity (isActive=true)
+        ↓
+ContentRepository.save() → INSERT INTO contents
+        ↓
+mapToResponse() → ContentResponseDTO
+        ↓
+queryClient.invalidateQueries([&quot;submoduleContents&quot;, submoduleId])
+        ↓
+Block list re-renders, sorted client-side by contentOrder
+</code></pre>
+<h3 id="7-api-details_4">7. API Details</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Body</th>
+<th>Response</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/api/v1/admin/submodules/{submoduleId}/contents</code></td>
+<td>—</td>
+<td><code>ContentResponseDTO[]</code></td>
+<td>404 if submodule missing</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/v1/admin/submodules/{submoduleId}/contents</code></td>
+<td><code>ContentRequestDTO</code></td>
+<td><code>ContentResponseDTO</code> (201)</td>
+<td><code>type</code> drives which other fields are relevant (<code>text</code>,<code>code</code>+<code>language</code>,<code>videoUrl</code>,<code>imageUrl</code>+<code>alt</code>+<code>caption</code>,<code>fileUrl</code>+<code>fileName</code>,<code>headingLevel</code>)</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/api/v1/admin/submodules/{submoduleId}/contents/{contentId}</code></td>
+<td><code>ContentRequestDTO</code></td>
+<td><code>ContentResponseDTO</code></td>
+<td>Full field overwrite</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/v1/admin/submodules/{submoduleId}/contents/{contentId}</code></td>
+<td>—</td>
+<td><code>204</code></td>
+<td>Soft delete (<code>isActive=false</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>External (not a backend endpoint of this app):</strong> <code>POST https://api.cloudinary.com/v1_1/{cloud_name}/{image|auto}/upload</code> — unsigned upload using <code>VITE_CLOUDINARY_CLOUD_NAME</code> / <code>VITE_CLOUDINARY_UPLOAD_PRESET</code> env vars. <code>resourceType="auto"</code> is used for non-image files (PDF/DOCX/ZIP) since Cloudinary's dedicated <code>/image/upload</code> endpoint rejects them. Limits enforced client-side only: images ≤ 5MB, other files ≤ 25MB.</p>
+<h3 id="8-database-flow_4">8. Database Flow</h3>
+<p>Table <code>contents</code> (<code>submodule_id</code> FK <code>nullable=false</code>, <code>type</code>, <code>title</code>, <code>text</code>, <code>code</code>, <code>language</code>, <code>video_url</code>, <code>image_url</code>, <code>file_url</code>, <code>file_name</code>, <code>alt</code>, <code>caption</code>, <code>heading_level</code>, <code>content_order</code>, <code>is_active</code>). No cascade configured from <code>ContentEntity</code>'s side (it's the "leaf" entity); deleting a submodule that still has cascade-eligible content would cascade-delete via <code>SubmoduleEntity</code>'s parent chain only if that hard-delete path were ever exercised (it currently isn't — only soft delete).</p>
+<h3 id="9-state-management_4">9. State Management</h3>
+<p>TanStack Query (<code>["submoduleContents", activeSubmoduleId]</code>) drives the block list; a <code>useEffect</code> carefully guards against an infinite render loop by <code>JSON.stringify</code>-comparing the incoming <code>fetchedBlocks</code> against what's already stored in the shared <code>courseData.modules[...].submodules[...].contentBlocks</code> before calling <code>setCourseData</code> (explicitly documented in a code comment as a fix for a "Maximum update depth exceeded" bug). Per-block-type form fields (<code>textVal</code>, <code>codeVal</code>, <code>videoUrlVal</code>, etc.) are local <code>useState</code>, reset after a successful create. <code>isUploadingFile</code> tracks the Cloudinary upload spinner.</p>
+<h3 id="10-component-hierarchy_4">10. Component Hierarchy</h3>
+<pre><code>WizardStep3
+ ├─ Submodule picker / breadcrumb (module → submodule)
+ ├─ Block-type selector (heading/text/video/code/image/callout/file)
+ ├─ Per-type input form (text area / code editor / URL+upload / drag-drop)
+ └─ Ordered list of existing ContentBlocks
+      └─ per-block renderer (icon by type) + Delete button
+</code></pre>
+<h3 id="11-sequence-diagram-text_4">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → WizardStep3 (file picker) → Cloudinary (direct browser upload) → secure_url
+Admin → WizardStep3 (form submit) → contentService → apiClient → ContentAdminController
+   → ContentAdminServiceImpl → ContentRepository → PostgreSQL
+   → ServiceImpl → Controller → apiClient → TanStack Query cache → WizardStep3 re-render
+</code></pre>
+<h3 id="12-dependencies_4">12. Dependencies</h3>
+<p>Cloudinary (unsigned upload, browser-direct — <strong>no backend involvement</strong> in file storage), <code>@tanstack/react-query</code>, <code>lucide-react</code>.</p>
+<h3 id="13-validation-rules_4">13. Validation Rules</h3>
+<ul>
+<li>Frontend: per-block-type required-field checks before submit (e.g. text block needs non-empty <code>textVal</code>, code block needs non-empty <code>codeVal</code>); client-side file-size caps (5MB images / 25MB other files); Cloudinary env vars must be configured or upload throws immediately.</li>
+<li>Backend: none — <code>ContentRequestDTO</code> has no Bean Validation, and <code>ContentAdminController</code> doesn't use <code>@Valid</code>.</li>
+</ul>
+<h3 id="14-error-handling_4">14. Error Handling</h3>
+<ul>
+<li>Upload failures: <code>try/catch</code> around <code>uploadToCloudinary</code>, surfaced via <code>showToast(err.message, "error")</code>.</li>
+<li>Mutation failures: <code>onError</code> toasts ("Failed to save block...", logged to console).</li>
+<li>Backend: standard <code>GlobalExceptionHandler</code> (404/500).</li>
+</ul>
+<h3 id="15-security_4">15. Security</h3>
+<p>None at the API layer. Cloudinary uploads use an <strong>unsigned upload preset</strong>, meaning the preset's security/transformation rules (configured in the Cloudinary dashboard, not in this codebase) are the only gatekeeping on what can be uploaded.</p>
+<h3 id="16-important-classes-and-methods_4">16. Important Classes and Methods</h3>
+<ul>
+<li><code>uploadToCloudinary(file, resourceType)</code> — core upload helper.</li>
+<li><code>ContentAdminServiceImpl.createContent/updateContent/deleteContent/getContentBySubmodule</code>.</li>
+<li><code>mapToResponse()</code> — full field-by-field DTO assembly.</li>
+<li><code>handleAddBlockSubmit()</code> — per-type validation + mutation dispatch.</li>
+</ul>
+<h3 id="17-feature-dependencies_4">17. Feature Dependencies</h3>
+<p>Curriculum Management (needs a <code>submoduleId</code>); <code>FileUploadController</code> exists in the backend as an alternative local-storage upload path but is <strong>dead code</strong> — it is never called by this feature.</p>
+<h3 id="18-possible-improvements_4">18. Possible Improvements</h3>
+<ul>
+<li>Add Bean Validation to <code>ContentRequestDTO</code> (especially per-<code>type</code> conditional requirements).</li>
+<li>Move Cloudinary credentials/signing server-side (signed uploads) instead of relying solely on an unsigned preset for security.</li>
+<li>Add reordering (<code>contentOrder</code>) support via drag-and-drop + a dedicated reorder endpoint.</li>
+<li>Either wire up or delete <code>FileUploadController</code> — having two unrelated, partially-overlapping upload mechanisms is confusing for new developers.</li>
+<li>Add server-side file-type/size validation as defense-in-depth (currently enforced only in the browser).</li>
+</ul>
+<h3 id="19-summary_4">19. Summary</h3>
+<ul>
+<li>Richest authoring surface in the app: 7 content block types per lesson.</li>
+<li>File/image/video assets are uploaded directly from the browser to Cloudinary — the Spring Boot backend never touches the binary file data.</li>
+<li>Content rows are simple flat fields on <code>ContentEntity</code> (no polymorphic table-per-type design); the <code>type</code> column is just a string.</li>
+<li>A documented bug-fix (stringify-compare guard) prevents an infinite re-render loop when syncing fetched content into wizard draft state.</li>
+<li>No backend validation exists; only client-side per-type checks.</li>
+<li><code>FileUploadController</code> is unused dead code for this feature.</li>
+</ul>
+<hr />
+<h2 id="feature-6-course-authoring-wizard-step-4-settings-seo">Feature 6: Course Authoring Wizard — Step 4: Settings &amp; SEO</h2>
+<h3 id="1-feature-name_5">1. Feature Name</h3>
+<p>Course Settings &amp; SEO — Course Wizard Step 4</p>
+<h3 id="2-feature-purpose_5">2. Feature Purpose</h3>
+<p>Final wizard step before publishing. Lets the admin configure search-engine metadata (meta title/description, canonical URL, keywords, Open Graph image, Twitter/X card settings) and preview how the course will appear in a search-engine results snippet and a social-share card, then publish the course.</p>
+<h3 id="3-feature-location_5">3. Feature Location</h3>
+<p>Frontend only: <code>frontend/src/components/CourseWizard/WizardStep4.tsx</code>, type <code>SeoSettings</code> in <code>types.ts</code>. No dedicated backend endpoint — SEO data lives only in the wizard's local draft object today (see §8 below).</p>
+<h3 id="4-related-files_5">4. Related Files</h3>
+<p>Frontend: ✓ <code>WizardStep4.tsx</code>, ✓ <code>types.ts</code> (<code>SeoSettings</code>), ✓ <code>CourseWizardParent.tsx</code> (<code>handlePublishCourse</code>)
+Backend: none dedicated; <code>CourseRequestDTO</code>/<code>CourseEntity</code> have <strong>no fields for SEO data</strong>.</p>
+<h3 id="5-feature-entry-point_5">5. Feature Entry Point</h3>
+<pre><code>Admin reaches Step 4 of the wizard (courseDraft.seo defaults applied if absent)
+        ↓
+Edits metaTitle/metaDescription/keywords/canonicalUrl/ogImage/xCardType
+        ↓
+Clicks &quot;Publish Curriculum&quot; → CourseWizardParent.handlePublishCourse()
+</code></pre>
+<h3 id="6-complete-feature-lifecycle_1">6. Complete Feature Lifecycle</h3>
+<pre><code>Admin edits SEO fields → handleSeoChange() updates courseDraft.seo (local state only)
+        ↓
+Live preview renders Google SERP snippet + X/Twitter card mock using current seo values
+        ↓
+Admin clicks &quot;Publish Curriculum&quot;
+        ↓
+handlePublishCourse(): finalCourse = {...courseDraft, status:&quot;Active&quot;}
+        ↓
+courseService.update(wizardCourseId, finalCourse)  [or .create() if somehow still null]
+        ↓
+PUT /admin/courses/{id}  with the FULL draft object (including the unused `seo` key)
+        ↓
+CourseAdminController.update(@RequestBody CourseRequestDTO requestDTO)
+        ↓
+Jackson silently DROPS unknown/unmapped fields like `seo` (CourseRequestDTO has no `seo` property)
+        ↓
+CourseAdminServiceImpl.update() persists only the known CourseEntity fields
+        ↓
+window.location.reload() — wizard exits, full app reload to refresh all cached state
+</code></pre>
+<h3 id="7-api-details_5">7. API Details</h3>
+<p>Re-uses <code>PUT /api/v1/admin/courses/{id}</code> (Feature 2 §7). <strong>Important:</strong> the <code>seo</code> object is sent in the request payload but is silently discarded server-side — <code>CourseRequestDTO</code> has no corresponding field, so SEO settings are <strong>not actually persisted to the database</strong> in the current implementation; they only exist transiently in the browser's wizard draft for that session.</p>
+<h3 id="8-database-flow_5">8. Database Flow</h3>
+<p>No dedicated table. <code>courses</code> table has no SEO-related columns at all. This is a <strong>known gap</strong> between the frontend's <code>SeoSettings</code> model and the backend's <code>CourseEntity</code>/<code>CourseRequestDTO</code>.</p>
+<h3 id="9-state-management_5">9. State Management</h3>
+<p>Purely local: <code>seo</code> is read from <code>courseDraft.seo</code> (with hard-coded defaults if absent) and written back via the shared <code>setCourseData</code> prop — same shared-draft-object pattern as the other wizard steps. Nothing here is fetched from or cached against the server independently.</p>
+<h3 id="10-component-hierarchy_5">10. Component Hierarchy</h3>
+<pre><code>WizardStep4
+ ├─ Index/No-index toggle
+ ├─ Meta Title / Meta Description / Keywords inputs
+ ├─ Canonical URL input
+ ├─ OG Image input
+ ├─ Google SERP live preview (derived from courseData + seo)
+ └─ X/Twitter Card live preview (Large Summary / Standard Summary variants)
+</code></pre>
+<h3 id="11-sequence-diagram-text_5">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → WizardStep4 (local seo state) → CourseWizardParent.handlePublishCourse()
+   → courseService.update → apiClient → CourseAdminController → CourseAdminServiceImpl
+   → CourseRepository.save() [seo fields dropped] → PostgreSQL
+   → response → window.location.reload()
+</code></pre>
+<h3 id="12-dependencies_5">12. Dependencies</h3>
+<p>None beyond the shared wizard draft and <code>courseService</code>.</p>
+<h3 id="13-validation-rules_5">13. Validation Rules</h3>
+<p>None — all fields optional, no character-count enforcement beyond the visual preview truncation styling.</p>
+<h3 id="14-error-handling_5">14. Error Handling</h3>
+<p><code>handlePublishCourse()</code> wraps the call in <code>try/catch</code>; on failure shows <code>showToast("Failed to publish course.", "error")</code>. No SEO-specific error handling.</p>
+<h3 id="15-security_5">15. Security</h3>
+<p>None.</p>
+<h3 id="16-important-classes-and-methods_5">16. Important Classes and Methods</h3>
+<ul>
+<li><code>handleSeoChange()</code> — generic field setter for the <code>seo</code> sub-object.</li>
+<li><code>CourseWizardParent.handlePublishCourse()</code> — final submit + view reset + full page reload.</li>
+</ul>
+<h3 id="17-feature-dependencies_5">17. Feature Dependencies</h3>
+<p>Depends on the course already existing (Step 1 must have run). Feeds nothing else — it's the terminal step of the wizard.</p>
+<h3 id="18-possible-improvements_5">18. Possible Improvements</h3>
+<ul>
+<li><strong>Add <code>seo</code>/SEO columns to <code>CourseEntity</code>/<code>CourseRequestDTO</code>/<code>CourseResponseDTO</code></strong> (or a separate <code>course_seo</code> table) so this data actually persists — this is the most important fix for this feature.</li>
+<li>Replace the hard <code>window.location.reload()</code> with a TanStack Query cache invalidation for a smoother UX.</li>
+<li>Add max-length validation matching the SERP/card preview truncation rules (e.g. meta description ~155–160 chars).</li>
+</ul>
+<h3 id="19-summary_5">19. Summary</h3>
+<ul>
+<li>Final, SEO-focused step of the course wizard with live Google/X preview cards.</li>
+<li><strong>Currently non-functional in terms of persistence</strong> — the backend silently drops the <code>seo</code> payload because no matching DTO/entity fields exist.</li>
+<li>Triggers the final "Publish" action, which is really just another <code>PUT /admin/courses/{id}</code> setting <code>status:"Active"</code>.</li>
+<li>Forces a full browser reload after publishing to resynchronize all app state.</li>
+</ul>
+<hr />
+<h2 id="feature-7-course-detail-view-learner-facing-curriculum-simulated-enrollment">Feature 7: Course Detail View (Learner-Facing Curriculum &amp; Simulated Enrollment)</h2>
+<h3 id="1-feature-name_6">1. Feature Name</h3>
+<p>Course Detail View (Curriculum Player &amp; Enrollment Simulation)</p>
+<h3 id="2-feature-purpose_6">2. Feature Purpose</h3>
+<p>Renders a single course's full detail page: hero banner, expandable module/submodule accordion, per-content-block renderer (text/code/video/image/file), and a simulated "Enroll" + lesson-completion/progress experience. This is the closest thing in the codebase to a learner-facing screen, though it's reached from the same admin shell (no distinct learner role exists).</p>
+<h3 id="3-feature-location_6">3. Feature Location</h3>
+<p>Frontend only: <code>frontend/src/components/CourseDetailView.tsx</code> (602 lines). Backend re-uses Curriculum Management's and Content Block Management's read endpoints — no dedicated controller.</p>
+<h3 id="4-related-files_6">4. Related Files</h3>
+<p>Frontend: ✓ <code>CourseDetailView.tsx</code>, ✓ <code>curriculumService.ts</code>, ✓ <code>contentService.ts</code>, ✓ <code>context/AppContext.tsx</code> (<code>selectedCourseId</code>, <code>courses</code>, <code>categories</code>, <code>viewCourseDetail</code>)
+Backend: ✓ <code>CurriculumAdminController.java</code> (<code>GET /admin/courses/{courseId}/modules</code>), ✓ <code>ContentAdminController.java</code> (read path, used lazily per expanded submodule)</p>
+<h3 id="5-feature-entry-point_6">5. Feature Entry Point</h3>
+<pre><code>Admin clicks a CourseCard in the Catalog → viewCourseDetail(courseId) (AppContext)
+   sets selectedCourseId, currentView=&quot;course-detail&quot;
+        ↓
+CourseDetailView mounts → useQuery([&quot;curriculum&quot;, selectedCourseId], curriculumService.getCourseCurriculum)
+        ↓
+GET /admin/courses/{courseId}/modules
+</code></pre>
+<h3 id="6-complete-feature-lifecycle-expand-a-module-view-lesson-content">6. Complete Feature Lifecycle (Expand a module → view lesson content)</h3>
+<pre><code>Page loads → realModules fetched, first module auto-expanded (useEffect sets expandedModules)
+        ↓
+Admin clicks a collapsed module header → toggleModule(moduleId) flips local boolean
+        ↓
+Module expands, revealing its submodule list
+        ↓
+Admin clicks a submodule → fetches its content blocks lazily via contentService.getContentBySubmodule
+        ↓
+Content blocks rendered per `block.type` (text/code/video/image/file)
+        ↓
+--- Enrollment simulation (entirely client-side, no backend calls) ---
+Admin clicks &quot;Enroll Now&quot; → handleEnroll() → setIsEnrolled(true)
+        ↓
+Admin marks a lesson complete → toggles completedLessons[lessonId] in local state
+        ↓
+When all lessons complete → setShowConfetti(true) (celebratory animation, no DB write)
+</code></pre>
+<h3 id="7-api-details_6">7. API Details</h3>
+<p>Re-uses <code>GET /api/v1/admin/courses/{courseId}/modules</code> (Feature 4) and <code>GET /api/v1/admin/submodules/{submoduleId}/contents</code> (Feature 5). <strong>No new endpoints.</strong> Enrollment, progress, and completion tracking have <strong>no backend representation whatsoever</strong> — there is no <code>enrollments</code> table, no <code>EnrollmentEntity</code>, no related controller/service/repository anywhere in the codebase. It's a pure UI simulation.</p>
+<h3 id="8-database-flow_6">8. Database Flow</h3>
+<p>Read-only against <code>modules</code>/<code>submodules</code>/<code>contents</code> (same tables as Features 4 &amp; 5). Nothing is written by this feature.</p>
+<h3 id="9-state-management_6">9. State Management</h3>
+<ul>
+<li>TanStack Query: <code>["curriculum", selectedCourseId]</code> for the module tree.</li>
+<li><code>useMemo</code> joins the selected course (from <code>AppContext.courses</code>, <strong>not</strong> re-fetched here) with its parent category for color/icon.</li>
+<li>Local <code>useState</code>: <code>expandedModules</code> (per-module boolean map), <code>isEnrolled</code>, <code>completedLessons</code> (per-lesson boolean map), <code>showConfetti</code> — <strong>none of this is persisted</strong> (lost on refresh/navigation away).</li>
+</ul>
+<h3 id="10-component-hierarchy_6">10. Component Hierarchy</h3>
+<pre><code>CourseDetailView
+ ├─ Hero banner (thumbnail, category badge, level badge, duration, Enroll button)
+ ├─ Accordion of Module rows
+ │    └─ Submodule rows
+ │         └─ Content block renderer (text/code/video/image/file icons &amp; previews)
+ └─ Confetti overlay (conditional)
+</code></pre>
+<h3 id="11-sequence-diagram-text_6">11. Sequence Diagram (Text)</h3>
+<pre><code>Admin → CourseCard.onClick → AppContext.viewCourseDetail → CourseDetailView
+   → curriculumService → apiClient → CurriculumAdminController → CurriculumAdminServiceImpl
+   → ModuleRepository/SubmoduleRepository → PostgreSQL → ... → CourseDetailView render
+(Enroll/Complete actions never leave the browser)
+</code></pre>
+<h3 id="12-dependencies_6">12. Dependencies</h3>
+<p><code>@tanstack/react-query</code>, <code>lucide-react</code>, <code>curriculumService</code>, <code>contentService</code>.</p>
+<h3 id="13-validation-rules_6">13. Validation Rules</h3>
+<p>None — read-only view; the only "guard" is the <code>enabled: !!selectedCourseId</code> query option preventing a fetch with no course selected.</p>
+<h3 id="14-error-handling_6">14. Error Handling</h3>
+<p><code>isLoadingModules</code> drives a loading state; no explicit error UI is wired for this query (<code>isError</code> is not destructured/used here, unlike Category Management).</p>
+<h3 id="15-security_6">15. Security</h3>
+<p>None.</p>
+<h3 id="16-important-classes-and-methods_6">16. Important Classes and Methods</h3>
+<ul>
+<li><code>toggleModule()</code> — accordion expand/collapse.</li>
+<li><code>handleEnroll()</code> — flips <code>isEnrolled</code>, purely cosmetic.</li>
+<li>Lesson completion toggler — updates <code>completedLessons</code> map, drives the progress bar and confetti trigger.</li>
+</ul>
+<h3 id="17-feature-dependencies_6">17. Feature Dependencies</h3>
+<p>Curriculum Management (module/submodule tree), Content Block Management (lesson content), Course Management (entry point + course metadata from <code>AppContext</code>).</p>
+<h3 id="18-possible-improvements_6">18. Possible Improvements</h3>
+<ul>
+<li>Build a real <code>enrollments</code>/<code>progress</code> data model so completion state survives a page refresh and is per-user.</li>
+<li>Add <code>isError</code> handling consistent with the rest of the app.</li>
+<li>Avoid re-deriving <code>course</code> from <code>AppContext.courses</code> (which may be stale relative to the just-fetched curriculum) — consider fetching the course by id directly.</li>
+</ul>
+<h3 id="19-summary_6">19. Summary</h3>
+<ul>
+<li>Learner-style "course player" UI built entirely on top of existing admin read endpoints.</li>
+<li>Enrollment, lesson completion, and progress tracking are <strong>100% client-side simulations</strong> with zero backend persistence.</li>
+<li>Reuses Curriculum and Content services rather than introducing new ones.</li>
+<li>No distinct learner authentication/role exists — this view is reachable by anyone using the same admin shell.</li>
+</ul>
+<hr />
+<h2 id="feature-8-application-shell-navigation-toasts-and-global-state-appcontext">Feature 8: Application Shell — Navigation, Toasts, and Global State (<code>AppContext</code>)</h2>
+<h3 id="1-feature-name_7">1. Feature Name</h3>
+<p>Application Shell (Sidebar Navigation, Header, Toast Notifications, Global App State)</p>
+<h3 id="2-feature-purpose_7">2. Feature Purpose</h3>
+<p>Provides the cross-cutting "chrome" of the SPA: the persistent left sidebar (brand, navigation, "Create Course" shortcut), the top header (search bar, notification/profile dropdowns — all simulated), and a centralized <code>AppContext</code> that holds which screen is showing, the currently-selected/edited course, and the global toast notification queue.</p>
+<h3 id="3-feature-location_7">3. Feature Location</h3>
+<p>Frontend only:
+- <code>frontend/src/context/AppContext.tsx</code>
+- <code>frontend/src/components/Sidebar.tsx</code>
+- <code>frontend/src/components/Header.tsx</code>
+- <code>frontend/src/components/Toast.tsx</code>
+- <code>frontend/src/App.tsx</code> (top-level composition + view switch)
+- <code>frontend/src/data/initialData.ts</code> (fallback seed data when <code>localStorage</code> is empty, before the first successful backend fetch)</p>
+<h3 id="4-related-files_7">4. Related Files</h3>
+<p>✓ <code>App.tsx</code>, ✓ <code>context/AppContext.tsx</code>, ✓ <code>components/Sidebar.tsx</code>, ✓ <code>components/Header.tsx</code>, ✓ <code>components/Toast.tsx</code>, ✓ <code>data/initialData.ts</code>, ✓ <code>providers/QueryProvider.tsx</code>, ✓ <code>main.tsx</code></p>
+<h3 id="5-feature-entry-point_7">5. Feature Entry Point</h3>
+<pre><code>main.tsx → createRoot().render(&lt;QueryProvider&gt;&lt;App/&gt;&lt;/QueryProvider&gt;)
+        ↓
+App.tsx → &lt;AppProvider&gt; wraps &lt;AppContent&gt;
+        ↓
+AppContent reads currentView from useApp() and conditionally renders the active screen
+</code></pre>
+<h3 id="6-complete-feature-lifecycle-toast-notification-as-a-representative-cross-cutting-flow">6. Complete Feature Lifecycle (Toast notification, as a representative cross-cutting flow)</h3>
+<pre><code>Any component calls showToast(message, type) via useApp()
+        ↓
+AppContext setToast({message, type})
+        ↓
+App.tsx renders &lt;Toast/&gt; conditionally when `toast` is truthy
+        ↓
+Toast's internal useEffect starts a 3-second setTimeout
+        ↓
+Timer fires → onClose() → hideToast() (AppContext) → setToast(null)
+        ↓
+Toast unmounts (or admin manually clicks the &quot;X&quot; close button, triggering the same hideToast())
+</code></pre>
+<h3 id="7-api-details_7">7. API Details</h3>
+<p>No dedicated API of its own. <code>AppContext.fetchCategoriesAndCourses()</code> (called once on mount, and after every category/course mutation) calls <code>categoryService.getAll()</code> + <code>courseService.getAll()</code> in parallel — see Features 1 &amp; 2 for the underlying endpoints.</p>
+<h3 id="8-database-flow_7">8. Database Flow</h3>
+<p>None directly; this layer orchestrates calls into the Category/Course services described elsewhere.</p>
+<h3 id="9-state-management-this-is-the-state-management-feature">9. State Management — this <strong>is</strong> the State Management feature</h3>
+<ul>
+<li><code>currentView</code>, <code>wizardCourseId</code>, <code>wizardStep</code>, <code>categories</code>, <code>courses</code> are all <code>useState</code> + mirrored to <code>localStorage</code> via paired <code>useEffect</code>s (<code>educorp_view</code>, <code>educorp_wizard_id</code>, <code>educorp_wizard_step</code>, <code>educorp_categories</code>, <code>educorp_courses</code>) — giving the app a crude "resume where you left off" persistence layer independent of the backend.</li>
+<li>On mount, <code>categories</code>/<code>courses</code> are seeded from <code>localStorage</code> if present, else from <code>data/initialData.ts</code> hard-coded fallback data — then immediately overwritten by a real backend fetch (<code>fetchCategoriesAndCourses</code>).</li>
+<li><code>toast</code>/<code>showSmartTagsToast</code> are ephemeral, not persisted.</li>
+<li>This context is a second, independent state store from each screen's own TanStack Query cache (see Feature 1 §9 and Feature 2 §9) — they are <strong>not</strong> kept in sync with each other automatically.</li>
+</ul>
+<h3 id="10-component-hierarchy_7">10. Component Hierarchy</h3>
+<pre><code>App
+ └─ AppProvider (context)
+      └─ AppContent
+           ├─ Sidebar (always visible)
+           ├─ Header (always visible)
+           ├─ &lt;main&gt; → one of: CourseCatalogView | CategoryManagement | CourseWizardParent | CourseDetailView
+           └─ Toast (conditional, global)
+</code></pre>
+<h3 id="11-sequence-diagram-text_7">11. Sequence Diagram (Text)</h3>
+<pre><code>Any Component → useApp().showToast() → AppContext.setToast() → App.tsx conditional render
+   → Toast component → 3s timer or manual close → hideToast() → setToast(null) → Toast unmounts
+</code></pre>
+<h3 id="12-dependencies_7">12. Dependencies</h3>
+<p>React Context API, <code>localStorage</code> Web API, <code>@tanstack/react-query</code> (<code>QueryProvider</code> wraps the whole app), <code>lucide-react</code>.</p>
+<h3 id="13-validation-rules_7">13. Validation Rules</h3>
+<p>None — this is orchestration/UI-shell code, not a data-entry feature.</p>
+<h3 id="14-error-handling_7">14. Error Handling</h3>
+<p><code>fetchCategoriesAndCourses()</code> catches and logs network errors but leaves whatever data was already in state (seed/localStorage data) visible rather than blanking the UI — a soft-degradation strategy.</p>
+<h3 id="15-security_7">15. Security</h3>
+<p>None. Header's "Sign Out", "My Profile", "Security", "Developer Console" menu items are all <code>alert()</code>/<code>confirm()</code> stubs with no real auth logic behind them — consistent with the rest of the app having no authentication layer.</p>
+<h3 id="16-important-classes-and-methods_7">16. Important Classes and Methods</h3>
+<ul>
+<li><code>AppContext.fetchCategoriesAndCourses()</code> — central data refresh used after every category/course mutation across the whole app.</li>
+<li><code>AppContext.addCategory/updateCategory/deleteCategory/addCourse/updateCourse/deleteCourse</code> — optimistic-local + network-backed mutators with <code>localStorage</code> fallback on error.</li>
+<li><code>AppContext.startNewCourseWizard/startEditCourseWizard/viewCourseDetail</code> — view-switching helpers.</li>
+<li><code>Toast</code>'s auto-dismiss <code>useEffect</code>.</li>
+</ul>
+<h3 id="17-feature-dependencies_7">17. Feature Dependencies</h3>
+<p>Underpins every other feature in the app (navigation, course/category data bootstrap, toast feedback channel).</p>
+<h3 id="18-possible-improvements_7">18. Possible Improvements</h3>
+<ul>
+<li>Replace the dual state model (Context + per-screen TanStack Query) with TanStack Query as the single source of truth everywhere, using <code>AppContext</code> purely for UI/navigation state.</li>
+<li>Replace <code>localStorage</code>-based data caching of <code>categories</code>/<code>courses</code> with TanStack Query's built-in persistence (<code>persistQueryClient</code>) to avoid stale/duplicated data.</li>
+<li>Introduce <code>react-router</code> for real URL-based navigation/deep-linking instead of an in-memory <code>currentView</code> string (currently a refresh on <code>course-detail</code> with no <code>selectedCourseId</code> restored shows "No course selected").</li>
+</ul>
+<h3 id="19-summary_7">19. Summary</h3>
+<ul>
+<li>The structural backbone of the SPA: sidebar, header, toast system, and global state.</li>
+<li>Implements its own lightweight, <code>localStorage</code>-backed persistence/resume mechanism, separate from TanStack Query's cache.</li>
+<li>No real authentication — all "account" UI is cosmetic.</li>
+<li>Centralizes category/course data fetching, but this duplicates what individual screens (e.g. Category Management) already do via TanStack Query, creating two independent state stores for the same backend data.</li>
+</ul>
+<hr />
+<h2 id="feature-9-database-seeding">Feature 9: Database Seeding</h2>
+<h3 id="1-feature-name_8">1. Feature Name</h3>
+<p>Database Seeder (Demo Data Bootstrap)</p>
+<h3 id="2-feature-purpose_8">2. Feature Purpose</h3>
+<p>On every backend application startup, wipes and repopulates the database with a realistic set of categories, courses, modules, submodules, and content blocks so the app has demo data to show immediately — useful for local development and demos, but <strong>destructive</strong> if ever run against a real production database.</p>
+<h3 id="3-feature-location_8">3. Feature Location</h3>
+<p>Backend only: <code>backend/src/main/java/com/geeknito/geeknito_backend/config/DatabaseSeeder.java</code></p>
+<h3 id="4-related-files_8">4. Related Files</h3>
+<p>✓ <code>DatabaseSeeder.java</code>, ✓ <code>CategoryRepository.java</code>, ✓ <code>CourseRepository.java</code>, ✓ <code>ModuleRepository.java</code>, ✓ <code>SubmoduleRepository.java</code>, ✓ <code>ContentRepository.java</code>, ✓ all <code>entity/learning/*.java</code></p>
+<h3 id="5-feature-entry-point_8">5. Feature Entry Point</h3>
+<pre><code>Spring Boot application context startup
+        ↓
+CommandLineRunner beans execute → DatabaseSeeder.run(String... args)
+</code></pre>
+<h3 id="6-complete-feature-lifecycle_2">6. Complete Feature Lifecycle</h3>
+<pre><code>App starts → DatabaseSeeder.run()
+        ↓
+jdbcTemplate.execute(&quot;TRUNCATE TABLE contents, submodules, modules, courses, categories
+                       RESTART IDENTITY CASCADE;&quot;)
+   (wipes ALL data in these 5 tables, bypassing soft-delete and FK constraints, resets auto-increment IDs)
+        ↓
+Creates 3 CategoryEntity rows (Cloud Architecture, Cybersecurity, Software Engineering)
+        ↓
+Creates 5 CourseEntity rows across those categories (AWS, GCP, Zero-Trust, Ethical Hacker Prep,
+   Modern Backend Architectures in Java)
+        ↓
+For &quot;Modern Backend Architectures in Java&quot; ONLY: seeds a deep curriculum —
+   2 ModuleEntity rows → each with 1-2 SubmoduleEntity rows →
+   first submodule gets 3 ContentEntity blocks (text/video/code) to showcase every content type
+        ↓
+Logs completion
+</code></pre>
+<h3 id="7-api-details_8">7. API Details</h3>
+<p>Not an HTTP-triggered feature — runs automatically as part of the Spring Boot startup lifecycle (<code>CommandLineRunner</code>).</p>
+<h3 id="8-database-flow_8">8. Database Flow</h3>
+<p>Direct JDBC <code>TRUNCATE ... RESTART IDENTITY CASCADE</code> (raw SQL via <code>JdbcTemplate</code>, bypassing JPA entirely) followed by a sequence of JPA <code>repository.save()</code> calls building the full Category → Course → Module → Submodule → Content hierarchy with real FK relationships.</p>
+<h3 id="9-state-management_7">9. State Management</h3>
+<p>N/A (server-side, one-time-per-boot operation).</p>
+<h3 id="10-component-hierarchy_8">10. Component Hierarchy</h3>
+<p>N/A (no UI).</p>
+<h3 id="11-sequence-diagram-text_8">11. Sequence Diagram (Text)</h3>
+<pre><code>Spring Boot Startup → DatabaseSeeder.run() → JdbcTemplate.execute(TRUNCATE...)
+   → CategoryRepository.save() ×3 → CourseRepository.save() ×5
+   → ModuleRepository.save() ×2 → SubmoduleRepository.save() ×3
+   → ContentRepository.save() ×3 → Application ready
+</code></pre>
+<h3 id="12-dependencies_8">12. Dependencies</h3>
+<p><code>spring-boot-starter-jdbc</code> (via <code>JdbcTemplate</code>), all five JPA repositories, <code>@Transactional</code>.</p>
+<h3 id="13-validation-rules_8">13. Validation Rules</h3>
+<p>None — this is trusted internal seed code, not user input.</p>
+<h3 id="14-error-handling_8">14. Error Handling</h3>
+<p>None explicit; any failure here would fail application startup (the whole method is wrapped in <code>@Transactional</code>, so a failure rolls back the partial seed).</p>
+<h3 id="15-security_8">15. Security</h3>
+<p><strong>This is effectively a destructive operation that runs unconditionally on every boot.</strong> The class's own doc-comment flags this: <em>"To disable this seeder after the first run, either comment out <code>@Component</code>, wrap in an environment-variable flag, or delete this file."</em> As shipped, <strong>every backend restart wipes and re-seeds all categories/courses/modules/submodules/content</strong> — a significant risk if ever deployed against real data.</p>
+<h3 id="16-important-classes-and-methods_8">16. Important Classes and Methods</h3>
+<ul>
+<li><code>DatabaseSeeder.run(String... args)</code> — the entire seeding routine in one method.</li>
+</ul>
+<h3 id="17-feature-dependencies_8">17. Feature Dependencies</h3>
+<p>Touches every entity in the data model; has no feature dependencies of its own.</p>
+<h3 id="18-possible-improvements_8">18. Possible Improvements</h3>
+<ul>
+<li><strong>Gate this behind a Spring profile</strong> (e.g. only run when <code>spring.profiles.active=dev</code>) or a config flag — this is the single highest-priority fix in the whole codebase for anyone planning to deploy beyond local development.</li>
+<li>Replace the raw <code>TRUNCATE</code> with idempotent "seed only if empty" logic.</li>
+<li>Move seed data to external SQL/JSON fixtures instead of hard-coded Java.</li>
+</ul>
+<h3 id="19-summary_8">19. Summary</h3>
+<ul>
+<li>Runs automatically on every backend startup via <code>CommandLineRunner</code>.</li>
+<li>Hard-wipes <code>contents</code>, <code>submodules</code>, <code>modules</code>, <code>courses</code>, <code>categories</code> via raw SQL <code>TRUNCATE ... CASCADE</code>, then re-seeds demo data.</li>
+<li>Only one course ("Modern Backend Architectures in Java") gets a full demo curriculum with all content block types.</li>
+<li><strong>Not safe for any environment with real data</strong> — must be disabled/gated before production use.</li>
+</ul>
+<hr />
+<h2 id="feature-10-cross-cutting-infrastructure">Feature 10: Cross-Cutting Infrastructure</h2>
+<p>These aren't user-facing "features" but are foundational and touched by every feature above.</p>
+<h3 id="101-centralized-axios-client-apiclientts">10.1 Centralized Axios Client (<code>apiClient.ts</code>)</h3>
+<ul>
+<li>Single Axios instance, <code>baseURL</code> from <code>VITE_API_BASE_URL</code> env var (default <code>http://localhost:8080/api/v1</code>), 15s timeout.</li>
+<li><strong>Request interceptor:</strong> injects <code>Authorization: Bearer &lt;token&gt;</code> if <code>localStorage.getItem("token")</code> exists (nothing in the app currently sets this key — dormant scaffolding for future auth).</li>
+<li><strong>Response interceptor:</strong> classifies errors by HTTP status (401/403/404/5xx) with <code>console.error</code> logging, and normalizes every rejection into a consistent <code>ApiError</code> shape (<code>status</code>, <code>message</code>, <code>details</code>, <code>isNetworkError</code>, <code>originalError</code>) consumed uniformly by every <code>*Service.ts</code> file.</li>
+</ul>
+<h3 id="102-global-exception-handling-globalexceptionhandlerjava">10.2 Global Exception Handling (<code>GlobalExceptionHandler.java</code>)</h3>
+<p><code>@RestControllerAdvice</code> mapping <code>ResourceNotFoundException</code>/<code>EntityNotFoundException</code> → 404, <code>IllegalArgumentException</code> → 400, <code>MethodArgumentNotValidException</code> → 400 (joined field messages), and a catch-all <code>Exception</code> → 500 with a generic message — used uniformly across every controller in the app via <code>ErrorResponse</code> (a Java <code>record</code>).</p>
+<h3 id="103-cors-configuration">10.3 CORS Configuration</h3>
+<p>Two overlapping layers: <code>WebConfig.java</code> globally restricts <code>/api/**</code> to <code>localhost:5173</code>/<code>localhost:3000</code> origins with specific methods/credentials; but <strong>every individual controller</strong> also carries <code>@CrossOrigin(origins = "*")</code>, which is more permissive and effectively the one that applies per-endpoint. <code>FileUploadController</code> instead hardcodes <code>@CrossOrigin(origins = "http://localhost:3000")</code>.</p>
+<h3 id="104-redis-caching-redisconfigjava">10.4 Redis Caching (<code>RedisConfig.java</code>)</h3>
+<p>Configures a <code>RedisCacheManager</code> with a 1-hour TTL, JSON value serialization, null-value caching disabled. <strong>Only actually exercised by the dead <code>CategoryServiceImpl</code></strong> (<code>@Cacheable("categories")</code>/<code>@CacheEvict</code>) — the live <code>CategoryAdminServiceImpl</code> path used by the frontend does <strong>not</strong> use caching at all, so Redis is effectively configured but unused in the active request path today.</p>
+<h3 id="105-mapstruct-mapping">10.5 MapStruct Mapping</h3>
+<p>Two <code>@Mapper(componentModel="spring")</code> interfaces (<code>CategoryMapper</code>, <code>CourseMapper</code>) auto-generate entity↔DTO conversion. <strong><code>CategoryMapper</code> is only used by the dead <code>CategoryServiceImpl</code></strong>; <code>CourseMapper</code> is used by the live <code>CourseCatalogServiceImpl</code>/<code>CourseAdminServiceImpl</code>... actually note: <code>CourseAdminServiceImpl</code> does <strong>not</strong> use <code>CourseMapper</code> either — it has its own manual <code>mapToResponse()</code>. Only <code>CourseCatalogController</code>'s read paths benefit from MapStruct today.</p>
+<h3 id="106-soft-delete-convention">10.6 Soft-Delete Convention</h3>
+<p>Every primary entity (<code>CategoryEntity</code>, <code>CourseEntity</code>, <code>ModuleEntity</code>, <code>SubmoduleEntity</code>, <code>ContentEntity</code>) carries an <code>is_active</code> boolean defaulting to <code>true</code>. Every <code>DELETE</code> endpoint in the app flips this flag rather than removing the row — meaning <strong>nothing is ever permanently deleted through the API</strong>, only through the <code>DatabaseSeeder</code>'s raw <code>TRUNCATE</code>.</p>
+<hr />
+<h2 id="appendix-a-backend-rest-endpoint-reference-effective-paths-incl-apiv1-context-prefix">Appendix A: Backend REST Endpoint Reference (effective paths, incl. <code>/api/v1</code> context prefix)</h2>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Method</th>
+<th>Path</th>
+<th>Used by Frontend?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Category (admin, active)</td>
+<td>GET/POST</td>
+<td><code>/api/v1/categories</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Category (admin, active)</td>
+<td>GET/PUT/DELETE</td>
+<td><code>/api/v1/categories/{id}</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Category (validated, dead)</td>
+<td>GET/POST</td>
+<td><code>/api/v1/api/categories</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Category (validated, dead)</td>
+<td>GET/PUT/DELETE</td>
+<td><code>/api/v1/api/categories/{id}</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Course (admin)</td>
+<td>GET/POST</td>
+<td><code>/api/v1/admin/courses</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Course (admin)</td>
+<td>GET/PUT/DELETE</td>
+<td><code>/api/v1/admin/courses/{id}</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Course (catalog, paginated)</td>
+<td>GET</td>
+<td><code>/api/v1/catalog/courses</code></td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Course (catalog, by slug)</td>
+<td>GET</td>
+<td><code>/api/v1/catalog/courses/{slug}</code></td>
+<td>❌ (also unimplemented server-side)</td>
+</tr>
+<tr>
+<td>Curriculum</td>
+<td>GET/POST</td>
+<td><code>/api/v1/admin/courses/{courseId}/modules</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Curriculum</td>
+<td>POST</td>
+<td><code>/api/v1/admin/courses/{courseId}/modules/{moduleId}/submodules</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>GET/POST</td>
+<td><code>/api/v1/admin/submodules/{submoduleId}/contents</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Content</td>
+<td>PUT/DELETE</td>
+<td><code>/api/v1/admin/submodules/{submoduleId}/contents/{contentId}</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>File Upload (local disk)</td>
+<td>POST</td>
+<td><code>/api/v1/api/v1/files/upload</code> (double-prefixed bug)</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-b-entity-relationship-summary">Appendix B: Entity-Relationship Summary</h2>
+<pre><code>CategoryEntity (1) ──&lt; CourseEntity (N)        [category_id FK, nullable]
+CourseEntity   (1) ──&lt; ModuleEntity (N)        [course_id FK, cascade ALL + orphanRemoval]
+ModuleEntity   (1) ──&lt; SubmoduleEntity (N)     [module_id FK, cascade ALL + orphanRemoval]
+SubmoduleEntity(1) ──&lt; ContentEntity (N)       [submodule_id FK, no cascade configured]
+</code></pre>
+<p>All entities use Lombok <code>@Data @Builder @NoArgsConstructor @AllArgsConstructor</code>, Hibernate <code>@CreationTimestamp</code>/<code>@UpdateTimestamp</code> for <code>created_at</code>/<code>updated_at</code>, and <code>IDENTITY</code> primary key generation.</p>
+
+<p><a class="back-to-top" href="#top">↑ Back to top / index</a></p>
+</body>
+</html>
