@@ -1,0 +1,1475 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>EduCorp LMS — Feature & System Documentation</title>
+    <style>
+      :root {
+        --accent: #510047;
+        --accent2: #01ac9f;
+        --bg: #ffffff;
+        --text: #1f2328;
+        --muted: #57606a;
+        --border: #d8dee4;
+        --code-bg: #f6f8fa;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+          sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 48px 24px 96px;
+        line-height: 1.65;
+        font-size: 16px;
+      }
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: var(--accent);
+        line-height: 1.3;
+      }
+      h1 {
+        font-size: 2.15em;
+        border-bottom: 3px solid var(--accent2);
+        padding-bottom: 0.3em;
+        margin-top: 0;
+      }
+      h2 {
+        font-size: 1.6em;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.25em;
+        margin-top: 2.4em;
+        scroll-margin-top: 20px;
+      }
+      h3 {
+        font-size: 1.25em;
+        margin-top: 1.8em;
+        color: #3c0034;
+        scroll-margin-top: 20px;
+      }
+      h4 {
+        font-size: 1.05em;
+        color: var(--accent2);
+      }
+      p {
+        margin: 0.8em 0;
+      }
+      a {
+        color: var(--accent2);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      code {
+        background: var(--code-bg);
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+        font-size: 0.88em;
+      }
+      pre {
+        background: var(--code-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        line-height: 1.5;
+      }
+      pre code {
+        background: none;
+        padding: 0;
+        font-size: 0.85em;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1.2em 0;
+        font-size: 0.92em;
+      }
+      th,
+      td {
+        border: 1px solid var(--border);
+        padding: 8px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #f7f0f5;
+        color: var(--accent);
+      }
+      tr:nth-child(even) {
+        background: #fafbfc;
+      }
+      blockquote {
+        border-left: 4px solid var(--accent2);
+        margin: 1.2em 0;
+        padding: 0.4em 1.2em;
+        background: #f0fbfa;
+        color: var(--muted);
+      }
+      hr {
+        border: none;
+        border-top: 2px solid var(--border);
+        margin: 3em 0;
+      }
+      ul,
+      ol {
+        padding-left: 1.6em;
+      }
+      li {
+        margin: 0.3em 0;
+      }
+
+      .index-box {
+        background: linear-gradient(180deg, #faf7fb 0%, #f5f0f8 100%);
+        border: 1px solid var(--border);
+        border-left: 5px solid var(--accent);
+        border-radius: 10px;
+        padding: 22px 28px 26px;
+        margin: 1.5em 0 3em;
+      }
+      .index-box h2 {
+        margin-top: 0;
+        border-bottom: none;
+        font-size: 1.3em;
+      }
+      .index-box ol {
+        padding-left: 1.4em;
+      }
+      .index-box li {
+        margin: 0.55em 0;
+        font-size: 1.02em;
+      }
+      .index-box a {
+        text-decoration: none;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .index-box a:hover {
+        text-decoration: underline;
+        color: var(--accent2);
+      }
+
+      .back-to-top {
+        display: inline-block;
+        margin-top: 2.5em;
+        font-size: 0.85em;
+        color: var(--accent2);
+        text-decoration: none;
+      }
+      strong {
+        color: #2d2230;
+      }
+      .file-badge {
+        background-color: #eaeefc;
+        color: #3b5bdb;
+        font-weight: 600;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.85em;
+        display: inline-block;
+        font-family: monospace;
+        border: 1px solid #d0ebff;
+      }
+      .flow-box {
+        background-color: #f8f9fa;
+        border-left: 4px solid #01ac9f;
+        padding: 12px 18px;
+        margin: 12px 0;
+        font-family: monospace;
+        font-size: 0.9em;
+        white-space: pre-wrap;
+        line-height: 1.4;
+        border-radius: 0 6px 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="top">EduCorp LMS — Feature &amp; System Documentation</h1>
+
+    <div class="index-box">
+      <h2>📑 Index of Features</h2>
+      <ol>
+        <li>
+          <a href="#0-system-wide-notes-read-this-first"
+            >0. System-Wide Notes</a
+          >
+        </li>
+        <li>
+          <a
+            href="#feature-1-user-authentication-registration-session-management"
+            >Feature 1: User Authentication, Registration &amp; Session
+            Management</a
+          >
+        </li>
+        <li>
+          <a href="#feature-2-category-management"
+            >Feature 2: Category Management</a
+          >
+        </li>
+        <li>
+          <a href="#feature-3-course-management-catalog-admin-course-crud"
+            >Feature 3: Course Management (Catalog &amp; Admin Course CRUD)</a
+          >
+        </li>
+        <li>
+          <a href="#feature-4-course-authoring-wizard-step-1-basic-details"
+            >Feature 4: Course Authoring Wizard — Step 1: Basic Details</a
+          >
+        </li>
+        <li>
+          <a
+            href="#feature-5-course-authoring-wizard-step-2-curriculum-modules-submodules"
+            >Feature 5: Course Authoring Wizard — Step 2: Curriculum (Modules
+            &amp; Submodules)</a
+          >
+        </li>
+        <li>
+          <a
+            href="#feature-6-course-authoring-wizard-step-3-content-block-management"
+            >Feature 6: Course Authoring Wizard — Step 3: Content Block
+            Management</a
+          >
+        </li>
+        <li>
+          <a href="#feature-7-course-authoring-wizard-step-4-settings-seo"
+            >Feature 7: Course Authoring Wizard — Step 4: Settings &amp; SEO</a
+          >
+        </li>
+        <li>
+          <a
+            href="#feature-8-course-detail-view-learner-facing-curriculum-enrollment-progress"
+            >Feature 8: Course Detail View (Learner-Facing Curriculum,
+            Enrollment &amp; Progress)</a
+          >
+        </li>
+        <li>
+          <a
+            href="#feature-9-application-shell-navigation-toasts-and-global-state-appcontext"
+            >Feature 9: Application Shell — Navigation, Toasts, and Global State
+            (AppContext)</a
+          >
+        </li>
+        <li>
+          <a href="#feature-10-database-seeding"
+            >Feature 10: Database Seeding</a
+          >
+        </li>
+        <li>
+          <a href="#feature-11-cross-cutting-infrastructure"
+            >Feature 11: Cross-Cutting Infrastructure</a
+          >
+        </li>
+        <li>
+          <a href="#appendix-a-backend-rest-endpoint-reference-effective-paths"
+            >Appendix A: Backend REST Endpoint Reference</a
+          >
+        </li>
+        <li>
+          <a href="#appendix-b-entity-relationship-summary"
+            >Appendix B: Entity-Relationship Summary</a
+          >
+        </li>
+      </ol>
+    </div>
+
+    <p>
+      <strong>Project:</strong> <code>lms-xebia</code> (backend artifact
+      <code>geeknito-backend</code>)<br />
+      <strong>Stack:</strong> React 19 + Vite + TypeScript + TanStack Query
+      (frontend) · Spring Boot 3.2.4 + PostgreSQL + Redis + MapStruct
+      (backend)<br />
+      <strong>Audience:</strong> New developers joining the project
+    </p>
+
+    <blockquote>
+      <p>
+        This document is generated by analyzing the actual source code in the
+        repository. It details how each system feature operates, lists the file
+        names relative to the root folder, provides the step-by-step technical
+        flows, and cross-checks the
+        <code>react-router-dom</code> implementation.
+      </p>
+    </blockquote>
+
+    <hr />
+
+    <h2 id="0-system-wide-notes-read-this-first">0. System-Wide Notes</h2>
+    <ul>
+      <li>
+        <strong>Root Path Organization:</strong> The workspace is split into two
+        major root folders:
+        <ul>
+          <li>
+            <span class="file-badge">/frontend</span>: Built with React, Vite,
+            TypeScript, Tailwind CSS, and TanStack Query.
+          </li>
+          <li>
+            <span class="file-badge">/backend</span>: Built with Java, Spring
+            Boot 3.2.4, PostgreSQL, and Hibernate/JPA.
+          </li>
+        </ul>
+      </li>
+      <li>
+        <strong>Backend context path:</strong>
+        <code>server.servlet.context-path = /api/v1</code> configured in
+        <span class="file-badge"
+          >backend/src/main/resources/application.yml</span
+        >. Every backend controller route is relative to
+        <code>/api/v1</code> (e.g. <code>@RequestMapping("/auth")</code> becomes
+        <code>/api/v1/auth</code>).
+      </li>
+      <li>
+        <strong>Frontend Base URL:</strong> Configured in
+        <span class="file-badge">frontend/src/lib/apiClient.ts</span> as
+        <code>baseURL = "http://localhost:8080/api/v1"</code> (or dynamically
+        mapped) to seamlessly communicate with the Spring Boot server.
+      </li>
+      <li>
+        <strong>Real DB Authentication:</strong> Real user signup, login,
+        session persistence, and role-based route protection are fully
+        operational. Authentic credentials are validated against the PostgreSQL
+        <code>users</code> table.
+      </li>
+      <li>
+        <strong>The React Routing Engine:</strong> Fully driven by
+        <code>react-router-dom</code> inside
+        <span class="file-badge">frontend/src/App.tsx</span>. Supports deep
+        nesting, dynamic segment matching (e.g.,
+        <code>/course-detail/:id</code>), role-based protections, and layout
+        framing.
+      </li>
+      <li>
+        <strong>Soft Deletes:</strong> The system implements soft-deletion.
+        Entities like courses, categories, and content blocks set
+        <code>is_active = false</code> instead of doing a hard SQL deletion,
+        preserving records and relationship integrity.
+      </li>
+    </ul>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-1-user-authentication-registration-session-management">
+      Feature 1: User Authentication, Registration &amp; Session Management
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Secures the application by restricting access to authorized users. It
+      supports two enterprise roles: <code>admin</code> (full catalog write
+      operations, curriculum authoring, category creation) and
+      <code>student</code> (read-only catalog browsing, course details,
+      learning, and enrollment simulation). On login/registration, the backend
+      generates an authentication session token.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend Login &amp; Signup Page:</strong>
+        <span class="file-badge">frontend/src/pages/Login.tsx</span>
+      </li>
+      <li>
+        <strong>Frontend Route Protection Gate:</strong>
+        <span class="file-badge"
+          >frontend/src/components/ProtectedRoute.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend API Auth Service:</strong>
+        <span class="file-badge">frontend/src/services/authService.ts</span>
+      </li>
+      <li>
+        <strong>Frontend Central Application State Context:</strong>
+        <span class="file-badge">frontend/src/context/AppContext.tsx</span>
+      </li>
+      <li>
+        <strong>Backend REST Auth Controller:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/user/controller/AuthController.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend JPA User Repository:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/user/repository/UserRepository.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Hibernate User Entity:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/entity/learning/UserEntity.java</span
+        >
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: User Login Flow</h4>
+    <div class="flow-box">
+      User types email and password on the Login Page &lt;Login /&gt; ↓ Clicks
+      "Sign In" button -> handleSubmit() trigger ↓ Login Page calls
+      authService.login(email, password) ↓ apiClient sends POST HTTP request to
+      "/auth/login" with { email, password } ↓ AuthController.login() receives
+      the request: - Sanitizes and lowercases the input email. - Queries
+      UserRepository.findByEmail(email). - If user not found -> Returns 401
+      Unauthorized ("Invalid credentials. User does not exist."). - Compares the
+      plain-text passwords. If mismatch -> Returns 401 ("Invalid email or
+      password."). - Verifies user.isActive() flag. If false -> Returns 403
+      Forbidden ("This user account has been deactivated."). - Generates an
+      "educorp-jwt-token-stub-{id}" token. ↓ AuthController returns 200 OK with
+      AuthResponse DTO (id, fullName, email, role, token) ↓ authService receives
+      response.data and returns it to &lt;Login /&gt; ↓ &lt;Login /&gt; triggers
+      login(response) in AppContext: - Sets "currentUser" state to the returned
+      user profile. - Sets "userRole" state to the user's role ("admin" or
+      "student"). - Synchronizes profile and role states to browser
+      LocalStorage: * "educorp_user_profile" -> JSON string *
+      "educorp_user_role" -> "admin" | "student" - Fires success toast: "Welcome
+      back, {fullName}!" ↓ &lt;Login /&gt; navigates programmatically to
+      "/courses" using react-router-dom useNavigate()
+    </div>
+
+    <h4>Flow B: User Registration / Signup Flow</h4>
+    <div class="flow-box">
+      User toggles to Signup Mode in &lt;Login /&gt; and fills out Name, Email,
+      Password ↓ Clicks "Create Account" -> handleSubmit() trigger ↓ Calls
+      authService.register(fullName, email, password) ↓ apiClient sends POST
+      HTTP request to "/auth/register" with { fullName, email, password } ↓
+      AuthController.register() receives the request: - Validates email is not
+      blank and password length >= 6. If invalid -> Returns 400 Bad Request. -
+      Normalizes email to lowercase. - Checks
+      UserRepository.existsByEmail(normalizedEmail). If true -> Returns 409
+      Conflict. - Resolves user role: * If request contains role parameter
+      ("admin" or "student"), sets it. * Else if the email string contains the
+      substring "admin", automatically promotes to "admin". * Otherwise,
+      defaults to "student". - Instantiates a UserEntity, sets isActive=true,
+      and commits it via UserRepository.save(). ↓ AuthController returns 210
+      Created with AuthResponse DTO including the generated database ID and
+      token ↓ authService receives response.data and returns it to &lt;Login
+      /&gt; ↓ &lt;Login /&gt; triggers login(response) in AppContext (persists
+      profile + role to LocalStorage) ↓ Fires success toast: "Account
+      successfully created for {fullName}!" ↓ Navigates programmatically to
+      "/courses" via react-router-dom useNavigate()
+    </div>
+
+    <h4>Flow C: Client-Side Route Protection Flow (ProtectedRoute)</h4>
+    <div class="flow-box">
+      Admin or Student triggers a page change (e.g. typing "/wizard" or
+      "/categories" or navigating to details) ↓ React Router parses Route
+      elements inside App.tsx and matches the route path ↓ The matched route is
+      wrapped in &lt;ProtectedRoute&gt; element ↓ ProtectedRoute checks userRole
+      and currentUser states from AppContext: - If userRole is null (no active
+      session): * Aborts rendering the children. * Redirects immediately to
+      "/login" using react-router-dom &lt;Navigate to="/login" replace /&gt;. -
+      If userRole exists, but the Route requires a restricted list of
+      allowedRoles (e.g. allowedRoles={["admin"]} on "/wizard" or "/categories")
+      and userRole is "student": * Fires error toast via showToast("Access
+      Denied: You do not have permission to view that page.", "error"). * Aborts
+      rendering the admin page. * Redirects Student back to "/courses" using
+      react-router-dom &lt;Navigate to="/courses" replace /&gt;. - Otherwise
+      (role matches permissions): * Renders children elements inside &lt;Outlet
+      /&gt; wrapper.
+    </div>
+
+    <h3>4. React Router Routing Configurations</h3>
+    <p>
+      Declared inside <span class="file-badge">frontend/src/App.tsx</span>,
+      routing coordinates all visual components based on the browser address
+      bar:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Route Path</th>
+          <th>Component View</th>
+          <th>Protection Guard</th>
+          <th>Notes / Redirect Rules</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>/login</code></td>
+          <td><code>&lt;Login /&gt;</code></td>
+          <td>Anonymous / Public</td>
+          <td>
+            Displays login/registration card. Redirects to `/courses` if user is
+            already signed in.
+          </td>
+        </tr>
+        <tr>
+          <td><code>/</code></td>
+          <td>Layout Parent</td>
+          <td>Authenticated Only</td>
+          <td>
+            Redirects to <code>/courses</code> using
+            <code>&lt;Navigate to="/courses" replace /&gt;</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>/courses</code></td>
+          <td><code>&lt;CourseCatalogView /&gt;</code></td>
+          <td>Authenticated (Admin &amp; Student)</td>
+          <td>Home dashboard with Course search, filter chips, and stats.</td>
+        </tr>
+        <tr>
+          <td><code>/course-detail/:id</code></td>
+          <td><code>&lt;CourseDetailView /&gt;</code></td>
+          <td>Authenticated (Admin &amp; Student)</td>
+          <td>
+            Loads dynamically parsed course details by route id parameters.
+          </td>
+        </tr>
+        <tr>
+          <td><code>/categories</code></td>
+          <td><code>&lt;CategoryManagement /&gt;</code></td>
+          <td>Admin Only (<code>allowedRoles=["admin"]</code>)</td>
+          <td>
+            Admin dashboard for taxonomies. Blocks students and redirects to
+            <code>/courses</code>.
+          </td>
+        </tr>
+        <tr>
+          <td><code>/wizard</code></td>
+          <td><code>&lt;CourseWizardParent /&gt;</code></td>
+          <td>Admin Only (<code>allowedRoles=["admin"]</code>)</td>
+          <td>Initial course drafting (Step 1) flow.</td>
+        </tr>
+        <tr>
+          <td><code>/wizard/:id</code></td>
+          <td><code>&lt;CourseWizardParent /&gt;</code></td>
+          <td>Admin Only (<code>allowedRoles=["admin"]</code>)</td>
+          <td>Resumes editing a specific course wizard by its database ID.</td>
+        </tr>
+        <tr>
+          <td><code>*</code> (Fallback)</td>
+          <td>Redirect Element</td>
+          <td>Catch-all route</td>
+          <td>Redirects unmatched paths back to <code>/courses</code>.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-2-category-management">Feature 2: Category Management</h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Provides taxonomic categorization for the LMS courses. Categories define
+      the core course subjects (e.g., Cloud Architectures, Ethical Hacking),
+      complete with metadata like CSS-friendly color themes and Lucide vector
+      icon names. These are used globally by catalog card filters, header tags,
+      and wizard dropdowns.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend View:</strong>
+        <span class="file-badge"
+          >frontend/src/pages/CategoryManagement.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend Service:</strong>
+        <span class="file-badge">frontend/src/services/categoryService.ts</span>
+      </li>
+      <li>
+        <strong>Frontend Data Model:</strong>
+        <span class="file-badge">frontend/src/types.ts</span> (Category
+        interface)
+      </li>
+      <li>
+        <strong>Backend Admin Controller:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/category/controller/CategoryAdminController.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Service Class:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/category/service/CategoryAdminServiceImpl.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Category Repository:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/category/repository/CategoryRepository.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend DB Entity:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/entity/learning/CategoryEntity.java</span
+        >
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Create New Category</h4>
+    <div class="flow-box">
+      Admin clicks "Create Category" in &lt;CategoryManagement /&gt; -> Opens
+      Modal Form ↓ Fills fields: name, description, icon identifier (Lucide
+      name), color hex ↓ Form submits -> createMutation.mutate(payload)
+      triggered [@tanstack/react-query] ↓ categoryService.create(payload)
+      executes API POST to "/categories" ↓
+      CategoryAdminController.create(CategoryRequestDTO) receives payload: -
+      Validates that category name is unique (surfaces SQL duplicate error
+      otherwise). - Maps DTO fields to CategoryEntity. - Defaults isActive=true.
+      - Saves CategoryEntity via CategoryRepository.save(). ↓ Returns 201
+      Created containing full CategoryResponseDTO (sets courseCount=0) ↓
+      React-Query onSuccess hook fires ->
+      queryClient.invalidateQueries(["categories"]) ↓ Category table
+      automatically re-fetches and renders with the new record.
+    </div>
+
+    <h4>Flow B: Category Soft Delete</h4>
+    <div class="flow-box">
+      Admin clicks "Delete" on a row -> triggers deleteMutation.mutate(id) ↓
+      apiClient issues DELETE to "/categories/{id}" ↓
+      CategoryAdminController.delete(id) triggers
+      CategoryAdminServiceImpl.softDelete(id): - Fetches CategoryEntity by id
+      from CategoryRepository. - Overwrites entity isActive flag to false
+      (isActive=false). - CategoryEntity is persisted back to PostgreSQL. ↓
+      Returns 204 No Content ↓ queryClient.invalidateQueries(["categories"])
+      triggers re-fetch of the table.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-3-course-management-catalog-admin-course-crud">
+      Feature 3: Course Management (Catalog &amp; Admin Course CRUD)
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Provides the primary landing page of the application, rendering a
+      beautiful searchable grid of courses with responsive category filter
+      chips, dynamic statistics (total courses, breakdown by difficulty
+      beginner/intermediate/advanced), and a context-sensitive dropdown for
+      Course editing and soft-deletion.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend View Component:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseCatalogView.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend Catalog Card:</strong>
+        <span class="file-badge">frontend/src/components/CourseCard.tsx</span>
+      </li>
+      <li>
+        <strong>Frontend API Course Service:</strong>
+        <span class="file-badge">frontend/src/services/courseService.ts</span>
+      </li>
+      <li>
+        <strong>Backend Admin Controller:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/controller/CourseAdminController.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Service Implementation:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/service/CourseAdminServiceImpl.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend JPA Course Repository:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/repository/CourseRepository.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Hibernate Course Entity:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/entity/learning/CourseEntity.java</span
+        >
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Fetching Catalog Data and Catalog View Render</h4>
+    <div class="flow-box">
+      User enters "/courses" page -> CourseCatalogView component mounts ↓
+      useEffect hook executes local fetchCatalogData(): - Dispatches parallel
+      API calls using Promise.all(): * courseService.getAll() -> GET
+      "/admin/courses" * categoryService.getAll() -> GET "/categories" ↓ Backend
+      returns list arrays for all active courses and categories. ↓
+      CourseCatalogView maps data client-side: - Evaluates statistical counters
+      (total courses, beginner, intermediate, advanced). - Intersects
+      course.category_id with the category list to assign badges, CSS background
+      colors, and Lucide icon. ↓ Component maps course records matching active
+      filters and user search query. ↓ Renders the courses grid using CourseCard
+      components.
+    </div>
+
+    <h4>Flow B: Course Soft Delete</h4>
+    <div class="flow-box">
+      Admin clicks "⋮" option on a CourseCard -> Selects "Delete" ↓ Triggers
+      courseService.delete(id) -> API DELETE to "/admin/courses/{id}" ↓
+      CourseAdminController.delete() matches route and requests softDelete() in
+      Service: - Fetches CourseEntity from database. - Sets course.isActive =
+      false. - Stores CourseEntity back in the database (keeping associated
+      child tables intact). ↓ Returns 204 No Content ↓ CourseCatalogView
+      refreshes catalog data, removing the deactivated course from search and
+      grid arrays.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-4-course-authoring-wizard-step-1-basic-details">
+      Feature 4: Course Authoring Wizard — Step 1: Basic Details
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Step 1 of the multi-step Course Wizard. Handles drafting basic descriptive
+      attributes of a course (title, auto-generated URL slug, parent category,
+      thumbnail URL, level, duration). When this page is validated, the wizard
+      automatically commits/upserts a raw database row on the backend so
+      subsequent steps have a real relational <code>courseId</code> to link
+      module outlines to.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend Wizard Wrapper:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseWizard/CourseWizardParent.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend Step 1 Component:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseWizard/WizardStep1.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend API Course Service:</strong>
+        <span class="file-badge">frontend/src/services/courseService.ts</span>
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Course Draft Creation &amp; Next Transition</h4>
+    <div class="flow-box">
+      Admin opens "/wizard" -> WizardStep1 loads empty courseDraft template
+      state ↓ Admin inputs title -> WizardStep1 auto-slugifies input string into
+      URL-safe formats: - (e.g. "Cloud Computing 101" -> "cloud-computing-101")
+      - Stops auto-slugification if Admin modifies the slug input field
+      manually. ↓ Admin selects parent category from dropdown and inputs
+      duration/level details. ↓ Clicks "Continue" -> handleNextStep() in
+      CourseWizardParent: - Checks client-side validation (title and categoryId
+      are required fields). - If validation fails, triggers showToast warning,
+      blocking step advance. - Calls handleSaveDraftSilent(): * Packages
+      courseDraft payload. * If wizardCourseId is null (brand new course): -
+      Submits POST to "/admin/courses" with basic details. - Returns 210 Created
+      with course database ID. - Sets AppContext wizardCourseId = response.id. -
+      Persists wizardCourseId to LocalStorage ("educorp_wizard_id"). * Else
+      (editing existing course draft): - Submits PUT to
+      "/admin/courses/{wizardCourseId}". ↓ Sets AppContext wizardStep = 2 and
+      persists "educorp_wizard_step" to 2. ↓ CourseWizardParent automatically
+      switches active sub-step view to WizardStep2.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2
+      id="feature-5-course-authoring-wizard-step-2-curriculum-modules-submodules"
+    >
+      Feature 5: Course Authoring Wizard — Step 2: Curriculum (Modules &amp;
+      Submodules)
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Step 2 of the multi-step Course Wizard. Coordinates building the module
+      chapter outline (Modules) and specific lesson topics (Submodules). This
+      curriculum hierarchy serves as the structural schema of the course.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend Step 2 View:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseWizard/WizardStep2.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend API Curriculum Service:</strong>
+        <span class="file-badge"
+          >frontend/src/services/curriculumService.ts</span
+        >
+      </li>
+      <li>
+        <strong>Backend REST Admin Controller:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/controller/CurriculumAdminController.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Service Implementation:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/service/CurriculumAdminServiceImpl.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend JPA Module Repository:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/repository/ModuleRepository.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend JPA Submodule Repository:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/repository/SubmoduleRepository.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Module DB Entity:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/entity/learning/ModuleEntity.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Submodule DB Entity:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/entity/learning/SubmoduleEntity.java</span
+        >
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Adding Modules under active Course Draft</h4>
+    <div class="flow-box">
+      WizardStep2 queries curriculum database using react-query
+      useQuery(["curriculum", wizardCourseId]) ↓ apiClient issues GET request to
+      "/admin/courses/{wizardCourseId}/modules" ↓ Admin clicks "+ Add Module",
+      types title and description, and submits ↓
+      createModuleMutation.mutate(payload) calls
+      curriculumService.createModule() ↓ Sends API POST request to
+      "/admin/courses/{wizardCourseId}/modules" ↓
+      CurriculumAdminController.createModule() handles routing: - Fetches parent
+      CourseEntity by path courseId. - Instantiates ModuleEntity, mapping title,
+      description, order. - Commits ModuleEntity to database using
+      ModuleRepository.save(). ↓ Returns 201 Created with full
+      ModuleResponseDTO. ↓ onSuccess hook invalidates ["curriculum",
+      wizardCourseId] query key. ↓ WizardStep2 re-fetches and updates module
+      outline list automatically.
+    </div>
+
+    <h4>Flow B: Adding Submodules under a Module</h4>
+    <div class="flow-box">
+      Admin opens module details panel, clicks "+ Add Submodule", types title,
+      description, and slug ↓ createSubmoduleMutation.mutate() calls
+      curriculumService.createSubmodule() ↓ apiClient issues POST to
+      "/admin/courses/{wizardCourseId}/modules/{moduleId}/submodules" ↓
+      CurriculumAdminController.createSubmodule() delegates to
+      CurriculumAdminServiceImpl: - Locates parent ModuleEntity using path
+      moduleId. - Maps payload to SubmoduleEntity (resolves title, description,
+      slug, order). - Commits SubmoduleEntity using SubmoduleRepository.save().
+      ↓ Returns 201 Created with SubmoduleResponseDTO. ↓ Triggers react-query
+      invalidation, updating the submodule list on screen.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-6-course-authoring-wizard-step-3-content-block-management">
+      Feature 6: Course Authoring Wizard — Step 3: Content Block Management
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Step 3 of the multi-step Course Wizard. Represents the most interactive
+      and detailed workspace in the system (managed inside a ~1140 line
+      component). It permits attaching rich educational content blocks of
+      various types (text paragraphs, Markdown callouts, code files with syntax
+      highlights, embedded videos, images, and downloadable document sheets) to
+      submodules (lessons). Uploaded attachments are persisted dynamically
+      directly into Cloudinary CDN.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend Content View Component:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseWizard/WizardStep3.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend API Content Service:</strong>
+        <span class="file-badge">frontend/src/services/contentService.ts</span>
+      </li>
+      <li>
+        <strong>Backend REST Admin Controller:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/controller/ContentAdminController.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Service Implementation:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/service/ContentAdminServiceImpl.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend JPA Content Repository:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/repository/ContentRepository.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend Content DB Entity:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/entity/learning/ContentEntity.java</span
+        >
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>
+      Flow A: Adding an Attachment Block (Image / Document File with Cloudinary)
+    </h4>
+    <div class="flow-box">
+      Admin selects "Image" or "Attachment File" block type inside WizardStep3 ↓
+      Admin drops a file or picks it manually via browser dialog ↓
+      WizardStep3.uploadToCloudinary(file, resourceType) initiates immediate
+      upload: - Sets up browser FormData, attaching file binary, upload_preset
+      config. - Performs fetch POST directly to Cloudinary API URL. - (Direct
+      browser-to-Cloudinary upload: Spring Boot server does not touch the files)
+      ↓ Cloudinary processes upload, registers assets, and returns secure_url
+      string ↓ Component captures secure_url -> binds it to local URL state
+      fields, displaying preview ↓ Admin clicks "Save Content Block" ->
+      handleAddBlockSubmit() executes ↓ Calls
+      createBlockMutation.mutate(payload) targeting content DTO schema ↓
+      apiClient triggers POST HTTP request to
+      "/admin/submodules/{submoduleId}/contents" ↓ ContentAdminController
+      receives, validates, maps, and stores ContentEntity: - Ties ContentEntity
+      directly to SubmoduleEntity. - Sets appropriate block fields (image_url,
+      file_url, type, text, caption, order). - Commits record via
+      ContentRepository.save(). ↓ Returns 201 Created ->
+      queryClient.invalidateQueries(["submoduleContents", submoduleId]) ↓
+      WizardStep3 updates, rendering the attachment block in lesson previews.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-7-course-authoring-wizard-step-4-settings-seo">
+      Feature 7: Course Authoring Wizard — Step 4: Settings &amp; SEO
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Step 4 of the multi-step Course Wizard. Collects settings for search
+      engines (meta title, keywords, canonical URLs, OG Social share previews).
+      Renders interactive preview cards modeling how the course will look in
+      search engines (Google SERP preview) and social feeds (Twitter/X Card,
+      supporting Large and Standard visual card layouts) before finalizing
+      course publication.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend SEO Step View Component:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseWizard/WizardStep4.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend API Course Service:</strong>
+        <span class="file-badge">frontend/src/services/courseService.ts</span>
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: SEO preview rendering and Course Publishing</h4>
+    <div class="flow-box">
+      Admin reaches Step 4 of the wizard -> local SEO form renders input states
+      ↓ As Admin modifies SEO titles and tags, reactive UI mock cards update in
+      real-time ↓ Admin clicks "Publish Course &amp; Curriculum" button ↓
+      CourseWizardParent.handlePublishCourse() is triggered: - Constructs final
+      Course payload, appending current courseDraft and sets status = "Active".
+      - Executes PUT request to "/admin/courses/{wizardCourseId}" via
+      courseService.update() - (Note: The Spring Boot backend safely accepts the
+      full DTO payload; unrecognized JSON properties like 'seo' are gracefully
+      discarded by Jackson JSON mapper, preserving core course data) ↓ Fires
+      success toast: "Course published successfully!" ↓ Resets Wizard context
+      states, clears LocalStorage wizard credentials, and triggers a clean page
+      reload to refresh global catalogs.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2
+      id="feature-8-course-detail-view-learner-facing-curriculum-enrollment-progress"
+    >
+      Feature 8: Course Detail View (Learner-Facing Curriculum, Enrollment &amp;
+      Progress)
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Acts as the dedicated course player. Rendered for students and admins
+      alike. Features a hero banner with details (duration, level, tags),
+      expandable module and lesson accordions, and detailed rendering for
+      content blocks. Also runs client-side simulation flows for student
+      Enrollment, complete-lesson indicators, learning progress bars, and
+      confetti celebrate animations.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend Course Detail View:</strong>
+        <span class="file-badge"
+          >frontend/src/components/CourseDetailView.tsx</span
+        >
+      </li>
+      <li>
+        <strong>Frontend API Services:</strong>
+        <span class="file-badge"
+          >frontend/src/services/curriculumService.ts</span
+        >
+        and
+        <span class="file-badge">frontend/src/services/contentService.ts</span>
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Viewing Curriculum lessons and Lazily Loading Content</h4>
+    <div class="flow-box">
+      Student clicks on a Course Card -> navigates dynamically to
+      "/course-detail/{id}" ↓ CourseDetailView parses "id" path parameter from
+      URL using React Router useParams() ↓ Triggers useQuery(["curriculum",
+      selectedCourseId], curriculumService.getCourseCurriculum) ↓ Backend
+      retrieves full Module and Submodule tree of the course and returns it ↓
+      Accordion displays Modules. First module is auto-expanded on render. ↓
+      Student clicks on a lesson (Submodule) -> triggers active lesson select: -
+      Checks if content blocks for this lesson are already cached. - If not,
+      triggers lazy-load request via
+      contentService.getContentBySubmodule(submoduleId). - Serves GET
+      "/admin/submodules/{submoduleId}/contents". ↓ Lesson content pane displays
+      all mapped content blocks: - text blocks are parsed and styled with text
+      formatting. - code blocks display in JetBrains Mono syntax containers with
+      interactive copying. - video blocks render custom responsive players. -
+      image and attachment blocks display preview download buttons.
+    </div>
+
+    <h4>Flow B: Simulated Student Enrollment and Progression</h4>
+    <div class="flow-box">
+      If Student is not enrolled, the course detail interface displays "Enroll
+      Now" lock screen ↓ Student clicks "Enroll Now" -> triggers
+      enrollInCourse(courseId) in AppContext: - Appends courseId into
+      "enrolledCourseIds" state array. - Saves array to browser LocalStorage
+      ("educorp_enrolled_courses"). - Triggers success toast: "Successfully
+      enrolled in the course! Start learning now." ↓ CourseDetailView
+      re-evaluates isEnrolled=true -> hides lock screen, unlocks lesson items. ↓
+      Student completes lesson study -> clicks "Mark as Complete" check button:
+      - Toggles current lesson id in completedLessons state map. - Progress bar
+      recalculates completed percentage instantly. - If completed percentage
+      reaches 100% -> Sets showConfetti=true, launching canvas celebration.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2
+      id="feature-9-application-shell-navigation-toasts-and-global-state-appcontext"
+    >
+      Feature 9: Application Shell — Navigation, Toasts, and Global State
+      (<code>AppContext</code>)
+    </h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Provides the persistent shell Layout frame wrapping the routing-driven
+      SPA. Features the Left Sidebar panel (EduCorp logo branding, role
+      profiles, primary site links, shortcuts), the Top Sticky Header (search
+      inputs, notifications menu, profile settings, logouts), dynamic Toast
+      notifications, and orchestrates global React states.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Frontend Central Routing Component:</strong>
+        <span class="file-badge">frontend/src/App.tsx</span>
+      </li>
+      <li>
+        <strong>Frontend Persistent Layout:</strong>
+        <span class="file-badge">frontend/src/context/AppContext.tsx</span>
+        (AppProvider / Context Brain)
+      </li>
+      <li>
+        <strong>Frontend Left Navigation Sidebar:</strong>
+        <span class="file-badge">frontend/src/components/Sidebar.tsx</span>
+      </li>
+      <li>
+        <strong>Frontend Top Shell Header:</strong>
+        <span class="file-badge">frontend/src/components/Header.tsx</span>
+      </li>
+      <li>
+        <strong>Frontend Custom Toast Popups:</strong>
+        <span class="file-badge">frontend/src/components/Toast.tsx</span>
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Global Toast Notification Display</h4>
+    <div class="flow-box">
+      Any page component triggers custom operation (e.g., login, save, error,
+      delete) ↓ Component triggers showToast(message, type) from useApp()
+      context hook ↓ AppContext updates "toast" state: { message, type } ↓
+      AppContent detects changes -> App.tsx renders &lt;Toast message=...
+      type=... onClose=... /&gt; ↓ &lt;Toast /&gt; displays beautifully with
+      color styling (green for success, red for error, purple for info) ↓
+      Internal useEffect launches a 3-second window timeout. ↓ When timer
+      completes (or user clicks close button) -> triggers onClose() callback ↓
+      Triggers hideToast() inside AppContext, setting toast state back to null
+      -> Toast unmounts.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-10-database-seeding">Feature 10: Database Seeding</h2>
+
+    <h3>1. Feature Purpose</h3>
+    <p>
+      Ensures that the backend relational database contains realistic, rich mock
+      data immediately upon boot. On every server startup, it cleanly drops,
+      recreates, and seeds complete sets of Categories, Courses, Modules,
+      Submodules, and various rich Content blocks into the PostgreSQL tables. It
+      also seeds default system users (Alex Rivera as administrator and student
+      accounts) for rapid demonstration purposes.
+    </p>
+
+    <h3>2. Associated Source Files (from Root)</h3>
+    <ul>
+      <li>
+        <strong>Backend Core DB Seeder:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/config/DatabaseSeeder.java</span
+        >
+      </li>
+      <li>
+        <strong>Backend DB Repository files:</strong>
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/user/repository/UserRepository.java</span
+        >,
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/category/repository/CategoryRepository.java</span
+        >, and
+        <span class="file-badge"
+          >backend/src/main/java/com/geeknito/geeknito_backend/course/repository/CourseRepository.java</span
+        >
+      </li>
+    </ul>
+
+    <h3>3. Exact Working Flows</h3>
+
+    <h4>Flow A: Automated Startup Database seeding</h4>
+    <div class="flow-box">
+      Spring Boot starts -> DatabaseSeeder bean implements CommandLineRunner,
+      executing run() ↓ DatabaseSeeder logs seeding process -> triggers raw JDBC
+      commands via JdbcTemplate: - Drop and recreate users table schema cleanly
+      to ensure enterprise role-based consistency: * "DROP TABLE IF EXISTS users
+      CASCADE;" * "CREATE TABLE users (id BIGSERIAL PRIMARY KEY, full_name,
+      email, password, role, is_active, ...);" - Truncate relational tables
+      using native Postgres Cascade commands: * "TRUNCATE TABLE contents,
+      submodules, modules, courses, categories RESTART IDENTITY CASCADE;" ↓
+      Creates 2 Default System Users: - Administrator: Alex Rivera
+      (admin@educorp.com / adminpass123) - Student: Student Learner
+      (student@educorp.com / studentpass123) ↓ Creates 3 CategoryEntity
+      instances (Cloud Architecture, Cybersecurity, Software Engineering) ↓
+      Creates 5 CourseEntity instances across those categories. ↓ For "Modern
+      Backend Architectures in Java" ONLY: seeds a rich, pre-packaged curriculum
+      structure: - Module 1: Core Design Principles -> 2 Submodules -> attaches
+      Text and Code blocks. - Module 2: Scale & High Performance -> 1 Submodule
+      -> attaches Video blocks. ↓ Saves all entities to DB in logical sequence
+      to ensure foreign key integrity.
+    </div>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="feature-11-cross-cutting-infrastructure">
+      Feature 11: Cross-Cutting Infrastructure
+    </h2>
+
+    <p>
+      The LMS system relies on several non-functional components to coordinate
+      cross-cutting operational stability:
+    </p>
+
+    <h3>
+      1. Centralized Axios client (<span class="file-badge"
+        >frontend/src/lib/apiClient.ts</span
+      >)
+    </h3>
+    <p>
+      Ensures consistent API calls. Translates client requests, appends Bearer
+      tokens if present, and intercepts response errors. It normalizes Spring
+      Boot server failures into a standardized <code>ApiError</code> schema
+      containing clean HTTP status codes, readable text messages, and network
+      indicators.
+    </p>
+
+    <h3>
+      2. Global Controller exception mapper (<span class="file-badge"
+        >backend/src/main/java/com/geeknito/geeknito_backend/exception/GlobalExceptionHandler.java</span
+      >)
+    </h3>
+    <p>
+      A global controller advice filter. Captures unexpected Spring Exceptions
+      at runtime and maps them to clean HTTP responses:
+    </p>
+    <ul>
+      <li>
+        <code>EntityNotFoundException</code> /
+        <code>ResourceNotFoundException</code> -> Maps to 404 Not Found.
+      </li>
+      <li>
+        <code>IllegalArgumentException</code> /
+        <code>MethodArgumentNotValidException</code> -> Maps to 400 Bad Request.
+      </li>
+      <li>
+        Database uniqueness constraint violations / other unhandled exceptions
+        -> Maps to 500 Internal Server Error.
+      </li>
+    </ul>
+
+    <h3>3. Soft Delete Schema Convention</h3>
+    <p>
+      Every Hibernate DB Entity (<code>CategoryEntity</code>,
+      <code>CourseEntity</code>, <code>ModuleEntity</code>,
+      <code>SubmoduleEntity</code>, and <code>ContentEntity</code>) contains an
+      <code>is_active</code> boolean property. Deletions do not execute
+      <code>DELETE FROM</code> commands; they run updates setting
+      <code>is_active = false</code>, which filters elements from read lists
+      while preserving relational histories.
+    </p>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="appendix-a-backend-rest-endpoint-reference-effective-paths">
+      Appendix A: Backend REST Endpoint Reference
+    </h2>
+    <p>
+      Every REST endpoint in the application is prefixed with the server context
+      path <code>/api/v1</code>. The table below represents the active HTTP
+      services called by the frontend client:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Module Resource</th>
+          <th>HTTP Method</th>
+          <th>Full Endpoint Address</th>
+          <th>Request Body Schema</th>
+          <th>Notes / Response Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>User Login</strong></td>
+          <td>POST</td>
+          <td><code>/api/v1/auth/login</code></td>
+          <td>LoginRequest (email, password)</td>
+          <td>Returns 200 OK with AuthResponse profile. Checks isActive.</td>
+        </tr>
+        <tr>
+          <td><strong>User Sign Up</strong></td>
+          <td>POST</td>
+          <td><code>/api/v1/auth/register</code></td>
+          <td>RegisterRequest (fullName, email, password, role)</td>
+          <td>
+            Returns 201 Created. Auto-resolves user role if email has "admin".
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Categories Admin</strong></td>
+          <td>GET</td>
+          <td><code>/api/v1/categories</code></td>
+          <td>None (Query string)</td>
+          <td>Returns 200 OK list. Includes course count aggregates.</td>
+        </tr>
+        <tr>
+          <td><strong>Categories Admin</strong></td>
+          <td>POST</td>
+          <td><code>/api/v1/categories</code></td>
+          <td>CategoryRequestDTO</td>
+          <td>Returns 201 Created on unique category insertions.</td>
+        </tr>
+        <tr>
+          <td><strong>Categories Admin</strong></td>
+          <td>PUT</td>
+          <td><code>/api/v1/categories/{id}</code></td>
+          <td>CategoryRequestDTO</td>
+          <td>Returns 200 OK with modified fields.</td>
+        </tr>
+        <tr>
+          <td><strong>Categories Admin</strong></td>
+          <td>DELETE</td>
+          <td><code>/api/v1/categories/{id}</code></td>
+          <td>None</td>
+          <td>Returns 204 No Content. Operates soft-delete.</td>
+        </tr>
+        <tr>
+          <td><strong>Courses Admin</strong></td>
+          <td>GET</td>
+          <td><code>/api/v1/admin/courses</code></td>
+          <td>None</td>
+          <td>Returns 200 OK list of active and drafted courses.</td>
+        </tr>
+        <tr>
+          <td><strong>Courses Admin</strong></td>
+          <td>POST</td>
+          <td><code>/api/v1/admin/courses</code></td>
+          <td>CourseRequestDTO</td>
+          <td>Returns 201 Created. Generates initial course draft entity.</td>
+        </tr>
+        <tr>
+          <td><strong>Courses Admin</strong></td>
+          <td>PUT</td>
+          <td><code>/api/v1/admin/courses/{id}</code></td>
+          <td>CourseRequestDTO</td>
+          <td>Returns 200 OK. Updates course metadata and settings.</td>
+        </tr>
+        <tr>
+          <td><strong>Courses Admin</strong></td>
+          <td>DELETE</td>
+          <td><code>/api/v1/admin/courses/{id}</code></td>
+          <td>None</td>
+          <td>Returns 204 No Content. Soft-deletes course.</td>
+        </tr>
+        <tr>
+          <td><strong>Curriculum Outline</strong></td>
+          <td>GET</td>
+          <td><code>/api/v1/admin/courses/{courseId}/modules</code></td>
+          <td>None</td>
+          <td>Returns 200 OK with nested Module and Submodule trees.</td>
+        </tr>
+        <tr>
+          <td><strong>Curriculum Admin</strong></td>
+          <td>POST</td>
+          <td><code>/api/v1/admin/courses/{courseId}/modules</code></td>
+          <td>ModuleRequestDTO</td>
+          <td>Returns 201 Created. Inserts custom module chapter.</td>
+        </tr>
+        <tr>
+          <td><strong>Curriculum Admin</strong></td>
+          <td>POST</td>
+          <td>
+            <code
+              >/api/v1/admin/courses/{courseId}/modules/{moduleId}/submodules</code
+            >
+          </td>
+          <td>SubmoduleRequestDTO</td>
+          <td>Returns 201 Created. Inserts lesson submodule under module.</td>
+        </tr>
+        <tr>
+          <td><strong>Content Block Admin</strong></td>
+          <td>GET</td>
+          <td><code>/api/v1/admin/submodules/{submoduleId}/contents</code></td>
+          <td>None</td>
+          <td>Returns 200 OK list of ordered lesson materials.</td>
+        </tr>
+        <tr>
+          <td><strong>Content Block Admin</strong></td>
+          <td>POST</td>
+          <td><code>/api/v1/admin/submodules/{submoduleId}/contents</code></td>
+          <td>ContentRequestDTO</td>
+          <td>
+            Returns 201 Created. Binds rich data blocks to lesson submodule.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a class="back-to-top" href="#top">↑ Back to top / index</a>
+
+    <hr />
+
+    <h2 id="appendix-b-entity-relationship-summary">
+      Appendix B: Entity-Relationship Summary
+    </h2>
+    <p>
+      The application model defines structured, nested cascading relationships
+      across backend databases to coordinate robust data hierarchies:
+    </p>
+
+    <pre><code>[UserEntity] ── (Independent login schema)
+
+[CategoryEntity] (1)
+       │
+       └───&lt; [CourseEntity] (N) [category_id FK, nullable, soft-deleted independently]
+                    │
+                    └───&lt; [ModuleEntity] (N) [course_id FK, cascade ALL + orphanRemoval]
+                                 │
+                                 └───&lt; [SubmoduleEntity] (N) [module_id FK, cascade ALL + orphanRemoval]
+                                              │
+                                              └───&lt; [ContentEntity] (N) [submodule_id FK, soft-deleted]
+</code></pre>
+
+    <p>
+      Every Entity class uses Lombok annotations (<code
+        >@Data @Builder @NoArgsConstructor @AllArgsConstructor</code
+      >) for clean code representation and applies JPA annotations (<code
+        >@CreationTimestamp</code
+      >
+      and <code>@UpdateTimestamp</code>) to track database lifecycle operations
+      automatically.
+    </p>
+
+    <p><a class="back-to-top" href="#top">↑ Back to top / index</a></p>
+  </body>
+</html>
