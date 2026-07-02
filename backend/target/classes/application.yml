@@ -2,11 +2,11 @@ spring:
   application:
     name: geeknito-backend
 
-  # Database Configuration (Connecting to local PostgreSQL container)
+  # Database Configuration (Connecting to PostgreSQL)
   datasource:
-    url: jdbc:postgresql://localhost:5432/enterprise_lms_db
-    username: lms_admin
-    password: admin_secure_pass_2026
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/enterprise_lms_db}
+    username: ${SPRING_DATASOURCE_USERNAME:lms_admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:admin_secure_pass_2026}
     driver-class-name: org.postgresql.Driver
 
   # JPA & Hibernate Settings
@@ -25,8 +25,9 @@ spring:
   # Redis Configuration (For second-level query caching and active session storage)
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${SPRING_REDIS_HOST:localhost}
+      port: ${SPRING_REDIS_PORT:6379}
+      password: ${SPRING_REDIS_PASSWORD:}
       timeout: 2000
 
 # Logging Configurations to audit queries and optimization behaviors
@@ -42,3 +43,11 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
+
+# CORS allowed origins config
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+app:
+  file-download-base-url: ${APP_FILE_DOWNLOAD_BASE_URL:http://localhost:8080}
+

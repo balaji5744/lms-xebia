@@ -1,6 +1,7 @@
 package com.geeknito.geeknito_backend.course.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,10 +17,12 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/files")
-@CrossOrigin(origins = "http://localhost:3000")
 public class FileUploadController {
 
     private final String UPLOAD_DIR = "uploads/";
+
+    @Value("${app.file-download-base-url:http://localhost:8080}")
+    private String fileDownloadBaseUrl;
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
@@ -39,7 +42,7 @@ public class FileUploadController {
             Files.write(filePath, file.getBytes());
 
             // 4. Return the local download URL to the React frontend
-            String fileDownloadUrl = "http://localhost:8080/uploads/" + uniqueFileName;
+            String fileDownloadUrl = fileDownloadBaseUrl + "/uploads/" + uniqueFileName;
             log.info("File saved locally at: {}", fileDownloadUrl);
 
             return ResponseEntity.ok(Map.of("url", fileDownloadUrl, "fileName", originalFileName));
