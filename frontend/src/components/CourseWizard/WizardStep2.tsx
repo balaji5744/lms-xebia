@@ -166,7 +166,7 @@ export const WizardStep2: React.FC<WizardStep2Props> = ({
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header Info Banner */}
-      <div className="bg-gradient-to-r from-[#510047] to-[#800F6F] text-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-[#4A1E47] text-white p-6 rounded-2xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <span className="text-[10px] uppercase font-bold tracking-wider text-[#ffd7f0] bg-white/10 px-2.5 py-1 rounded-full">
             Step 2 of 4

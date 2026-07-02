@@ -346,7 +346,7 @@ export const CourseWizardParent: React.FC = () => {
             ) : (
               <button
                 onClick={handlePublishCourse}
-                className="w-full sm:w-auto px-8 py-2.5 bg-gradient-to-r from-[#01AC9F] to-[#008f84] hover:opacity-90 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 active:scale-95"
+                className="w-full sm:w-auto px-8 py-2.5 bg-[#01AC9F] hover:bg-[#008f84] text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 active:scale-95"
               >
                 <Send className="w-4 h-4" />
                 Publish Curriculum
@@ -357,4 +357,4 @@ export const CourseWizardParent: React.FC = () => {
       </div>
     </div>
   );
-};;
+};

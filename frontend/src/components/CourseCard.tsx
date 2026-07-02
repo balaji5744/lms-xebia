@@ -156,10 +156,10 @@ export const CourseCard: React.FC<CourseCardProps> = ({
                 e.stopPropagation();
                 onEdit(e);
               }}
-              className="w-full py-2.5 bg-gradient-to-r from-[#6C1D5F] to-[#FF6200] hover:from-[#5A174F] hover:to-[#E05600] text-white text-xs font-black rounded-xl shadow-lg shadow-[#6C1D5F]/20 flex items-center justify-center gap-2 transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] cursor-pointer"
+              className="w-full py-2.5 bg-[#6C1D5F] hover:bg-[#4A1E47] text-white text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-2 transition-all duration-150 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] cursor-pointer"
             >
               <Edit className="w-3.5 h-3.5" />
-              <span>Launch Course Builder</span>
+              <span>Edit</span>
             </button>
 
             <div className="grid grid-cols-2 gap-2">

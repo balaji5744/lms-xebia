@@ -153,7 +153,7 @@ export const CourseDetailView: React.FC = () => {
     <div className="pb-24 animate-fade-in space-y-8 max-w-6xl mx-auto">
       {/* Confetti Banner */}
       {showConfetti && (
-        <div className="bg-gradient-to-r from-[#01AC9F] to-[#510047] text-white px-6 py-4 rounded-3xl shadow-xl flex items-center justify-between animate-bounce">
+        <div className="bg-[#01AC9F] text-white px-6 py-4 rounded-3xl shadow-md flex items-center justify-between animate-bounce">
           <div className="flex items-center gap-3">
             <span className="text-2xl">🎉</span>
             <div>

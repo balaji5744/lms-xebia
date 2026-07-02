@@ -13,6 +13,8 @@ public interface CourseAdminService {
 
     void softDelete(Long id);
 
+    void hardDelete(Long id);
+
     CourseResponseDTO getById(Long id);
 
     List<CourseResponseDTO> getAll();

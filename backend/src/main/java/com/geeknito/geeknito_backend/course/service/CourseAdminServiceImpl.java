@@ -92,6 +92,22 @@ public class CourseAdminServiceImpl implements CourseAdminService {
     @Transactional
     public void softDelete(Long id) {
 
+        log.info("Soft deleting course with ID: {}", id);
+
+        CourseEntity entity = courseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Course not found with ID: " + id));
+
+        entity.setActive(false);
+        courseRepository.save(entity);
+
+        log.info("Course soft-deleted successfully with ID: {}", id);
+    }
+
+    @Override
+    @Transactional
+    public void hardDelete(Long id) {
+
         log.warn("Hard deleting course with ID: {}", id);
 
         CourseEntity entity = courseRepository.findById(id)

@@ -51,13 +51,16 @@ export const courseService = {
   },
 
   /**
-   * Delete a course by ID
+   * Delete a course by ID (supports optional hard delete)
    * DELETE /admin/courses/{id}
    * @param {string|number} id - Course ID
+   * @param {boolean} [hard=false] - True to permanently delete, false to soft-delete/deactivate
    * @returns {Promise<void>} Resolves when delete operation completes
    */
-  async delete(id: string | number): Promise<void> {
-    await apiClient.delete(`/admin/courses/${id}`);
+  async delete(id: string | number, hard: boolean = false): Promise<void> {
+    await apiClient.delete(`/admin/courses/${id}`, {
+      params: { hard },
+    });
   },
 };
 

@@ -43,8 +43,12 @@ public class CourseAdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        courseAdminService.softDelete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam(value = "hard", defaultValue = "false") boolean hard) {
+        if (hard) {
+            courseAdminService.hardDelete(id);
+        } else {
+            courseAdminService.softDelete(id);
+        }
         return ResponseEntity.noContent().build();
     }
 }

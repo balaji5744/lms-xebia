@@ -48,9 +48,17 @@ async function uploadToCloudinary(
   resourceType: "image" | "auto" = "image",
 ): Promise<string> {
   if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
-    throw new Error(
-      "Cloudinary is not configured. Set VITE_CLOUDINARY_CLOUD_NAME and VITE_CLOUDINARY_UPLOAD_PRESET.",
+    console.warn(
+      "Cloudinary is not configured. Falling back to a high-quality educational placeholder URL for preview purposes.",
     );
+    if (resourceType === "image" || file.type.startsWith("image/")) {
+      const keywords = ["education", "technology", "books", "code", "design"];
+      const randomKeyword =
+        keywords[Math.floor(Math.random() * keywords.length)];
+      return `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop`;
+    } else {
+      return "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    }
   }
 
   const formData = new FormData();
@@ -171,7 +179,14 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
     try {
       const secureUrl = await uploadImageToCloudinary(file);
       setImageUrlVal(secureUrl);
-      showToast("Image uploaded successfully!", "success");
+      if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+        showToast(
+          "Cloudinary not configured. Fallback placeholder image loaded.",
+          "info",
+        );
+      } else {
+        showToast("Image uploaded successfully!", "success");
+      }
     } catch (err: any) {
       console.error("[WizardStep3] Cloudinary upload failed:", err);
       showToast(
@@ -196,7 +211,14 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       const secureUrl = await uploadToCloudinary(file, "auto");
       setFileUrlVal(secureUrl);
       setFileNameVal(file.name);
-      showToast("File uploaded successfully!", "success");
+      if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+        showToast(
+          "Cloudinary not configured. Fallback document URL loaded.",
+          "info",
+        );
+      } else {
+        showToast("File uploaded successfully!", "success");
+      }
     } catch (err: any) {
       console.error("[WizardStep3] Cloudinary file upload failed:", err);
       showToast(

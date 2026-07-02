@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-07-02T18:29:17+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
+    date = "2026-07-02T22:00:45+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
 public class CategoryMapperImpl implements CategoryMapper {
@@ -22,10 +22,10 @@ public class CategoryMapperImpl implements CategoryMapper {
 
         CategoryEntity.CategoryEntityBuilder categoryEntity = CategoryEntity.builder();
 
-        categoryEntity.name( dto.getName() );
-        categoryEntity.icon( dto.getIcon() );
-        categoryEntity.description( dto.getDescription() );
         categoryEntity.color( dto.getColor() );
+        categoryEntity.description( dto.getDescription() );
+        categoryEntity.icon( dto.getIcon() );
+        categoryEntity.name( dto.getName() );
 
         return categoryEntity.build();
     }
@@ -38,12 +38,12 @@ public class CategoryMapperImpl implements CategoryMapper {
 
         CategoryResponseDTO.CategoryResponseDTOBuilder categoryResponseDTO = CategoryResponseDTO.builder();
 
-        categoryResponseDTO.id( entity.getId() );
-        categoryResponseDTO.name( entity.getName() );
-        categoryResponseDTO.icon( entity.getIcon() );
-        categoryResponseDTO.description( entity.getDescription() );
         categoryResponseDTO.color( entity.getColor() );
         categoryResponseDTO.createdAt( entity.getCreatedAt() );
+        categoryResponseDTO.description( entity.getDescription() );
+        categoryResponseDTO.icon( entity.getIcon() );
+        categoryResponseDTO.id( entity.getId() );
+        categoryResponseDTO.name( entity.getName() );
         categoryResponseDTO.updatedAt( entity.getUpdatedAt() );
 
         return categoryResponseDTO.build();
@@ -55,12 +55,12 @@ public class CategoryMapperImpl implements CategoryMapper {
             return;
         }
 
-        entity.setName( dto.getName() );
-        entity.setIcon( dto.getIcon() );
-        entity.setDescription( dto.getDescription() );
-        entity.setColor( dto.getColor() );
         if ( dto.getActive() != null ) {
             entity.setActive( dto.getActive() );
         }
+        entity.setColor( dto.getColor() );
+        entity.setDescription( dto.getDescription() );
+        entity.setIcon( dto.getIcon() );
+        entity.setName( dto.getName() );
     }
 }

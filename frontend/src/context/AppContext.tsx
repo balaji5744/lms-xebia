@@ -28,7 +28,7 @@ interface AppContextProps {
     course: Omit<Course, "id" | "learnersCount" | "modules">,
   ) => number;
   updateCourse: (course: Course) => void;
-  deleteCourse: (id: number) => void;
+  deleteCourse: (id: number, hard?: boolean) => void;
   setWizardStep: (step: number) => void;
   setWizardCourseId: (id: number | null) => void;
   showSmartTagsToast: boolean;
@@ -359,12 +359,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setCourses((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
   };
 
-  const deleteCourse = (id: number) => {
+  const deleteCourse = (id: number, hard: boolean = false) => {
     courseService
-      .delete(id)
-      .then(() => fetchCategoriesAndCourses())
+      .delete(id, hard)
+      .then(() => {
+        fetchCategoriesAndCourses();
+        showToast(
+          hard
+            ? "Course permanently deleted from the database."
+            : "Course soft-deleted (deactivated).",
+          "success",
+        );
+      })
       .catch((err) => {
         console.error("[AppContext] Failed to delete course on backend:", err);
+        showToast("Failed to delete course.", "error");
         fetchCategoriesAndCourses();
       });
     setCourses((prev) => prev.filter((c) => c.id !== id));

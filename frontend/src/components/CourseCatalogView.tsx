@@ -18,10 +18,7 @@ import { Course, Category } from "../types";
 
 export const CourseCatalogView: React.FC = () => {
   const navigate = useNavigate();
-  const {
-    deleteCourse,
-    userRole,
-  } = useApp();
+  const { deleteCourse, userRole } = useApp();
 
   // Local state for courses and categories fetched directly from services
   const [localCourses, setLocalCourses] = useState<Course[]>([]);
@@ -39,6 +36,17 @@ export const CourseCatalogView: React.FC = () => {
   const [activeMenuId, setActiveMenuId] = useState<number | string | null>(
     null,
   );
+
+  // Custom Delete Modal state
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    courseId: number | null;
+    courseTitle: string;
+  }>({
+    isOpen: false,
+    courseId: null,
+    courseTitle: "",
+  });
 
   // Fetch data directly from backend
   const fetchCatalogData = async () => {
@@ -105,25 +113,31 @@ export const CourseCatalogView: React.FC = () => {
     });
   }, [mappedCourses, selectedCategory, searchQuery]);
 
-  // Handle course deletion cleanly and update both context and local states
-  const handleDelete = async (
-    id: number,
-    title: string,
-    e: React.MouseEvent,
-  ) => {
+  // Handle course deletion cleanly by showing the option selection modal
+  const handleDelete = (id: number, title: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (
-      confirm(
-        `Are you sure you want to permanently delete the course "${title}"?`,
-      )
-    ) {
-      try {
-        await courseService.delete(id);
-        deleteCourse(id); // Synchronize context state
-        await fetchCatalogData(); // Re-fetch components
-      } catch (err) {
-        console.error("[CourseCatalog] Delete operation failed:", err);
-      }
+    setDeleteModal({
+      isOpen: true,
+      courseId: id,
+      courseTitle: title,
+    });
+  };
+
+  const performDeletion = async (hard: boolean) => {
+    if (deleteModal.courseId === null) return;
+    try {
+      deleteCourse(deleteModal.courseId, hard);
+      setDeleteModal({
+        isOpen: false,
+        courseId: null,
+        courseTitle: "",
+      });
+      // Allow state to propagate then re-fetch
+      setTimeout(() => {
+        fetchCatalogData();
+      }, 500);
+    } catch (err) {
+      console.error("[CourseCatalog] Delete operation failed:", err);
     }
   };
 
@@ -386,6 +400,89 @@ export const CourseCatalogView: React.FC = () => {
                 Create a Course
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Custom Brand-Compliant Deletion Modal */}
+      {deleteModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="bg-white rounded-2xl max-w-md w-full border border-[#DEDEDE] shadow-2xl p-6 space-y-6">
+            {/* Header */}
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-[#6C1D5F]">
+                Delete Course
+              </h3>
+              <p className="text-sm text-[#5A5A5A]">
+                You are about to delete{" "}
+                <span className="font-semibold text-black">
+                  "{deleteModal.courseTitle}"
+                </span>
+                . Please select the deletion option:
+              </p>
+            </div>
+
+            {/* Options */}
+            <div className="space-y-4">
+              {/* Option 1: Soft Delete */}
+              <button
+                type="button"
+                onClick={() => performDeletion(false)}
+                className="w-full text-left p-4 rounded-xl border border-[#DADCEA] hover:border-[#6C1D5F] hover:bg-[#F7F8FC] transition-all group cursor-pointer"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="text-xs font-black text-[#6C1D5F] uppercase tracking-wider">
+                      Archive / Soft Delete
+                    </h4>
+                    <p className="text-xs text-[#5A5A5A] mt-1">
+                      Deactivates the course so it's hidden from students in the
+                      catalog. All curriculum modules, lessons, and content
+                      remain completely safe.
+                    </p>
+                  </div>
+                </div>
+              </button>
+
+              {/* Option 2: Hard Delete */}
+              <button
+                type="button"
+                onClick={() => performDeletion(true)}
+                className="w-full text-left p-4 rounded-xl border border-red-200 hover:border-red-600 hover:bg-red-50/50 transition-all group cursor-pointer"
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h4 className="text-xs font-black text-red-600 uppercase tracking-wider">
+                      Permanent / Hard Delete
+                    </h4>
+                    <p className="text-xs text-[#5A5A5A] mt-1 font-normal">
+                      Permanently wipes this course and all its modules,
+                      lessons, and contents from the database.{" "}
+                      <strong className="text-red-700">
+                        This action is irreversible.
+                      </strong>
+                    </p>
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            {/* Footer Buttons */}
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() =>
+                  setDeleteModal({
+                    isOpen: false,
+                    courseId: null,
+                    courseTitle: "",
+                  })
+                }
+                className="px-4 py-2 bg-[#DEDEDE] hover:bg-gray-300 text-[#000000] text-xs font-bold rounded-xl transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
