@@ -1,8 +1,37 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-// Spring Boot Backend Base URL
-const BASE_URL =
-  (import.meta as any).env?.VITE_API_BASE_URL || "http://localhost:8080/api/v1";
+// Spring Boot Backend Base URL determined dynamically to support local Wi-Fi mobile testing and production deploys
+const getApiBaseUrl = (): string => {
+  const envUrl = (import.meta as any).env?.VITE_API_BASE_URL;
+  if (envUrl && envUrl.trim() !== "") {
+    return envUrl;
+  }
+
+  if (typeof window !== "undefined" && window.location) {
+    const { hostname, origin } = window.location;
+
+    // Check if the application is being accessed from a local IP (e.g. 192.168.x.x, 10.x.x.x, etc.)
+    const isLocalIP =
+      /^(127\.)|^(10\.)|^(172\.(1[6-9]|2[0-9]|3[0-1])\.)|^(192\.168\.)/.test(
+        hostname,
+      );
+    const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+    if (isLocalhost) {
+      return "http://localhost:8080/api/v1";
+    } else if (isLocalIP) {
+      // Accessed on local network (e.g., from a mobile device on the same Wi-Fi pointing to the laptop's backend)
+      return `http://${hostname}:8080/api/v1`;
+    } else {
+      // Deployed/production fallback: Use current origin with context-path if served together
+      return `${origin}/api/v1`;
+    }
+  }
+
+  return "http://localhost:8080/api/v1";
+};
+
+const BASE_URL = getApiBaseUrl();
 
 export interface ApiError {
   status: number | null;
