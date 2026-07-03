@@ -38,6 +38,17 @@ apiClient.interceptors.request.use(
         error,
       );
     }
+
+    // Automatically remove default JSON Content-Type header if the request body is a FormData instance
+    // to let the browser auto-generate the multipart boundary header.
+    if (config.data instanceof FormData) {
+      if (config.headers && typeof config.headers.delete === "function") {
+        config.headers.delete("Content-Type");
+      } else if (config.headers) {
+        delete (config.headers as any)["Content-Type"];
+      }
+    }
+
     return config;
   },
   (error: any) => {

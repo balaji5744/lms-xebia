@@ -51,66 +51,70 @@ async function uploadToCloudinary(
   file: File,
   resourceType: "image" | "auto" = "image",
 ): Promise<string> {
-  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
-    console.warn(
-      "Cloudinary is not configured. Trying local backend storage fallback...",
-    );
+  const cloudName = CLOUDINARY_CLOUD_NAME?.trim();
+  const uploadPreset = CLOUDINARY_UPLOAD_PRESET?.trim();
+
+  const isConfigured = !!(cloudName && uploadPreset);
+
+  if (isConfigured) {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const response = await apiClient.post("/files/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      if (response.data && response.data.url) {
-        console.info(
-          "Uploaded successfully to local backend storage:",
-          response.data.url,
-        );
-        return response.data.url;
-      }
-    } catch (backendErr) {
-      console.warn(
-        "Local backend upload failed or backend is unreachable. Falling back to educational placeholder URLs:",
-        backendErr,
-      );
-    }
+      formData.append("upload_preset", uploadPreset);
 
-    if (resourceType === "image" || file.type.startsWith("image/")) {
-      const keywords = ["education", "technology", "books", "code", "design"];
-      const randomKeyword =
-        keywords[Math.floor(Math.random() * keywords.length)];
-      return `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop`;
-    } else {
-      return "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.secure_url) {
+          return data.secure_url as string;
+        }
+      }
+      console.warn(
+        "Cloudinary upload response was not ok, trying local backend storage fallback...",
+      );
+    } catch (cloudinaryErr) {
+      console.warn(
+        "Cloudinary upload failed with exception, trying local backend storage fallback:",
+        cloudinaryErr,
+      );
     }
   }
 
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-  const response = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${resourceType}/upload`,
-    {
-      method: "POST",
-      body: formData,
-    },
-  );
-
-  if (!response.ok) {
-    const errBody = await response.json().catch(() => null);
-    throw new Error(
-      errBody?.error?.message || "Cloudinary upload failed. Please retry.",
+  // Fallback to local Spring Boot backend storage
+  console.info("Trying local backend storage upload...");
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    const response = await apiClient.post("/files/upload", formData);
+    if (response.data && response.data.url) {
+      console.info(
+        "Uploaded successfully to local backend storage:",
+        response.data.url,
+      );
+      return response.data.url;
+    }
+  } catch (backendErr) {
+    console.warn(
+      "Local backend upload failed or backend is unreachable. Falling back to educational placeholder URLs:",
+      backendErr,
     );
   }
 
-  const data = await response.json();
-  if (!data.secure_url) {
-    throw new Error("Cloudinary did not return a file URL.");
+  // Final placeholder fallback if both failed
+  if (resourceType === "image" || file.type.startsWith("image/")) {
+    const keywords = ["education", "technology", "books", "code", "design"];
+    const randomKeyword = keywords[Math.floor(Math.random() * keywords.length)];
+    return `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop`;
+  } else {
+    return "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
   }
-  return data.secure_url as string;
 }
 
 // Thin wrapper kept for the image-block call sites.
@@ -206,7 +210,10 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       const secureUrl = await uploadImageToCloudinary(file);
       setImageUrlVal(secureUrl);
       if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
-        if (secureUrl.includes("/uploads/")) {
+        if (
+          secureUrl.includes("/uploads/") ||
+          secureUrl.includes("/files/download/")
+        ) {
           showToast(
             "Cloudinary not configured. Image uploaded to backend storage successfully!",
             "success",
@@ -245,7 +252,10 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       setFileUrlVal(secureUrl);
       setFileNameVal(file.name);
       if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
-        if (secureUrl.includes("/uploads/")) {
+        if (
+          secureUrl.includes("/uploads/") ||
+          secureUrl.includes("/files/download/")
+        ) {
           showToast(
             "Cloudinary not configured. File uploaded to backend storage successfully!",
             "success",

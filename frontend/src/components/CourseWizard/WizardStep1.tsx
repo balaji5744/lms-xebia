@@ -103,41 +103,51 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
         const formData = new FormData();
         formData.append("file", file);
 
-        // Check if Cloudinary is configured
-        const CLOUDINARY_CLOUD_NAME = import.meta.env
-          .VITE_CLOUDINARY_CLOUD_NAME;
-        const CLOUDINARY_UPLOAD_PRESET = import.meta.env
-          .VITE_CLOUDINARY_UPLOAD_PRESET;
+        // Check if Cloudinary is configured, stripping whitespaces from local .env values if they exist but are empty
+        const CLOUDINARY_CLOUD_NAME = (
+          import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as string | undefined
+        )?.trim();
+        const CLOUDINARY_UPLOAD_PRESET = (
+          import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET as string | undefined
+        )?.trim();
 
         if (CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
-          const clFormData = new FormData();
-          clFormData.append("file", file);
-          clFormData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-          const clRes = await fetch(
-            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-            {
-              method: "POST",
-              body: clFormData,
-            },
-          );
-          if (clRes.ok) {
-            const data = await clRes.json();
-            handleFieldChange("thumbnailUrl", data.secure_url);
-            showToast(
-              "Thumbnail uploaded to Cloudinary successfully!",
-              "success",
+          try {
+            const clFormData = new FormData();
+            clFormData.append("file", file);
+            clFormData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+            const clRes = await fetch(
+              `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+              {
+                method: "POST",
+                body: clFormData,
+              },
             );
-            setIsUploading(false);
-            return;
+            if (clRes.ok) {
+              const data = await clRes.json();
+              if (data.secure_url) {
+                handleFieldChange("thumbnailUrl", data.secure_url);
+                showToast(
+                  "Thumbnail uploaded to Cloudinary successfully!",
+                  "success",
+                );
+                setIsUploading(false);
+                return;
+              }
+            }
+            console.warn(
+              "Cloudinary upload failed (non-ok response), trying backend fallback...",
+            );
+          } catch (cloudinaryErr) {
+            console.warn(
+              "Cloudinary upload failed with exception, trying backend fallback:",
+              cloudinaryErr,
+            );
           }
         }
 
         // Fallback to local Spring Boot backend
-        const response = await apiClient.post("/files/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const response = await apiClient.post("/files/upload", formData);
         if (response.data && response.data.url) {
           handleFieldChange("thumbnailUrl", response.data.url);
           showToast(
