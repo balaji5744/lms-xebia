@@ -147,6 +147,36 @@ export const CourseWizardParent: React.FC = () => {
     }
   };
 
+  const handleStepClick = async (targetStep: number) => {
+    if (targetStep === wizardStep) return;
+
+    if (wizardStep === 1 && targetStep > 1) {
+      if (!courseDraft.title?.trim()) {
+        showToast("Please fill in the Course Title to proceed.", "error");
+        return;
+      }
+      if (!courseDraft.categoryId) {
+        showToast("Please select a Category to proceed.", "error");
+        return;
+      }
+    }
+
+    // Attempt to save draft if title is present
+    if (courseDraft.title?.trim()) {
+      const success = await handleSaveDraftSilent();
+      if (!success && targetStep > wizardStep) {
+        // If save failed on going forward, block
+        return;
+      }
+    } else if (targetStep > wizardStep) {
+      // If no title and trying to go forward, they shouldn't be allowed
+      showToast("Please fill in the Course Title to proceed.", "error");
+      return;
+    }
+
+    setWizardStep(targetStep);
+  };
+
   const handleEditSubmoduleContentShortcut = (submoduleId: number) => {
     setActiveSubmoduleId(submoduleId);
     handleSaveDraftSilent();
@@ -250,33 +280,35 @@ export const CourseWizardParent: React.FC = () => {
             const isActive = wizardStep === step.number;
 
             return (
-              <div
+              <button
                 key={step.number}
-                className="relative z-10 flex flex-col items-center gap-2"
+                type="button"
+                onClick={() => handleStepClick(step.number)}
+                className="relative z-10 flex flex-col items-center gap-2 focus:outline-none cursor-pointer group"
               >
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 shadow-sm ${
                     isCompleted
-                      ? "bg-[#01AC9F] text-white ring-4 ring-emerald-50 border-none"
+                      ? "bg-[#01AC9F] text-white ring-4 ring-emerald-50 border-none group-hover:bg-[#009287]"
                       : isActive
                         ? "bg-[#510047] text-white ring-4 ring-[#ffd7f0] border-none scale-110"
-                        : "bg-white text-gray-400 border-2 border-gray-200"
+                        : "bg-white text-gray-400 border-2 border-gray-200 group-hover:border-[#510047]/30 group-hover:text-[#510047]/60 group-hover:bg-[#510047]/5"
                   }`}
                 >
                   {isCompleted ? <Check className="w-5 h-5" /> : step.number}
                 </div>
                 <span
-                  className={`text-[11px] font-bold uppercase tracking-wider ${
+                  className={`text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 ${
                     isActive
                       ? "text-[#510047]"
                       : isCompleted
-                        ? "text-[#01AC9F]"
-                        : "text-gray-400"
+                        ? "text-[#01AC9F] group-hover:text-[#009287]"
+                        : "text-gray-400 group-hover:text-[#510047]/80"
                   }`}
                 >
                   {step.label}
                 </span>
-              </div>
+              </button>
             );
           })}
         </div>

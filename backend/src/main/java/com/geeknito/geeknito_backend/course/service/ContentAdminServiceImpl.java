@@ -90,7 +90,7 @@ public class ContentAdminServiceImpl implements ContentAdminService {
             throw new EntityNotFoundException("Submodule not found with ID: " + submoduleId);
         }
 
-        List<ContentEntity> contents = contentRepository.findBySubmoduleIdOrderByContentOrderAsc(submoduleId);
+        List<ContentEntity> contents = contentRepository.findBySubmoduleIdAndIsActiveTrueOrderByContentOrderAsc(submoduleId);
         return contents.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
