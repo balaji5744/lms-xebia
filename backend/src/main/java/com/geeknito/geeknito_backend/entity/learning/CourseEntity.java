@@ -32,7 +32,7 @@ public class CourseEntity {
     @Column(nullable = false, unique = true)
     private String slug;
 
-    @Column(name = "thumbnail_url")
+    @Column(name = "thumbnail_url", columnDefinition = "TEXT")
     private String thumbnail;
 
     @Column(name = "short_description", columnDefinition = "TEXT")

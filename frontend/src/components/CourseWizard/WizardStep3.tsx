@@ -23,6 +23,7 @@ import {
 import { Module, Submodule, ContentBlock } from "../../types";
 import contentService from "../../services/contentService";
 import { useApp } from "../../context/AppContext"; // <-- Added for Toast Notifications
+import apiClient from "../../lib/apiClient";
 
 const CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME as
   | string
@@ -37,10 +38,13 @@ const MAX_FILE_SIZE_BYTES = 25 * 1024 * 1024; // 25MB
  * returns the resulting secure (https) URL. Throws on failure so the caller
  * can show an appropriate toast instead of silently storing a broken value.
  *
+ * If Cloudinary is not configured, it gracefully falls back to uploading the file
+ * to the Spring Boot backend's local file storage.
+ *
  * @param resourceType - "image" for image blocks, "auto" for arbitrary
  * file types (PDF, DOCX, ZIP, etc). Cloudinary's "auto" endpoint detects
  * the right resource type (image/video/raw) for whatever is uploaded, which
- * is what lets PDFs and Office docs upload successfully â€” the dedicated
+ * is what lets PDFs and Office docs upload successfully — the dedicated
  * /image/upload endpoint rejects non-image files.
  */
 async function uploadToCloudinary(
@@ -49,8 +53,30 @@ async function uploadToCloudinary(
 ): Promise<string> {
   if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
     console.warn(
-      "Cloudinary is not configured. Falling back to a high-quality educational placeholder URL for preview purposes.",
+      "Cloudinary is not configured. Trying local backend storage fallback...",
     );
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await apiClient.post("/files/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.data && response.data.url) {
+        console.info(
+          "Uploaded successfully to local backend storage:",
+          response.data.url,
+        );
+        return response.data.url;
+      }
+    } catch (backendErr) {
+      console.warn(
+        "Local backend upload failed or backend is unreachable. Falling back to educational placeholder URLs:",
+        backendErr,
+      );
+    }
+
     if (resourceType === "image" || file.type.startsWith("image/")) {
       const keywords = ["education", "technology", "books", "code", "design"];
       const randomKeyword =
@@ -180,10 +206,17 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       const secureUrl = await uploadImageToCloudinary(file);
       setImageUrlVal(secureUrl);
       if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
-        showToast(
-          "Cloudinary not configured. Fallback placeholder image loaded.",
-          "info",
-        );
+        if (secureUrl.includes("/uploads/")) {
+          showToast(
+            "Cloudinary not configured. Image uploaded to backend storage successfully!",
+            "success",
+          );
+        } else {
+          showToast(
+            "Cloudinary not configured. Fallback placeholder image loaded.",
+            "info",
+          );
+        }
       } else {
         showToast("Image uploaded successfully!", "success");
       }
@@ -212,10 +245,17 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       setFileUrlVal(secureUrl);
       setFileNameVal(file.name);
       if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
-        showToast(
-          "Cloudinary not configured. Fallback document URL loaded.",
-          "info",
-        );
+        if (secureUrl.includes("/uploads/")) {
+          showToast(
+            "Cloudinary not configured. File uploaded to backend storage successfully!",
+            "success",
+          );
+        } else {
+          showToast(
+            "Cloudinary not configured. Fallback document URL loaded.",
+            "info",
+          );
+        }
       } else {
         showToast("File uploaded successfully!", "success");
       }

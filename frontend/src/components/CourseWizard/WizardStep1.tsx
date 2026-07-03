@@ -10,6 +10,7 @@ import {
 import { Course, Category } from "../../types";
 import categoryService from "../../services/categoryService";
 import { useApp } from "../../context/AppContext";
+import apiClient from "../../lib/apiClient";
 
 interface WizardStep1Props {
   courseData: Course;
@@ -93,17 +94,79 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
 
   // Drag and drop state
   const [isDragging, setIsDragging] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const processFile = (file: File) => {
+  const processFile = async (file: File) => {
     if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          handleFieldChange("thumbnailUrl", event.target.result as string);
-          showToast("Image uploaded successfully!", "success");
+      setIsUploading(true);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Check if Cloudinary is configured
+        const CLOUDINARY_CLOUD_NAME = import.meta.env
+          .VITE_CLOUDINARY_CLOUD_NAME;
+        const CLOUDINARY_UPLOAD_PRESET = import.meta.env
+          .VITE_CLOUDINARY_UPLOAD_PRESET;
+
+        if (CLOUDINARY_CLOUD_NAME && CLOUDINARY_UPLOAD_PRESET) {
+          const clFormData = new FormData();
+          clFormData.append("file", file);
+          clFormData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+          const clRes = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+            {
+              method: "POST",
+              body: clFormData,
+            },
+          );
+          if (clRes.ok) {
+            const data = await clRes.json();
+            handleFieldChange("thumbnailUrl", data.secure_url);
+            showToast(
+              "Thumbnail uploaded to Cloudinary successfully!",
+              "success",
+            );
+            setIsUploading(false);
+            return;
+          }
         }
-      };
-      reader.readAsDataURL(file);
+
+        // Fallback to local Spring Boot backend
+        const response = await apiClient.post("/files/upload", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.data && response.data.url) {
+          handleFieldChange("thumbnailUrl", response.data.url);
+          showToast(
+            "Thumbnail uploaded to backend storage successfully!",
+            "success",
+          );
+        } else {
+          throw new Error("Invalid response format");
+        }
+      } catch (err: any) {
+        console.warn(
+          "Backend / Cloudinary upload failed, using local base64 fallback:",
+          err,
+        );
+        // Fall back to base64 preview so it still works if offline or disconnected
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          if (event.target?.result) {
+            handleFieldChange("thumbnailUrl", event.target.result as string);
+            showToast(
+              "Backend upload failed. Saved as local preview.",
+              "info",
+            );
+          }
+        };
+        reader.readAsDataURL(file);
+      } finally {
+        setIsUploading(false);
+      }
     } else {
       showToast("Please upload a valid image file (PNG, JPG).", "error");
     }
@@ -241,6 +304,14 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
                     : "border-gray-200 hover:border-[#510047]"
                 } ${localForm.thumbnailUrl ? "h-64" : "h-40"}`}
               >
+                {isUploading && (
+                  <div className="absolute inset-0 bg-black/60 z-10 flex flex-col items-center justify-center text-white space-y-2">
+                    <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span className="text-xs font-semibold">
+                      Uploading Thumbnail...
+                    </span>
+                  </div>
+                )}
                 {localForm.thumbnailUrl ? (
                   <>
                     <img
