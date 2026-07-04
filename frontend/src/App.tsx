@@ -49,7 +49,7 @@ const MainLayout: React.FC = () => {
 
       {/* Main Panel Content Frame */}
       <div
-        className={`flex-1 min-h-screen flex flex-col transition-all duration-300 ${
+        className={`flex-1 min-w-0 min-h-screen flex flex-col transition-all duration-300 ${
           sidebarCollapsed ? "md:pl-[80px]" : "md:pl-[280px]"
         } pl-0`}
       >
