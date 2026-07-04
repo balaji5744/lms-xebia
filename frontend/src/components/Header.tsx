@@ -85,7 +85,7 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu className="w-5 h-5 transition-transform duration-200 active:scale-95" />
         </button>
 
-        <div className="relative w-full max-w-[130px] sm:max-w-md">
+        <div className="relative w-full max-w-[110px] min-[360px]:max-w-[150px] min-[400px]:max-w-[180px] sm:max-w-md">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
@@ -181,14 +181,6 @@ export const Header: React.FC<HeaderProps> = ({
                     : "Academy Student"}
               </p>
             </div>
-            {currentUser?.profilePicture && (
-              <img
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#ffd7f0] object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
-                alt="User Profile"
-                referrerPolicy="no-referrer"
-                src={currentUser.profilePicture}
-              />
-            )}
             <ChevronDown className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-gray-400 group-hover:text-gray-600 transition-colors shrink-0" />
           </div>
 

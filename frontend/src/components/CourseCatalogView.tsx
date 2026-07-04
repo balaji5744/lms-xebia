@@ -161,7 +161,7 @@ export const CourseCatalogView: React.FC = () => {
   }, [localCourses]);
 
   return (
-    <div className="bg-[#F7F8FC] min-h-screen -m-4 sm:-m-8 p-4 sm:p-8 space-y-6 sm:space-y-8 animate-fade-in relative">
+    <div className="bg-[#F7F8FC] min-h-screen -mx-4 sm:mx-0 p-4 sm:p-8 rounded-none sm:rounded-3xl space-y-6 sm:space-y-8 animate-fade-in relative">
       {/* Absolute Transparent Cover for Click-Outside closing of Menu Dropdowns */}
       {activeMenuId !== null && (
         <div
@@ -199,7 +199,7 @@ export const CourseCatalogView: React.FC = () => {
       </div>
 
       {/* Statistics Hub */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 min-[450px]:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Total Stats card */}
         <div className="bg-white p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-2 sm:gap-4">
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#6C1D5F]/10 flex items-center justify-center text-[#6C1D5F] shrink-0">

@@ -225,8 +225,8 @@ export default function CategoryManagement() {
       {/* Main Container */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         {/* Search Bar / Filters */}
-        <div className="p-4 bg-gray-50/50 border-b border-gray-100 flex items-center justify-between gap-4">
-          <div className="relative w-full max-w-sm">
+        <div className="p-4 bg-gray-50/50 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="relative w-full sm:max-w-sm">
             <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
@@ -236,7 +236,7 @@ export default function CategoryManagement() {
               className="w-full pl-9 pr-4 py-2 bg-white border border-gray-200 rounded-lg text-xs focus:outline-none focus:border-[#510047] focus:ring-1 focus:ring-[#ffd7f0]"
             />
           </div>
-          <div className="text-xs text-gray-400 font-mono">
+          <div className="text-xs text-gray-400 font-mono self-end sm:self-auto">
             Total: {filteredCategories.length} items
           </div>
         </div>

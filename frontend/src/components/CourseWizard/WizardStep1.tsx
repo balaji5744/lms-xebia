@@ -224,7 +224,7 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
               </div>
 
               <div className="flex items-center">
-                <span className="bg-gray-100 border border-r-0 border-gray-200 px-4 py-3 rounded-l-xl text-xs font-mono text-gray-400">
+                <span className="hidden sm:inline-flex bg-gray-100 border border-r-0 border-gray-200 px-4 py-3 rounded-l-xl text-xs font-mono text-gray-400">
                   academy.edu/c/
                 </span>
                 <input
@@ -232,7 +232,7 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
                   disabled={!isManualSlug}
                   value={localForm.slug || ""}
                   onChange={(e) => handleFieldChange("slug", e.target.value)}
-                  className={`w-full border border-gray-200 rounded-r-xl px-4 py-3 text-sm focus:outline-none focus:border-[#510047] transition-all font-mono text-xs ${
+                  className={`w-full border border-gray-200 rounded-xl sm:rounded-l-none sm:rounded-r-xl px-4 py-3 text-sm focus:outline-none focus:border-[#510047] transition-all font-mono text-xs ${
                     isManualSlug
                       ? "bg-white text-gray-800"
                       : "bg-gray-50 text-gray-400 cursor-not-allowed"
