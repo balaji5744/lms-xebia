@@ -329,8 +329,8 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
                       alt="Thumbnail Preview"
                       className="absolute inset-0 w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
-                      <label className="cursor-pointer bg-white text-gray-800 px-4 py-2 rounded-lg text-xs font-bold shadow-lg hover:bg-gray-100 transition-colors">
+                    <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-xs p-2 flex items-center justify-center gap-2 md:inset-0 md:bg-black/50 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity md:flex-row md:gap-3">
+                      <label className="cursor-pointer bg-white text-gray-800 px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-[10px] md:text-xs font-bold shadow-lg hover:bg-gray-100 transition-colors">
                         Change Image
                         <input
                           type="file"
@@ -344,9 +344,9 @@ export const WizardStep1: React.FC<WizardStep1Props> = ({
                       <button
                         type="button"
                         onClick={() => handleFieldChange("thumbnailUrl", "")}
-                        className="bg-red-500 text-white p-2 rounded-lg shadow-lg hover:bg-red-600 transition-colors"
+                        className="bg-red-500 text-white p-1.5 md:p-2 rounded-lg shadow-lg hover:bg-red-600 transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       </button>
                     </div>
                   </>

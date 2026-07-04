@@ -360,7 +360,7 @@ export default function CategoryManagement() {
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                         <button
                           onClick={() => handleOpenEditModal(cat)}
                           className="p-1.5 text-gray-400 hover:text-[#510047] hover:bg-[#ffd7f0]/40 rounded-lg transition-all"
