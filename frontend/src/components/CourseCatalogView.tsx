@@ -161,7 +161,7 @@ export const CourseCatalogView: React.FC = () => {
   }, [localCourses]);
 
   return (
-    <div className="bg-[#F7F8FC] min-h-screen -m-8 p-8 space-y-8 animate-fade-in relative">
+    <div className="bg-[#F7F8FC] min-h-screen -m-4 sm:-m-8 p-4 sm:p-8 space-y-6 sm:space-y-8 animate-fade-in relative">
       {/* Absolute Transparent Cover for Click-Outside closing of Menu Dropdowns */}
       {activeMenuId !== null && (
         <div
@@ -171,16 +171,16 @@ export const CourseCatalogView: React.FC = () => {
       )}
 
       {/* Top Banner Block */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-6 md:p-8 rounded-3xl border border-[#DEDEDE] shadow-sm">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 bg-white p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border border-[#DEDEDE] shadow-sm">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#6C1D5F]/10 rounded-full text-xs font-bold text-[#6C1D5F]">
             <Layers className="w-3.5 h-3.5 text-[#6C1D5F]" />
             Enterprise LMS Portal
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#000000] tracking-tight">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#000000] tracking-tight">
             Curriculum Catalog
           </h2>
-          <p className="text-[#5A5A5A] text-sm leading-relaxed max-w-2xl">
+          <p className="text-[#5A5A5A] text-xs sm:text-sm leading-relaxed max-w-2xl">
             Explore, manage, and enroll in premium learning modules. Leverage
             granular administration options and intuitive student workflows.
           </p>
@@ -190,7 +190,7 @@ export const CourseCatalogView: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate("/wizard")}
-            className="bg-[#6C1D5F] hover:bg-[#4A1E47] text-white px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2.5 shadow-lg shadow-[#6C1D5F]/10 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 text-sm shrink-0 self-start lg:self-center cursor-pointer"
+            className="bg-[#6C1D5F] hover:bg-[#4A1E47] text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-bold flex items-center justify-center gap-2.5 shadow-lg shadow-[#6C1D5F]/10 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 text-xs sm:text-sm shrink-0 self-start lg:self-center cursor-pointer"
           >
             <Plus className="w-4 h-4 text-white" />
             Create New Course
@@ -199,62 +199,62 @@ export const CourseCatalogView: React.FC = () => {
       </div>
 
       {/* Statistics Hub */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* Total Stats card */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#6C1D5F]/10 flex items-center justify-center text-[#6C1D5F]">
-            <BookOpenCheck className="w-6 h-6" />
+        <div className="bg-white p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-2 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#6C1D5F]/10 flex items-center justify-center text-[#6C1D5F] shrink-0">
+            <BookOpenCheck className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A]">
+          <div className="min-w-0">
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A] truncate">
               Total Courses
             </p>
-            <p className="text-2xl font-black text-[#000000] mt-0.5">
+            <p className="text-xl sm:text-2xl font-black text-[#000000] mt-0.5">
               {stats.total}
             </p>
           </div>
         </div>
 
         {/* Beginner Stats Card */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#01AC9F]/10 flex items-center justify-center text-[#01AC9F]">
-            <GraduationCap className="w-6 h-6" />
+        <div className="bg-white p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-2 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#01AC9F]/10 flex items-center justify-center text-[#01AC9F] shrink-0">
+            <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A]">
+          <div className="min-w-0">
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A] truncate">
               Beginner
             </p>
-            <p className="text-2xl font-black text-[#000000] mt-0.5">
+            <p className="text-xl sm:text-2xl font-black text-[#000000] mt-0.5">
               {stats.beginner}
             </p>
           </div>
         </div>
 
         {/* Intermediate Stats Card */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#6C1D5F]/10 flex items-center justify-center text-[#6C1D5F]">
-            <Briefcase className="w-6 h-6" />
+        <div className="bg-white p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-2 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#6C1D5F]/10 flex items-center justify-center text-[#6C1D5F] shrink-0">
+            <Briefcase className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A]">
+          <div className="min-w-0">
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A] truncate">
               Intermediate
             </p>
-            <p className="text-2xl font-black text-[#000000] mt-0.5">
+            <p className="text-xl sm:text-2xl font-black text-[#000000] mt-0.5">
               {stats.intermediate}
             </p>
           </div>
         </div>
 
         {/* Advanced Stats Card */}
-        <div className="bg-white p-5 rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-[#FF6200]/10 flex items-center justify-center text-[#FF6200]">
-            <BookOpen className="w-6 h-6" />
+        <div className="bg-white p-3 sm:p-5 rounded-xl sm:rounded-2xl border border-[#DEDEDE] shadow-sm flex items-center gap-2 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-[#FF6200]/10 flex items-center justify-center text-[#FF6200] shrink-0">
+            <BookOpen className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A]">
+          <div className="min-w-0">
+            <p className="text-[9px] sm:text-[10px] uppercase tracking-wider font-bold text-[#5A5A5A] truncate">
               Advanced / Expert
             </p>
-            <p className="text-2xl font-black text-[#000000] mt-0.5">
+            <p className="text-xl sm:text-2xl font-black text-[#000000] mt-0.5">
               {stats.advanced}
             </p>
           </div>

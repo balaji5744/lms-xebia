@@ -85,35 +85,35 @@ export const Header: React.FC<HeaderProps> = ({
           <Menu className="w-5 h-5 transition-transform duration-200 active:scale-95" />
         </button>
 
-        <div className="relative w-full max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4.5 h-4.5" />
+        <div className="relative w-full max-w-[130px] sm:max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
             value={searchValue}
             onChange={(e) => onSearchChange?.(e.target.value)}
-            className="w-full pl-11 pr-4 py-2 bg-gray-50 border border-transparent rounded-full font-sans text-sm focus:outline-none focus:bg-white focus:border-[#510047] focus:ring-2 focus:ring-[#ffd7f0] transition-all placeholder:text-gray-400 text-gray-800"
+            className="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-transparent rounded-full font-sans text-xs sm:text-sm focus:outline-none focus:bg-white focus:border-[#510047] focus:ring-2 focus:ring-[#ffd7f0] transition-all placeholder:text-gray-400 text-gray-800 truncate"
             placeholder={placeholderText}
           />
         </div>
       </div>
 
       {/* Action Utilities & Profile details */}
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
         {/* Notifications Trigger */}
         <div className="relative">
           <button
             onClick={() => setShowNotifications(!showNotifications)}
-            className="text-gray-500 hover:text-[#510047] hover:bg-gray-100 p-2 rounded-full transition-colors relative"
+            className="text-gray-500 hover:text-[#510047] hover:bg-gray-100 p-1.5 sm:p-2 rounded-full transition-colors relative"
           >
-            <Bell className="w-5 h-5" />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#ba1a1a] rounded-full ring-2 ring-white" />
+            <Bell className="w-4 sm:w-5 h-4 sm:h-5" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#ba1a1a] rounded-full ring-2 ring-white" />
           </button>
 
           {/* Notifications Dropdown Panel */}
           {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 animate-fade-in">
+            <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 animate-fade-in">
               <div className="px-4 py-2 border-b border-gray-50 flex justify-between items-center">
-                <span className="font-semibold text-sm text-gray-800">
+                <span className="font-semibold text-xs sm:text-sm text-gray-800">
                   Notifications
                 </span>
                 <span
@@ -127,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {notifications.map((notif) => (
                   <div
                     key={notif.id}
-                    className={`p-4 hover:bg-gray-50 transition-colors cursor-pointer ${notif.isUnread ? "bg-[#ffd7f0]/10" : ""}`}
+                    className={`p-3 sm:p-4 hover:bg-gray-50 transition-colors cursor-pointer ${notif.isUnread ? "bg-[#ffd7f0]/10" : ""}`}
                   >
                     <p className="text-xs text-gray-700 leading-normal">
                       {notif.text}
@@ -149,29 +149,29 @@ export const Header: React.FC<HeaderProps> = ({
               "Simulated System Activity Log: Checked courses taxonomy and security records.",
             )
           }
-          className="text-gray-500 hover:text-[#510047] hover:bg-gray-100 p-2 rounded-full transition-colors"
+          className="text-gray-500 hover:text-[#510047] hover:bg-gray-100 p-1.5 sm:p-2 rounded-full transition-colors hidden sm:block"
           title="Activity History"
         >
-          <History className="w-5 h-5" />
+          <History className="w-4 sm:w-5 h-4 sm:h-5" />
         </button>
 
-        <div className="h-8 w-[1px] bg-gray-200" />
+        <div className="h-6 w-[1px] bg-gray-200 hidden sm:block" />
 
         {/* Profile Dropdown */}
         <div className="relative">
           <div
             onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center gap-2 cursor-pointer group select-none py-1.5 px-2.5 hover:bg-gray-50 rounded-xl transition-all"
+            className="flex items-center gap-1 sm:gap-2 cursor-pointer group select-none py-1 px-1.5 sm:py-1.5 sm:px-2.5 hover:bg-gray-50 rounded-xl transition-all"
           >
             <div className="text-right">
-              <p className="text-sm font-semibold text-gray-800 group-hover:text-[#510047] transition-colors">
+              <p className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#510047] transition-colors truncate max-w-[65px] sm:max-w-none">
                 {currentUser
                   ? currentUser.fullName
                   : userRole === "admin"
                     ? "Alex Rivera"
                     : "Student Learner"}
               </p>
-              <p className="text-[10px] text-gray-400 font-medium tracking-wide">
+              <p className="text-[9px] sm:text-[10px] text-gray-400 font-medium tracking-wide hidden sm:block">
                 {currentUser
                   ? currentUser.role === "admin"
                     ? "LMS Administrator"
@@ -183,13 +183,13 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
             {currentUser?.profilePicture && (
               <img
-                className="w-10 h-10 rounded-full border-2 border-[#ffd7f0] object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#ffd7f0] object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
                 alt="User Profile"
                 referrerPolicy="no-referrer"
                 src={currentUser.profilePicture}
               />
             )}
-            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
+            <ChevronDown className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-gray-400 group-hover:text-gray-600 transition-colors shrink-0" />
           </div>
 
           {/* Profile Contextual Actions Menu */}

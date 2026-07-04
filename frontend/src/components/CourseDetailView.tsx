@@ -167,27 +167,27 @@ export const CourseDetailView: React.FC = () => {
       )}
 
       {/* Hero Header Back Button */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <button
           onClick={() => navigate("/courses")}
-          className="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-100 text-xs font-bold text-[#510047] hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
+          className="group flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-gray-100 text-xs font-bold text-[#510047] hover:bg-gray-50 transition-all shadow-sm cursor-pointer w-full sm:w-auto"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />{" "}
           Back to Course Catalog
         </button>
-        <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">
+        <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest self-start sm:self-auto pl-1 sm:pl-0">
           Course ID: {course.id}
         </span>
       </div>
 
       {/* Hero Cover Section */}
       <div
-        className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-0 relative"
+        className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-gray-100 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-0 relative"
         style={{ borderTop: `4px solid ${course.categoryColor}` }}
       >
-        <div className="p-8 lg:p-12 lg:col-span-7 flex flex-col justify-between space-y-6">
+        <div className="p-5 sm:p-8 lg:p-12 lg:col-span-7 flex flex-col justify-between space-y-6">
           <div className="space-y-4">
-            <div className="flex flex-wrap items-center gap-2.5">
+            <div className="flex flex-wrap items-center gap-2">
               <span
                 className={`text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 rounded-md text-white shadow-sm ${levelBadgeColor}`}
               >
@@ -207,10 +207,10 @@ export const CourseDetailView: React.FC = () => {
                 <span>{course.categoryName}</span>
               </span>
             </div>
-            <h1 className="text-2xl lg:text-4xl font-black text-[#000000] tracking-tight leading-tight">
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-black text-[#000000] tracking-tight leading-tight">
               {course.title}
             </h1>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-xl">
+            <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-xl">
               {course.description ||
                 course.shortDescription ||
                 "No overview provided."}
@@ -218,22 +218,22 @@ export const CourseDetailView: React.FC = () => {
           </div>
 
           <div className="pt-6 border-t border-gray-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               <div>
-                <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+                <p className="text-[9px] sm:text-[10px] font-bold uppercase text-gray-400 tracking-wider">
                   Duration
                 </p>
-                <div className="flex items-center gap-1 mt-0.5 text-[#510047] font-bold text-sm">
+                <div className="flex items-center gap-1 mt-0.5 text-[#510047] font-bold text-xs sm:text-sm">
                   <Clock className="w-4 h-4 text-[#01AC9F]" />
                   <span>{course.duration || "Self-Paced"}</span>
                 </div>
               </div>
               <div className="w-px h-8 bg-gray-100" />
               <div>
-                <p className="text-[10px] font-bold uppercase text-gray-400 tracking-wider">
+                <p className="text-[9px] sm:text-[10px] font-bold uppercase text-gray-400 tracking-wider">
                   Curriculum
                 </p>
-                <div className="flex items-center gap-1 mt-0.5 text-[#510047] font-bold text-sm">
+                <div className="flex items-center gap-1 mt-0.5 text-[#510047] font-bold text-xs sm:text-sm">
                   <BookOpen className="w-4 h-4 text-[#01AC9F]" />
                   <span>{realModules.length} Modules</span>
                 </div>
@@ -241,7 +241,7 @@ export const CourseDetailView: React.FC = () => {
             </div>
 
             {isEnrolled ? (
-              <div className="flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-50 text-emerald-700 font-extrabold text-xs border border-emerald-200 shadow-sm shrink-0">
+              <div className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-emerald-50 text-emerald-700 font-extrabold text-xs border border-emerald-200 shadow-sm shrink-0 w-full sm:w-auto">
                 <CheckCircle className="w-4 h-4 text-emerald-600 animate-pulse" />
                 <span>Learning Sandbox Active</span>
               </div>
@@ -249,7 +249,7 @@ export const CourseDetailView: React.FC = () => {
               <button
                 onClick={handleEnroll}
                 style={{ backgroundColor: course.categoryColor }}
-                className="px-8 py-3.5 text-white font-extrabold text-sm rounded-xl shadow-lg hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:translate-y-0 shrink-0 flex items-center justify-center gap-2"
+                className="px-6 sm:px-8 py-3 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-lg hover:opacity-90 transition-all transform hover:-translate-y-0.5 active:translate-y-0 shrink-0 flex items-center justify-center gap-2 w-full sm:w-auto cursor-pointer"
               >
                 <Sparkles className="w-4 h-4 animate-spin-slow" /> Enroll &
                 Start Learning
@@ -258,7 +258,7 @@ export const CourseDetailView: React.FC = () => {
           </div>
         </div>
 
-        <div className="h-64 lg:h-auto lg:col-span-5 relative overflow-hidden bg-gray-900">
+        <div className="h-48 sm:h-64 lg:h-auto lg:col-span-5 relative overflow-hidden bg-gray-900">
           <img
             src={
               course.thumbnailUrl ||
@@ -316,9 +316,9 @@ export const CourseDetailView: React.FC = () => {
                         onClick={() =>
                           mod.id !== undefined && toggleModule(mod.id)
                         }
-                        className="w-full p-6 text-left flex items-center justify-between gap-4 select-none focus:outline-none"
+                        className="w-full p-4 sm:p-6 text-left flex items-center justify-between gap-4 select-none focus:outline-none"
                       >
-                        <div className="flex items-start gap-4">
+                        <div className="flex items-start gap-3 sm:gap-4">
                           <div
                             className={`w-10 h-10 rounded-xl flex flex-col items-center justify-center font-black shrink-0 ${isOpen ? "bg-[#510047] text-white" : "bg-gray-50 text-gray-500"}`}
                           >
@@ -339,7 +339,7 @@ export const CourseDetailView: React.FC = () => {
                           </div>
                         </div>
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${isOpen ? "bg-[#ffd7f0]/40 text-[#510047]" : "bg-gray-50 text-gray-400"}`}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shrink-0 ${isOpen ? "bg-[#ffd7f0]/40 text-[#510047]" : "bg-gray-50 text-gray-400"}`}
                         >
                           {isOpen ? (
                             <ChevronUp className="w-4 h-4" />
@@ -362,7 +362,7 @@ export const CourseDetailView: React.FC = () => {
                               return (
                                 <div
                                   key={sub.id ?? `sub-${subIdx}`}
-                                  className="p-6 hover:bg-white transition-colors duration-150 flex flex-col sm:flex-row sm:items-start justify-between gap-4"
+                                  className="p-4 sm:p-6 hover:bg-white transition-colors duration-150 flex flex-col sm:flex-row sm:items-start justify-between gap-4"
                                 >
                                   <div className="flex items-start gap-3 w-full">
                                     <span className="text-xs font-mono font-black text-[#01AC9F] bg-[#01AC9F]/10 px-2 py-0.5 rounded shrink-0 mt-0.5">
@@ -386,7 +386,7 @@ export const CourseDetailView: React.FC = () => {
                                     </div>
                                   </div>
 
-                                  <div className="shrink-0 flex flex-col items-end gap-2.5">
+                                  <div className="shrink-0 flex flex-col items-start sm:items-end gap-2.5 w-full sm:w-auto pl-8 sm:pl-0">
                                     {isEnrolled ? (
                                       <button
                                         type="button"
@@ -394,23 +394,24 @@ export const CourseDetailView: React.FC = () => {
                                           sub.id !== undefined &&
                                           toggleLessonComplete(sub.id, e)
                                         }
-                                        className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${isLessonDone ? "bg-emerald-500 text-white shadow-sm" : "bg-white border border-gray-200 text-gray-600 hover:border-[#01AC9F] hover:text-[#01AC9F]"}`}
+                                        className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all w-full sm:w-auto justify-center cursor-pointer ${isLessonDone ? "bg-emerald-500 text-white shadow-sm" : "bg-white border border-gray-200 text-gray-600 hover:border-[#01AC9F] hover:text-[#01AC9F]"}`}
                                       >
                                         {isLessonDone ? (
                                           <>
-                                            <CheckCircle className="w-3.5 h-3.5" />
+                                            <CheckCircle className="w-3.5 h-3.5 shrink-0" />
                                             <span>Completed</span>
                                           </>
                                         ) : (
                                           <>
-                                            <Play className="w-3 h-3 text-[#01AC9F]" />
+                                            <Play className="w-3 h-3 text-[#01AC9F] shrink-0" />
                                             <span>Complete Lesson</span>
                                           </>
                                         )}
                                       </button>
                                     ) : (
-                                      <span className="flex items-center gap-1.5 text-[10px] text-gray-400 font-bold bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-lg select-none">
-                                        <Lock className="w-3 h-3" /> Locked
+                                      <span className="flex items-center justify-center gap-1.5 text-[10px] text-gray-400 font-bold bg-gray-50 border border-gray-100 px-3 py-1.5 rounded-lg select-none w-full sm:w-auto">
+                                        <Lock className="w-3 h-3 shrink-0" />{" "}
+                                        Locked
                                       </span>
                                     )}
                                   </div>
