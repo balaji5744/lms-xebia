@@ -41,6 +41,7 @@ interface AppContextProps {
     fullName: string;
     email: string;
     role: "admin" | "student";
+    profilePicture?: string;
   } | null;
   enrolledCourseIds: number[];
   login: (
@@ -52,6 +53,7 @@ interface AppContextProps {
           fullName: string;
           email: string;
           role: "admin" | "student";
+          profilePicture?: string;
         },
   ) => void;
   logout: () => void;
@@ -133,6 +135,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     fullName: string;
     email: string;
     role: "admin" | "student";
+    profilePicture?: string;
   } | null>(() => {
     const saved = localStorage.getItem("educorp_user_profile");
     return saved ? JSON.parse(saved) : null;
@@ -182,6 +185,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
           fullName: string;
           email: string;
           role: "admin" | "student";
+          profilePicture?: string;
         },
   ) => {
     if (typeof userData === "string") {

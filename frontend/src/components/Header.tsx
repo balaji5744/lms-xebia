@@ -135,9 +135,9 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="relative">
           <div
             onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-2 cursor-pointer group select-none py-1.5 px-2.5 hover:bg-gray-50 rounded-xl transition-all"
           >
-            <div className="text-right hidden sm:block">
+            <div className="text-right">
               <p className="text-sm font-semibold text-gray-800 group-hover:text-[#510047] transition-colors">
                 {currentUser
                   ? currentUser.fullName
@@ -155,13 +155,15 @@ export const Header: React.FC<HeaderProps> = ({
                     : "Academy Student"}
               </p>
             </div>
-            <img
-              className="w-10 h-10 rounded-full border-2 border-[#ffd7f0] object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
-              alt="Manager Avatar"
-              referrerPolicy="no-referrer"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMXt9gPPaGFp0lxKBansRbI09u5YpxZY2_afmsA2K8qPyozoAVh0tk8fsA4PiIKt9fsgg8y2Y2D4z-ZB1BYVC_TKec2BiuzxlN7fS6QzvdXAKiCwAysLqxLNqkI4VjJzpJS0V1Ey8aeL1i_nIKlxQBDBKtIFfSSLJqfDyEIrrA1LiR4dbtcH0fTPCugFLFPYFPArUZzMKkPoSceuMDnkE3Om0y8Dd2wcKINBqpDnMvgm28HnQxbd3nlcmjWfq41OmdLRcqUEeZbH0"
-            />
-            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors hidden sm:block" />
+            {currentUser?.profilePicture && (
+              <img
+                className="w-10 h-10 rounded-full border-2 border-[#ffd7f0] object-cover shadow-sm group-hover:scale-105 transition-transform duration-200"
+                alt="User Profile"
+                referrerPolicy="no-referrer"
+                src={currentUser.profilePicture}
+              />
+            )}
+            <ChevronDown className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
           </div>
 
           {/* Profile Contextual Actions Menu */}
