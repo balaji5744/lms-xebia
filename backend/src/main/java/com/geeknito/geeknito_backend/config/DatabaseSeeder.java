@@ -15,6 +15,7 @@ import com.geeknito.geeknito_backend.entity.learning.UserEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * DatabaseSeeder
  * 
- * To disable this seeder after the first run, either:
- * 1. Comment out the @Component annotation below, OR
- * 2. Wrap the run() method execution in a config flag (e.g. environment variable), OR
- * 3. Delete this file if it is no longer required in your staging/production workflow.
+ * Safely seeds the database with initial admin and curriculum data.
+ * Isolated to 'local' and 'dev' profiles; will NEVER run in production.
+ * Operations are fully idempotent and check for pre-existing records first.
  */
 @Component
+@Profile({"local", "dev"})
 @RequiredArgsConstructor
 @Slf4j
 public class DatabaseSeeder implements CommandLineRunner {
@@ -45,76 +46,65 @@ public class DatabaseSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("Starting Enterprise LMS Database Seeding process...");
 
-        // Ensure users table is correctly created and reset
-        log.info("Resetting and recreating users table with correct enterprise schema...");
-        jdbcTemplate.execute("DROP TABLE IF EXISTS users CASCADE;");
-        jdbcTemplate.execute("CREATE TABLE users (" +
-                "id BIGSERIAL PRIMARY KEY, " +
-                "full_name VARCHAR(255), " +
-                "email VARCHAR(255) NOT NULL UNIQUE, " +
-                "password VARCHAR(255) NOT NULL, " +
-                "role VARCHAR(50) NOT NULL, " +
-                "is_active BOOLEAN NOT NULL DEFAULT TRUE, " +
-                "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, " +
-                "updated_at TIMESTAMP" +
-                ");");
+        // Make user seeding idempotent and production-safe
+        if (userRepository.count() == 0) {
+            log.info("No users found in database. Seeding default enterprise role-based users...");
+            UserEntity admin = UserEntity.builder()
+                    .fullName("Alex Rivera")
+                    .email("admin@educorp.com")
+                    .password("adminpass123") // stored in plain/hash for simplicity
+                    .role("admin")
+                    .isActive(true)
+                    .build();
 
-        // 1. Wipe existing data using native PostgreSQL truncate with CASCADE to bypass FK constraints and soft deletes
-        log.info("Wiping existing LMS database tables via native TRUNCATE CASCADE...");
-        jdbcTemplate.execute("TRUNCATE TABLE contents, submodules, modules, courses, categories RESTART IDENTITY CASCADE;");
-        log.info("Existing database tables wiped successfully.");
+            UserEntity student = UserEntity.builder()
+                    .fullName("Emma Watson")
+                    .email("student@educorp.com")
+                    .password("studentpass123")
+                    .role("student")
+                    .isActive(true)
+                    .build();
 
-        // Create Default Users with Roles
-        log.info("Creating default enterprise role-based users...");
-        UserEntity admin = UserEntity.builder()
-                .fullName("Alex Rivera")
-                .email("admin@educorp.com")
-                .password("adminpass123") // stored in plain/hash for simplicity
-                .role("admin")
-                .isActive(true)
-                .build();
+            userRepository.save(admin);
+            userRepository.save(student);
+            log.info("Seeded default users (Admin: admin@educorp.com, Student: student@educorp.com)");
+        } else {
+            log.info("Existing user records detected. Skipping user seeding.");
+        }
 
-        UserEntity student = UserEntity.builder()
-                .fullName("Emma Watson")
-                .email("student@educorp.com")
-                .password("studentpass123")
-                .role("student")
-                .isActive(true)
-                .build();
+        // Make category and content curriculum seeding idempotent
+        if (categoryRepository.count() == 0) {
+            log.info("No curriculum categories found. Seeding premium LMS categories and courses...");
 
-        userRepository.save(admin);
-        userRepository.save(student);
-        log.info("Seeded default users (Admin: admin@educorp.com, Student: student@educorp.com)");
+            // 2. Create Premium Categories
+            log.info("Creating premium LMS curriculum categories...");
+            CategoryEntity cloudCat = CategoryEntity.builder()
+                    .name("Cloud Architecture")
+                    .icon("☁️")
+                    .description("Master public and private cloud design, scalability, and security across AWS, Azure, and GCP.")
+                    .color("#0284C7")
+                    .isActive(true)
+                    .build();
 
-        // 2. Create Premium Categories
-        log.info("Creating premium LMS curriculum categories...");
-        CategoryEntity cloudCat = CategoryEntity.builder()
-                .name("Cloud Architecture")
-                .icon("☁️")
-                .description("Master public and private cloud design, scalability, and security across AWS, Azure, and GCP.")
-                .color("#0284C7")
-                .isActive(true)
-                .build();
+            CategoryEntity cyberCat = CategoryEntity.builder()
+                    .name("Cybersecurity")
+                    .icon("🛡️")
+                    .description("Learn modern threat intelligence, zero-trust network engineering, incident response, and compliance.")
+                    .color("#DC2626")
+                    .isActive(true)
+                    .build();
 
-        CategoryEntity cyberCat = CategoryEntity.builder()
-                .name("Cybersecurity")
-                .icon("🛡️")
-                .description("Learn modern threat intelligence, zero-trust network engineering, incident response, and compliance.")
-                .color("#DC2626")
-                .isActive(true)
-                .build();
+            CategoryEntity devCat = CategoryEntity.builder()
+                    .name("Software Engineering")
+                    .icon("💻")
+                    .description("Build highly scalable backend services, event-driven architectures, and modern web systems.")
+                    .color("#059669")
+                    .isActive(true)
+                    .build();
 
-        CategoryEntity devCat = CategoryEntity.builder()
-                .name("Software Engineering")
-                .icon("💻")
-                .description("Build highly scalable backend services, event-driven architectures, and modern web systems.")
-                .color("#059669")
-                .isActive(true)
-                .build();
-
-        cloudCat = categoryRepository.save(cloudCat);
-        cyberCat = categoryRepository.save(cyberCat);
-        devCat = categoryRepository.save(devCat);
+            cloudCat = categoryRepository.save(cloudCat);
+            cyberCat = categoryRepository.save(cyberCat);
+            devCat = categoryRepository.save(devCat);
 
         // 3. Create Premium Courses per Category
         log.info("Seeding premium enterprise courses...");
@@ -311,7 +301,9 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .build();
 
         submoduleRepository.save(sub2_2);
-
-        log.info("LMS database seeding completed successfully!");
+            log.info("LMS database seeding completed successfully!");
+        } else {
+            log.info("Existing curriculum data detected. Skipping curriculum seeding.");
+        }
     }
 }
