@@ -9,6 +9,9 @@ import com.geeknito.geeknito_backend.entity.learning.CourseEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,10 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories-admin", key = "'all'")
+    })
     public CategoryResponseDTO create(CategoryRequestDTO requestDTO) {
         log.info("Admin Service: Creating new category with name: {}", requestDTO.getName());
         
@@ -44,6 +51,7 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "categories-admin", key = "#id")
     public CategoryResponseDTO getById(Long id) {
         log.info("Admin Service: Fetching category details for ID: {}", id);
         
@@ -58,6 +66,7 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "categories-admin", key = "'all'")
     public List<CategoryResponseDTO> getAll() {
         log.info("Admin Service: Fetching all categories for admin dashboard");
         
@@ -74,6 +83,12 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id"),
+        @CacheEvict(value = "categories-admin", key = "'all'"),
+        @CacheEvict(value = "categories-admin", key = "#id")
+    })
     public CategoryResponseDTO update(Long id, CategoryRequestDTO requestDTO) {
         log.info("Admin Service: Updating category ID: {}", id);
         
@@ -98,6 +113,12 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id"),
+        @CacheEvict(value = "categories-admin", key = "'all'"),
+        @CacheEvict(value = "categories-admin", key = "#id")
+    })
     public void softDelete(Long id) {
         log.info("Admin Service: Hard deleting category ID: {}", id);
         

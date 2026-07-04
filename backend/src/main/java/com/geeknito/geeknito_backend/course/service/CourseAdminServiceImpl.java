@@ -9,6 +9,9 @@ import com.geeknito.geeknito_backend.entity.learning.CourseEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,12 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "course-catalog", allEntries = true),
+        @CacheEvict(value = "course-details", allEntries = true),
+        @CacheEvict(value = "categories", allEntries = true),
+        @CacheEvict(value = "categories-admin", allEntries = true)
+    })
     public CourseResponseDTO create(CourseRequestDTO requestDTO) {
 
         log.info("Creating course: {}", requestDTO.getTitle());
@@ -57,6 +66,12 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "course-catalog", allEntries = true),
+        @CacheEvict(value = "course-details", allEntries = true),
+        @CacheEvict(value = "categories", allEntries = true),
+        @CacheEvict(value = "categories-admin", allEntries = true)
+    })
     public CourseResponseDTO update(Long id, CourseRequestDTO requestDTO) {
 
         log.info("Updating course with ID: {}", id);
@@ -90,6 +105,12 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "course-catalog", allEntries = true),
+        @CacheEvict(value = "course-details", allEntries = true),
+        @CacheEvict(value = "categories", allEntries = true),
+        @CacheEvict(value = "categories-admin", allEntries = true)
+    })
     public void softDelete(Long id) {
 
         log.info("Soft deleting course with ID: {}", id);
@@ -106,6 +127,12 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "course-catalog", allEntries = true),
+        @CacheEvict(value = "course-details", allEntries = true),
+        @CacheEvict(value = "categories", allEntries = true),
+        @CacheEvict(value = "categories-admin", allEntries = true)
+    })
     public void hardDelete(Long id) {
 
         log.warn("Hard deleting course with ID: {}", id);
@@ -121,6 +148,7 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "course-details", key = "'id-' + #id")
     public CourseResponseDTO getById(Long id) {
 
         log.debug("Fetching course with ID: {}", id);
@@ -134,6 +162,7 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "course-catalog", key = "'admin-all'")
     public List<CourseResponseDTO> getAll() {
 
         log.debug("Fetching all courses");

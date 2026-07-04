@@ -8,12 +8,16 @@ import com.geeknito.geeknito_backend.entity.learning.ContentEntity;
 import com.geeknito.geeknito_backend.entity.learning.SubmoduleEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ContentAdminServiceImpl implements ContentAdminService {
@@ -23,7 +27,9 @@ public class ContentAdminServiceImpl implements ContentAdminService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "submodule-contents", key = "#submoduleId")
     public ContentResponseDTO createContent(Long submoduleId, ContentRequestDTO dto) {
+        log.info("Creating content block for Submodule ID: {}", submoduleId);
         SubmoduleEntity submodule = submoduleRepository.findById(submoduleId)
                 .orElseThrow(() -> new EntityNotFoundException("Submodule not found with ID: " + submoduleId));
 
@@ -51,7 +57,9 @@ public class ContentAdminServiceImpl implements ContentAdminService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "submodule-contents", allEntries = true)
     public ContentResponseDTO updateContent(Long contentId, ContentRequestDTO dto) {
+        log.info("Updating content block with ID: {}", contentId);
         ContentEntity content = contentRepository.findById(contentId)
                 .orElseThrow(() -> new EntityNotFoundException("Content not found with ID: " + contentId));
 
@@ -75,7 +83,9 @@ public class ContentAdminServiceImpl implements ContentAdminService {
 
     @Override
     @Transactional
+    @CacheEvict(value = "submodule-contents", allEntries = true)
     public void deleteContent(Long contentId) {
+        log.info("Soft deleting content block with ID: {}", contentId);
         ContentEntity content = contentRepository.findById(contentId)
                 .orElseThrow(() -> new EntityNotFoundException("Content not found with ID: " + contentId));
 
@@ -85,7 +95,9 @@ public class ContentAdminServiceImpl implements ContentAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "submodule-contents", key = "#submoduleId")
     public List<ContentResponseDTO> getContentBySubmodule(Long submoduleId) {
+        log.info("Fetching content blocks for Submodule ID: {}", submoduleId);
         if (!submoduleRepository.existsById(submoduleId)) {
             throw new EntityNotFoundException("Submodule not found with ID: " + submoduleId);
         }

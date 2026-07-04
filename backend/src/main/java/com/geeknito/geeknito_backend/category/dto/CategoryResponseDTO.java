@@ -6,13 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoryResponseDTO {
+public class CategoryResponseDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String name;

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "categories", key = "#id")
     public CategoryResponseDTO getCategoryById(Long id) {
         log.info("Fetching category details with ID: {}", id);
         Object[] result = categoryRepository.findByIdWithCourseCount(id)
@@ -73,7 +75,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "categories", key = "'active'")
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id")
+    })
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO requestDTO) {
         log.info("Updating existing category node with ID: {}", id);
         CategoryEntity entity = categoryRepository.findById(id)
@@ -93,7 +98,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "categories", key = "'active'")
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id")
+    })
     public void deleteCategory(Long id) {
         log.info("Performing enterprise-level soft-delete of category with ID: {}", id);
         CategoryEntity entity = categoryRepository.findById(id)
