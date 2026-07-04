@@ -11,6 +11,7 @@ import {
   Shield,
   Key,
   LogOut,
+  Menu,
 } from "lucide-react";
 
 interface HeaderProps {
@@ -24,7 +25,15 @@ export const Header: React.FC<HeaderProps> = ({
   searchValue = "",
   placeholderText = "Search courses, categories, or students...",
 }) => {
-  const { userRole, currentUser, logout } = useApp();
+  const {
+    userRole,
+    currentUser,
+    logout,
+    sidebarCollapsed,
+    setSidebarCollapsed,
+    mobileSidebarOpen,
+    setMobileSidebarOpen,
+  } = useApp();
   const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -55,10 +64,27 @@ export const Header: React.FC<HeaderProps> = ({
     setShowProfileMenu(false);
   };
 
+  const handleToggleSidebar = () => {
+    if (window.innerWidth < 768) {
+      setMobileSidebarOpen(!mobileSidebarOpen);
+    } else {
+      setSidebarCollapsed(!sidebarCollapsed);
+    }
+  };
+
   return (
-    <header className="h-16 flex items-center justify-between px-8 bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
-      {/* Search Input */}
-      <div className="flex items-center gap-4 flex-1">
+    <header className="h-16 flex items-center justify-between px-4 sm:px-8 bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm transition-all duration-300">
+      {/* Sidebar Toggle & Search Input */}
+      <div className="flex items-center gap-3 sm:gap-4 flex-1">
+        <button
+          onClick={handleToggleSidebar}
+          aria-label="Toggle Sidebar"
+          className="p-2 -ml-2 text-gray-500 hover:text-[#510047] hover:bg-gray-100 rounded-lg transition-colors cursor-pointer focus:outline-none flex items-center justify-center"
+          title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <Menu className="w-5 h-5 transition-transform duration-200 active:scale-95" />
+        </button>
+
         <div className="relative w-full max-w-md">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 w-4.5 h-4.5" />
           <input

@@ -34,6 +34,12 @@ interface AppContextProps {
   showSmartTagsToast: boolean;
   setShowSmartTagsToast: (show: boolean) => void;
 
+  // SIDEBAR COLLAPSIBLE & MOBILE DRAWER STATE
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: (collapsed: boolean) => void;
+  mobileSidebarOpen: boolean;
+  setMobileSidebarOpen: (open: boolean) => void;
+
   // USER AUTH & ENROLLMENT ROLE-BASED ACCESS
   userRole: "admin" | "student" | null;
   currentUser: {
@@ -128,6 +134,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const [showSmartTagsToast, setShowSmartTagsToast] = useState<boolean>(false);
+
+  // Sidebar collapsible & mobile overlay states
+  const [sidebarCollapsed, setSidebarCollapsedState] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("educorp_sidebar_collapsed");
+      return saved === "true";
+    }
+    return false;
+  });
+
+  const setSidebarCollapsed = (collapsed: boolean) => {
+    setSidebarCollapsedState(collapsed);
+    localStorage.setItem("educorp_sidebar_collapsed", String(collapsed));
+  };
+
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false);
 
   // Auth & Enrollment States
   const [currentUser, setCurrentUser] = useState<{
@@ -406,6 +428,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         setWizardCourseId,
         showSmartTagsToast,
         setShowSmartTagsToast,
+        sidebarCollapsed,
+        setSidebarCollapsed,
+        mobileSidebarOpen,
+        setMobileSidebarOpen,
         userRole,
         currentUser,
         enrolledCourseIds,
