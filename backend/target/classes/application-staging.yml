@@ -33,7 +33,7 @@ spring:
   # Redis Configuration for staging caching
   data:
     redis:
-      url: ${SPRING_REDIS_URL}
+      url: ${SPRING_REDIS_URL:${REDIS_URL}}
       timeout: 3000
 
 # Logging Configurations for staging (structured, high-performance)

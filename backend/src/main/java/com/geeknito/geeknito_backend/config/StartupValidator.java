@@ -3,6 +3,7 @@ package com.geeknito.geeknito_backend.config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.cache.CacheManager;
 import org.springframework.core.annotation.Order;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -24,6 +25,7 @@ public class StartupValidator implements CommandLineRunner {
 
     private final JdbcTemplate jdbcTemplate;
     private final RedisConnectionFactory redisConnectionFactory;
+    private final CacheManager cacheManager;
 
     @Override
     public void run(String... args) {
@@ -47,6 +49,14 @@ public class StartupValidator implements CommandLineRunner {
             log.warn("⚠️  Cache Tier Connection: Redis is OFFLINE!");
             log.warn("🔄 Resilient Fallback Mode: Enterprise LMS is falling back to database-direct queries.");
             log.warn("🚀 Server is continuing to run securely without Redis-backed cache layers.");
+        }
+
+        // Print active CacheManager and cache configurations
+        if (cacheManager != null) {
+            log.info("🏷️  Active CacheManager: {}", cacheManager.getClass().getName());
+            log.info("📦 Pre-configured Cache names: {}", cacheManager.getCacheNames());
+        } else {
+            log.warn("⚠️  No CacheManager bean found in context!");
         }
 
         log.info("====================================================================");

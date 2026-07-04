@@ -33,7 +33,7 @@ spring:
   # Redis Configuration for local session and query caching
   data:
     redis:
-      url: ${SPRING_REDIS_URL:redis://localhost:6379}
+      url: ${SPRING_REDIS_URL:${REDIS_URL:redis://localhost:6379}}
       timeout: 2000
 
 # Logging Configurations for local development
