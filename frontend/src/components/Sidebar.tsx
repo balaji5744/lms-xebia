@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, useNavigate, Link, useLocation } from "react-router-dom";
 import { useApp } from "../context/AppContext";
 import {
@@ -11,12 +11,13 @@ import {
   Shield,
   User,
 } from "lucide-react";
-import logoWhite from "../assets/Logo-White.png";
+import { BRAND_CONFIG } from "../lib/brandConfig";
 
 export const Sidebar: React.FC = () => {
   const { userRole, currentUser, logout } = useApp();
   const navigate = useNavigate();
   const location = useLocation();
+  const [logoError, setLogoError] = useState(false);
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to log out?")) {
@@ -34,13 +35,21 @@ export const Sidebar: React.FC = () => {
       {/* Brand Header */}
       <div className="px-6 mb-8 flex items-center">
         <Link to="/courses" className="flex items-center gap-3">
-          <img
-            src={logoWhite}
-            alt="Brand Logo"
-            className="h-10 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer"
-          />
+          {logoError ? (
+            <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center font-black text-xl text-[#76f7e8] border border-white/20 shadow-inner select-none">
+              X
+            </div>
+          ) : (
+            <img
+              src={BRAND_CONFIG.logoWhite}
+              alt={`${BRAND_CONFIG.name} Logo`}
+              onError={() => setLogoError(true)}
+              referrerPolicy="no-referrer"
+              className="h-10 w-auto max-w-[120px] object-contain transition-transform duration-300 hover:scale-105 cursor-pointer"
+            />
+          )}
           <span className="text-lg font-extrabold tracking-tight text-white select-none">
-            Xebia LMS
+            {BRAND_CONFIG.name}
           </span>
         </Link>
       </div>
