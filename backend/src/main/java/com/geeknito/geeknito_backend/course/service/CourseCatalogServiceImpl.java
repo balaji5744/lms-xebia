@@ -44,4 +44,33 @@ public class CourseCatalogServiceImpl implements CourseCatalogService {
                 .map(courseMapper::toCatalogDetailDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with slug: " + slug));
     }
+
+    @Override
+    @Cacheable(value = "course-catalog", key = "'public-active'")
+    public java.util.List<com.geeknito.geeknito_backend.course.dto.CourseResponseDTO> getActiveCourses() {
+        log.info("Fetching public active course catalog");
+        return courseRepository.findByIsActiveTrue().stream()
+                .map(course -> {
+                    Long categoryId = course.getCategory() != null ? course.getCategory().getId() : null;
+                    String categoryName = course.getCategory() != null ? course.getCategory().getName() : null;
+
+                    return com.geeknito.geeknito_backend.course.dto.CourseResponseDTO.builder()
+                            .id(course.getId())
+                            .title(course.getTitle())
+                            .slug(course.getSlug())
+                            .shortDescription(course.getShortDescription())
+                            .description(course.getDescription())
+                            .level(course.getLevel())
+                            .duration(course.getDuration())
+                            .thumbnailUrl(course.getThumbnail())
+                            .categoryId(categoryId)
+                            .categoryName(categoryName)
+                            .isActive(course.isActive())
+                            .isPublished(course.isActive())
+                            .createdAt(course.getCreatedAt())
+                            .updatedAt(course.getUpdatedAt())
+                            .build();
+                })
+                .collect(java.util.stream.Collectors.toList());
+    }
 }

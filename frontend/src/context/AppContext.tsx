@@ -92,37 +92,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     return saved ? JSON.parse(saved) : initialCourses;
   });
 
-  const fetchCategoriesAndCourses = async () => {
-    try {
-      const [cats, crs] = await Promise.all([
-        categoryService.getAll(),
-        courseService.getAll(),
-      ]);
-      const mappedCats = cats.map((cat) => {
-        const isAct =
-          cat.isActive !== undefined
-            ? cat.isActive
-            : (cat as any).active !== undefined
-              ? (cat as any).active
-              : cat.status === "Active";
-        return {
-          ...cat,
-          isActive: isAct,
-          active: isAct,
-          status: (isAct ? "Active" : "Inactive") as "Active" | "Inactive",
-        } as Category;
-      });
-      setCategories(mappedCats);
-      setCourses(crs);
-    } catch (error) {
-      console.error("[AppContext] Failed to load data from backend:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategoriesAndCourses();
-  }, []);
-
   const [wizardCourseId, setWizardCourseId] = useState<number | null>(() => {
     const saved = localStorage.getItem("educorp_wizard_id");
     return saved ? parseInt(saved, 10) : null;
@@ -172,6 +141,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     const saved = localStorage.getItem("educorp_enrolled_courses");
     return saved ? JSON.parse(saved) : [];
   });
+
+  const fetchCategoriesAndCourses = async () => {
+    try {
+      const [cats, crs] = await Promise.all([
+        categoryService.getAll(),
+        courseService.getAll(userRole),
+      ]);
+      const mappedCats = cats.map((cat) => {
+        const isAct =
+          cat.isActive !== undefined
+            ? cat.isActive
+            : (cat as any).active !== undefined
+              ? (cat as any).active
+              : cat.status === "Active";
+        return {
+          ...cat,
+          isActive: isAct,
+          active: isAct,
+          status: (isAct ? "Active" : "Inactive") as "Active" | "Inactive",
+        } as Category;
+      });
+      setCategories(mappedCats);
+      setCourses(crs);
+    } catch (error) {
+      console.error("[AppContext] Failed to load data from backend:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategoriesAndCourses();
+  }, [userRole]);
 
   useEffect(() => {
     if (currentUser) {

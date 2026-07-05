@@ -16,6 +16,8 @@ public interface CourseRepository extends JpaRepository<CourseEntity, Long> {
 
     Page<CourseEntity> findByIsActiveTrue(Pageable pageable);
 
+    List<CourseEntity> findByIsActiveTrue();
+
     @Query("SELECT c FROM CourseEntity c " +
            "LEFT JOIN FETCH c.modules m " +
            "LEFT JOIN FETCH m.submodules s " +

@@ -7,12 +7,13 @@ import { Course } from "../types";
  */
 export const courseService = {
   /**
-   * Fetch all admin courses
-   * GET /admin/courses
-   * @returns {Promise<Course[]>} List of all Courses
+   * Fetch courses (all admin courses for admins, public active courses for students/guests)
+   * @param {string} [role] - User role ("admin" or "student")
+   * @returns {Promise<Course[]>} List of Courses
    */
-  async getAll(): Promise<Course[]> {
-    const response = await apiClient.get<Course[]>("/admin/courses");
+  async getAll(role?: string | null): Promise<Course[]> {
+    const endpoint = role === "admin" ? "/admin/courses" : "/courses/active";
+    const response = await apiClient.get<Course[]>(endpoint);
     return response.data;
   },
 

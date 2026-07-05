@@ -53,7 +53,7 @@ export const CourseCatalogView: React.FC = () => {
     try {
       setIsLoading(true);
       const [crs, cats] = await Promise.all([
-        courseService.getAll(),
+        courseService.getAll(userRole),
         categoryService.getAll(),
       ]);
       setLocalCourses(crs || []);
@@ -67,7 +67,7 @@ export const CourseCatalogView: React.FC = () => {
 
   useEffect(() => {
     fetchCatalogData();
-  }, []);
+  }, [userRole]);
 
   // Map the courses so that each course has access to its parent category's color and icon
   const mappedCourses = useMemo(() => {

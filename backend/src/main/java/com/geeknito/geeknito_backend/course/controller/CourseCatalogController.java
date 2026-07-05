@@ -38,4 +38,10 @@ public class CourseCatalogController {
         CourseCatalogDetailDTO courseDetail = courseCatalogService.getCourseDetailBySlug(slug);
         return ResponseEntity.ok(courseDetail);
     }
+
+    @GetMapping("/active")
+    public ResponseEntity<java.util.List<com.geeknito.geeknito_backend.course.dto.CourseResponseDTO>> getActiveCourses() {
+        java.util.List<com.geeknito.geeknito_backend.course.dto.CourseResponseDTO> activeCourses = courseCatalogService.getActiveCourses();
+        return ResponseEntity.ok(activeCourses);
+    }
 }
