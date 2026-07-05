@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Data
 @NoArgsConstructor
@@ -23,4 +24,12 @@ public class CourseRequestDTO implements Serializable {
     private String duration;
     private String thumbnailUrl;
     private Long categoryId;
+
+    @JsonProperty("isActive")
+    private Boolean isActive;
+
+    @JsonProperty("isPublished")
+    private Boolean isPublished;
+
+    private String status;
 }

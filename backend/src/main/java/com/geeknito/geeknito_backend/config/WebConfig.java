@@ -1,8 +1,10 @@
 package com.geeknito.geeknito_backend.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -10,6 +12,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${cors.allowed-origins:http://localhost:5173,http://localhost:3000}")
     private String[] allowedOrigins;
+
+//    @Autowired
+//    private SecurityInterceptor securityInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        // Commented out since Spring Security now handles JWT authentication and authorization
+        // registry.addInterceptor(securityInterceptor);
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

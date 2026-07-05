@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,7 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final ContentRepository contentRepository;
     private final UserRepository userRepository;
     private final JdbcTemplate jdbcTemplate;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -52,7 +54,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             UserEntity admin = UserEntity.builder()
                     .fullName("Alex Rivera")
                     .email("admin@educorp.com")
-                    .password("adminpass123") // stored in plain/hash for simplicity
+                    .password(passwordEncoder.encode("adminpass123")) // BCrypt-encoded
                     .role("admin")
                     .isActive(true)
                     .build();
@@ -60,7 +62,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             UserEntity student = UserEntity.builder()
                     .fullName("Emma Watson")
                     .email("student@educorp.com")
-                    .password("studentpass123")
+                    .password(passwordEncoder.encode("studentpass123")) // BCrypt-encoded
                     .role("student")
                     .isActive(true)
                     .build();

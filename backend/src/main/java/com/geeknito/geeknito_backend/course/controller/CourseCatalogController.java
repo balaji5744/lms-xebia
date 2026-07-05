@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/catalog/courses")
+@RequestMapping({"/catalog/courses", "/courses"})
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class CourseCatalogController {

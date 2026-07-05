@@ -26,6 +26,36 @@ public class CourseAdminServiceImpl implements CourseAdminService {
     private final CourseRepository courseRepository;
     private final CategoryRepository categoryRepository;
 
+    private boolean isPublishedRequest(CourseRequestDTO dto) {
+        if (dto.getStatus() != null) {
+            return "Active".equalsIgnoreCase(dto.getStatus()) || "Published".equalsIgnoreCase(dto.getStatus());
+        }
+        if (dto.getIsPublished() != null) {
+            return dto.getIsPublished();
+        }
+        if (dto.getIsActive() != null) {
+            return dto.getIsActive();
+        }
+        return true; // default to published if not specified
+    }
+
+    private void validateCourseBusinessRules(CourseRequestDTO requestDTO) {
+        if (isPublishedRequest(requestDTO)) {
+            if (requestDTO.getTitle() == null || requestDTO.getTitle().trim().isEmpty()) {
+                throw new IllegalArgumentException("Course title is required for published courses.");
+            }
+            if (requestDTO.getDescription() == null || requestDTO.getDescription().trim().isEmpty()) {
+                throw new IllegalArgumentException("Course description is required for published courses.");
+            }
+            if (requestDTO.getThumbnailUrl() == null || requestDTO.getThumbnailUrl().trim().isEmpty()) {
+                throw new IllegalArgumentException("Course thumbnail is required for published courses.");
+            }
+            if (requestDTO.getCategoryId() == null) {
+                throw new IllegalArgumentException("Course category is required for published courses.");
+            }
+        }
+    }
+
     @Override
     @Transactional
     @Caching(evict = {
@@ -38,6 +68,9 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
         log.info("Creating course: {}", requestDTO.getTitle());
 
+        // Validate business rules first (before database or repository operations)
+        validateCourseBusinessRules(requestDTO);
+
         CategoryEntity category = null;
         if (requestDTO.getCategoryId() != null) {
             category = categoryRepository.findById(requestDTO.getCategoryId())
@@ -45,16 +78,45 @@ public class CourseAdminServiceImpl implements CourseAdminService {
                             "Category not found with ID: " + requestDTO.getCategoryId()));
         }
 
+        // Apply fallback defaulting for missing fields on Drafts
+        String title = requestDTO.getTitle();
+        if (title == null || title.trim().isEmpty()) {
+            title = "Untitled Course";
+        } else {
+            title = title.trim();
+        }
+
+        String slug = requestDTO.getSlug();
+        if (slug == null || slug.trim().isEmpty()) {
+            slug = title.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
+            if (slug.isEmpty()) {
+                slug = "untitled-course";
+            }
+            slug += "-" + java.util.UUID.randomUUID().toString().substring(0, 8);
+        } else {
+            slug = slug.trim().toLowerCase();
+        }
+
+        String level = requestDTO.getLevel();
+        if (level == null || level.trim().isEmpty()) {
+            level = "Beginner";
+        } else {
+            level = level.trim();
+        }
+
+        boolean isPub = isPublishedRequest(requestDTO);
+        boolean activeValue = requestDTO.getIsActive() != null ? requestDTO.getIsActive() : isPub;
+
         CourseEntity entity = CourseEntity.builder()
-                .title(requestDTO.getTitle())
-                .slug(requestDTO.getSlug())
+                .title(title)
+                .slug(slug)
                 .thumbnail(requestDTO.getThumbnailUrl())
                 .shortDescription(requestDTO.getShortDescription())
                 .description(requestDTO.getDescription())
-                .level(requestDTO.getLevel())
+                .level(level)
                 .duration(requestDTO.getDuration())
                 .category(category)
-                .isActive(true)
+                .isActive(activeValue)
                 .build();
 
         CourseEntity saved = courseRepository.save(entity);
@@ -76,6 +138,9 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 
         log.info("Updating course with ID: {}", id);
 
+        // Validate business rules first (before database or repository operations)
+        validateCourseBusinessRules(requestDTO);
+
         CourseEntity entity = courseRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Course not found with ID: " + id));
@@ -87,14 +152,44 @@ public class CourseAdminServiceImpl implements CourseAdminService {
                             "Category not found with ID: " + requestDTO.getCategoryId()));
         }
 
-        entity.setTitle(requestDTO.getTitle());
-        entity.setSlug(requestDTO.getSlug());
+        // Apply fallback defaulting for missing fields on Drafts
+        String title = requestDTO.getTitle();
+        if (title == null || title.trim().isEmpty()) {
+            title = "Untitled Course";
+        } else {
+            title = title.trim();
+        }
+
+        String slug = requestDTO.getSlug();
+        if (slug == null || slug.trim().isEmpty()) {
+            slug = title.toLowerCase().replaceAll("[^a-z0-9]+", "-").replaceAll("^-|-$", "");
+            if (slug.isEmpty()) {
+                slug = "untitled-course";
+            }
+            slug += "-" + java.util.UUID.randomUUID().toString().substring(0, 8);
+        } else {
+            slug = slug.trim().toLowerCase();
+        }
+
+        String level = requestDTO.getLevel();
+        if (level == null || level.trim().isEmpty()) {
+            level = "Beginner";
+        } else {
+            level = level.trim();
+        }
+
+        boolean isPub = isPublishedRequest(requestDTO);
+        boolean activeValue = requestDTO.getIsActive() != null ? requestDTO.getIsActive() : isPub;
+
+        entity.setTitle(title);
+        entity.setSlug(slug);
         entity.setThumbnail(requestDTO.getThumbnailUrl());
         entity.setShortDescription(requestDTO.getShortDescription());
         entity.setDescription(requestDTO.getDescription());
-        entity.setLevel(requestDTO.getLevel());
+        entity.setLevel(level);
         entity.setDuration(requestDTO.getDuration());
         entity.setCategory(category);
+        entity.setActive(activeValue);
 
         CourseEntity updated = courseRepository.save(entity);
 

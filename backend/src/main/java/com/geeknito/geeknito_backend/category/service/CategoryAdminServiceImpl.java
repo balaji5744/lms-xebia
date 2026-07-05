@@ -2,6 +2,7 @@ package com.geeknito.geeknito_backend.category.service;
 
 import com.geeknito.geeknito_backend.category.dto.CategoryRequestDTO;
 import com.geeknito.geeknito_backend.category.dto.CategoryResponseDTO;
+import com.geeknito.geeknito_backend.category.dto.CategoryWithCourseCount;
 import com.geeknito.geeknito_backend.category.repository.CategoryRepository;
 import com.geeknito.geeknito_backend.course.repository.CourseRepository;
 import com.geeknito.geeknito_backend.entity.learning.CategoryEntity;
@@ -55,10 +56,10 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
     public CategoryResponseDTO getById(Long id) {
         log.info("Admin Service: Fetching category details for ID: {}", id);
         
-        Object[] result = categoryRepository.findByIdWithCourseCount(id)
+        CategoryWithCourseCount result = categoryRepository.findByIdWithCourseCount(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + id));
-        CategoryEntity entity = (CategoryEntity) result[0];
-        Long count = (Long) result[1];
+        CategoryEntity entity = result.getCategory();
+        Long count = result.getCourseCount();
         CategoryResponseDTO dto = mapToResponse(entity);
         dto.setCourseCount(count != null ? count : 0L);
         return dto;
@@ -72,8 +73,8 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
         
         return categoryRepository.findAllWithCourseCount().stream()
                 .map(result -> {
-                    CategoryEntity entity = (CategoryEntity) result[0];
-                    Long count = (Long) result[1];
+                    CategoryEntity entity = result.getCategory();
+                    Long count = result.getCourseCount();
                     CategoryResponseDTO dto = mapToResponse(entity);
                     dto.setCourseCount(count != null ? count : 0L);
                     return dto;

@@ -1,5 +1,6 @@
 package com.geeknito.geeknito_backend.user.controller;
 
+import com.geeknito.geeknito_backend.config.JwtService;
 import com.geeknito.geeknito_backend.entity.learning.UserEntity;
 import com.geeknito.geeknito_backend.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
@@ -39,7 +43,16 @@ public class AuthController {
         }
 
         UserEntity user = userOpt.get();
-        if (!user.getPassword().equals(request.getPassword())) {
+        boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
+        if (!matches && user.getPassword().equals(request.getPassword())) {
+            // legacy plain text match - migrate to BCrypt on-the-fly!
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            userRepository.save(user);
+            log.info("Auth: Migrated legacy plain-text password to BCrypt for user: {}", user.getEmail());
+            matches = true;
+        }
+
+        if (!matches) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(new AuthErrorResponse("Invalid email or password. Please try again."));
         }
@@ -54,7 +67,7 @@ public class AuthController {
                 .fullName(user.getFullName())
                 .email(user.getEmail())
                 .role(user.getRole())
-                .token("educorp-jwt-token-stub-" + user.getId())
+                .token(jwtService.generateToken(user.getId(), user.getEmail(), user.getRole()))
                 .build();
 
         log.info("Auth: User {} logged in successfully with role: {}", user.getEmail(), user.getRole());
@@ -92,7 +105,7 @@ public class AuthController {
         UserEntity newUser = UserEntity.builder()
                 .fullName(request.getFullName() != null ? request.getFullName().trim() : "Academy Learner")
                 .email(normalizedEmail)
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .role(resolvedRole)
                 .isActive(true)
                 .build();
@@ -104,7 +117,7 @@ public class AuthController {
                 .fullName(savedUser.getFullName())
                 .email(savedUser.getEmail())
                 .role(savedUser.getRole())
-                .token("educorp-jwt-token-stub-" + savedUser.getId())
+                .token(jwtService.generateToken(savedUser.getId(), savedUser.getEmail(), savedUser.getRole()))
                 .build();
 
         log.info("Auth: New user registered successfully: {} with role: {}", savedUser.getEmail(), savedUser.getRole());
