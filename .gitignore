@@ -156,3 +156,7 @@ docs/build/
 # VS Code Workspace
 ##############################################
 *.code-workspace
+
+target/
+
+**/target/
