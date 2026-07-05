@@ -89,7 +89,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [courses, setCourses] = useState<Course[]>(() => {
     const saved = localStorage.getItem("educorp_courses");
-    return saved ? JSON.parse(saved) : initialCourses;
+    if (saved) {
+      try {
+        const parsed: Course[] = JSON.parse(saved);
+        let modified = false;
+        const repaired = parsed.map((c) => {
+          const defaultCourse = initialCourses.find((ic) => ic.id === c.id);
+          if (
+            defaultCourse &&
+            (!c.modules || c.modules.length === 0) &&
+            defaultCourse.modules &&
+            defaultCourse.modules.length > 0
+          ) {
+            modified = true;
+            return {
+              ...c,
+              modules: defaultCourse.modules,
+            };
+          }
+          return c;
+        });
+        if (modified) {
+          localStorage.setItem("educorp_courses", JSON.stringify(repaired));
+          return repaired;
+        }
+        return parsed;
+      } catch (e) {
+        // fallback
+      }
+    }
+    localStorage.setItem("educorp_courses", JSON.stringify(initialCourses));
+    return initialCourses;
   });
 
   const [wizardCourseId, setWizardCourseId] = useState<number | null>(() => {

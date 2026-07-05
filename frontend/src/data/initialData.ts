@@ -218,8 +218,59 @@ def scan_ports(target):
     difficulty: "Intermediate",
     language: "English",
     thumbnailUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuC55bLS_GahWloPZgLsV3tdelaGb2PmodaAg5puhOMExFsJVhYOv7A5jTUr9PGrome4XVfTjfDig5JRyW4DW7bro7-PZfkqgjLR-IHur634D179AXapLwWdoaqm7tYuuFNxSm2JoE27LxcqfBwhcGlVV3pmFxVU1MOS5BZvShiofHVhdbzxtNP4oaaSWoKxd_oPBs7vlWefM-n9hm2T1aACs4PfifaIa8PZKXz2JRAWo8yHWLFtLcfDnJJYQ5QWoSzeLLzKsCXRGYE",
-    modules: [],
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&auto=format&fit=crop&q=60",
+    modules: [
+      {
+        id: 201,
+        title: "Module 1: Foundational Leadership Styles",
+        isCollapsed: false,
+        submodules: [
+          {
+            id: 2001,
+            title: "1.1 Servant Leadership Principles",
+            slug: "servant-leadership-principles",
+            description:
+              "Understand how prioritizing team success and growth drives overall performance.",
+            contentBlocks: [
+              {
+                id: 20001,
+                type: "heading",
+                value: "The Core of Servant Leadership",
+              },
+              {
+                id: 20002,
+                type: "text",
+                value:
+                  "Servant leadership is a leadership philosophy in which the main goal of the leader is to serve. This differs from traditional leadership where the leader's main focus is the thriving of their company or organization.",
+              },
+            ],
+          },
+          {
+            id: 2002,
+            title: "1.2 Situational and Adaptive Leadership",
+            slug: "situational-adaptive-leadership",
+            description:
+              "Learn to adjust your management style dynamically based on team readiness.",
+            contentBlocks: [],
+          },
+        ],
+      },
+      {
+        id: 202,
+        title: "Module 2: High-Performance Team Dynamics",
+        isCollapsed: true,
+        submodules: [
+          {
+            id: 2003,
+            title: "2.1 Building Psychological Safety",
+            slug: "building-psychological-safety",
+            description:
+              "Create a safe space for communication, innovation, and risk-taking.",
+            contentBlocks: [],
+          },
+        ],
+      },
+    ],
     seo: {
       indexInSearch: true,
       metaTitle: "Leadership Principles Training | EduCorp LMS",
@@ -248,8 +299,36 @@ def scan_ports(target):
     difficulty: "Advanced",
     language: "English, French",
     thumbnailUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCgovRZ3nxsBv-vmYZOfg3255xRZ2XX0Uv4C7MZqz-rH3faa35mnUp2_S61c405DxIo0SCPH1LR_MmFOSoTMnxRp85U0pqLddPah3C7DsYLraKWC8shX0M7lW2uT-cm5thokwxDpCp2cimMnevOTHzuBfGB9NBiW4MlbuOhq-8EvtQyvWWhf2iO1cRDj3IAo-LDqQtaH6K9SAfdVdTCsvpbfift5N2OZOADExaTmyf-iAQSvCQj_-Y_EF1Uul4xO_0VbkHFdDQFEhI",
-    modules: [],
+      "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?w=600&auto=format&fit=crop&q=60",
+    modules: [
+      {
+        id: 301,
+        title: "Module 1: Core Principles of GDPR",
+        isCollapsed: false,
+        submodules: [
+          {
+            id: 3001,
+            title: "1.1 The 7 Core Protection Principles",
+            slug: "core-protection-principles",
+            description:
+              "Deep dive into lawfulness, fairness, transparency, and accuracy.",
+            contentBlocks: [
+              {
+                id: 30001,
+                type: "heading",
+                value: "GDPR Core Tenets",
+              },
+              {
+                id: 30002,
+                type: "text",
+                value:
+                  "The General Data Protection Regulation centers around key principles that dictate how individual citizen data must be securely handled and stored.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
     seo: {
       indexInSearch: true,
       metaTitle: "GDPR & Data Privacy Essentials | EduCorp LMS",
@@ -278,8 +357,36 @@ def scan_ports(target):
     difficulty: "Beginner",
     language: "English",
     thumbnailUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCk-9g2-SCgyxES8a_gljeTod4afvq5rOE8ipF_cUcJe_VuikfudqC3_zqGNQZ9Zh5hxxJx5MHj2k2NpCfYak74bvGlPNHp46ij4rP1XpivpFzsYparHZV-EG5Os88IeHCpN9lArZMw7X-H7URc5GC0hZ2rQl7XZnpByUZ5aslMsB73_M8VXyJ4JWxx8ewmhNeTdZABA3SHf5T2dHD50NeU2-eJjrDBQcF6Tp1U9pFaRXTzALZiajGIsU4loE_5tzfN6EAU9CLchiU",
-    modules: [],
+      "https://images.unsplash.com/photo-1531538606174-0f90ff5dce83?w=600&auto=format&fit=crop&q=60",
+    modules: [
+      {
+        id: 401,
+        title: "Module 1: Unconscious Bias in the Workplace",
+        isCollapsed: false,
+        submodules: [
+          {
+            id: 4001,
+            title: "1.1 Identifying Implicit Associations",
+            slug: "identifying-implicit-associations",
+            description:
+              "Recognize how implicit associations shape daily actions and communications.",
+            contentBlocks: [
+              {
+                id: 40001,
+                type: "heading",
+                value: "Understanding Unconscious Bias",
+              },
+              {
+                id: 40002,
+                type: "text",
+                value:
+                  "Implicit bias refers to the attitudes or stereotypes that affect our understanding, actions, and decisions in an unconscious manner.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
     seo: {
       indexInSearch: true,
       metaTitle: "Diversity & Inclusion Fundamentals | EduCorp LMS",
@@ -308,8 +415,36 @@ def scan_ports(target):
     difficulty: "Advanced",
     language: "English",
     thumbnailUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAbFOfqUHCTLGTaHCnZG-9_cXC4fYAer7UvrBTkrjJpXC4fYAer7UvrBTkrjJpCxpyFdTAxTrPykJ_ng5jFgDy7CcmPXMxqu33fAUoL6JOrLSZ1BO8KuFiLkNn-UEyPtz2AFIiar7iQKMkrwFBPnFH7vZs09A0IdAcu0fFeH049MAlhdI2jpKWFkntmbiM8_fP3qpLpWFxOc61AKJq-KmTpSPVyiTi9kztzdB7XVVVAqEQyWEs_92HsO_EuiO-Y-nDER0fRooW_aMhe-hyw1EjGrwel9yzVIQ",
-    modules: [],
+      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&auto=format&fit=crop&q=60",
+    modules: [
+      {
+        id: 501,
+        title: "Module 1: Scaling Agile Frameworks",
+        isCollapsed: false,
+        submodules: [
+          {
+            id: 5001,
+            title: "1.1 Introduction to SAFe and LeSS",
+            slug: "introduction-safe-less",
+            description:
+              "Master multi-team planning, agile release trains, and portfolio management.",
+            contentBlocks: [
+              {
+                id: 50001,
+                type: "heading",
+                value: "Enterprise Scale Agile",
+              },
+              {
+                id: 50002,
+                type: "text",
+                value:
+                  "Scaling Agile means taking the principles of Scrum or Kanban and applying them across many cross-functional teams.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
     seo: {
       indexInSearch: true,
       metaTitle: "Advanced Project Management Certification | EduCorp LMS",

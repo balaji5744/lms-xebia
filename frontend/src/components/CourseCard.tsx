@@ -100,12 +100,15 @@ export const CourseCard: React.FC<CourseCardProps> = ({
       {/* Enterprise Admin Command Console Overlay on Hover or Menu Trigger */}
       {userRole === "admin" && (
         <div
-          className={`absolute inset-0 bg-slate-950/90 backdrop-blur-md z-30 flex flex-col justify-between p-6 transition-all duration-300 border border-[#6C1D5F]/35 rounded-2xl ${
+          className={`absolute inset-0 bg-slate-950/90 backdrop-blur-md z-30 flex flex-col justify-between p-6 transition-all duration-300 border border-[#6C1D5F]/35 rounded-2xl cursor-pointer ${
             isHovered || isMenuOpen
               ? "opacity-100 translate-y-0 pointer-events-auto"
               : "opacity-0 translate-y-4 pointer-events-none"
           }`}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick(); // clicking anywhere on overlay goes to details/curriculum page!
+          }}
         >
           {/* Header */}
           <div className="space-y-1.5 text-left">
@@ -171,7 +174,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
                 }}
                 className="py-2 bg-slate-800/40 hover:bg-slate-800 border border-slate-700/60 hover:border-slate-600 text-slate-200 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 transition-all duration-150 active:scale-[0.98] cursor-pointer"
               >
-                <span>Preview Mode</span>
+                <span>View Curriculum</span>
               </button>
               <button
                 type="button"
