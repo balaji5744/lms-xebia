@@ -26,6 +26,8 @@ import {
   Paperclip,
   Download,
   AlertCircle,
+  Heading,
+  Lightbulb,
 } from "lucide-react";
 import { Module, ContentBlock } from "../types";
 
@@ -527,6 +529,12 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
             {block.type === "file" && (
               <Paperclip className="w-3.5 h-3.5 text-sky-400" />
             )}
+            {block.type === "heading" && (
+              <Heading className="w-3.5 h-3.5 text-purple-400" />
+            )}
+            {block.type === "callout" && (
+              <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+            )}
             <span className="text-[10px] uppercase font-bold tracking-wider text-gray-500">
               {block.type} Block
             </span>
@@ -537,6 +545,49 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
             <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap">
               {block.text || block.value}
             </p>
+          )}
+
+          {/* Heading Block */}
+          {block.type === "heading" && (
+            <div className="text-gray-900 font-bold tracking-tight">
+              {block.headingLevel === 1 ? (
+                <h1 className="text-base font-extrabold text-[#510047]">
+                  {block.value || block.text || block.title}
+                </h1>
+              ) : block.headingLevel === 2 ? (
+                <h2 className="text-sm font-bold text-gray-900">
+                  {block.value || block.text || block.title}
+                </h2>
+              ) : (
+                <h3 className="text-xs font-semibold text-gray-800">
+                  {block.value || block.text || block.title}
+                </h3>
+              )}
+            </div>
+          )}
+
+          {/* Callout Block */}
+          {block.type === "callout" && (
+            <div
+              className={`p-3.5 rounded-lg border flex items-start gap-2.5 ${
+                block.metadata?.calloutType === "warning"
+                  ? "bg-amber-50/70 border-amber-200/60 text-amber-900"
+                  : block.metadata?.calloutType === "danger"
+                    ? "bg-rose-50/70 border-rose-200/60 text-rose-900"
+                    : "bg-teal-50/60 border-teal-200/60 text-teal-950"
+              }`}
+            >
+              <div className="shrink-0 mt-0.5">
+                {block.metadata?.calloutType === "warning" ? (
+                  <AlertCircle className="w-4 h-4 text-amber-500" />
+                ) : (
+                  <Lightbulb className="w-4 h-4 text-[#01AC9F]" />
+                )}
+              </div>
+              <div className="text-xs leading-relaxed">
+                {block.value || block.text}
+              </div>
+            </div>
           )}
 
           {/* Code Block - Styled beautifully */}
@@ -613,7 +664,15 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
           )}
 
           {/* Fallback for any other/unknown block type */}
-          {!["text", "code", "video", "image", "file"].includes(block.type) && (
+          {![
+            "text",
+            "code",
+            "video",
+            "image",
+            "file",
+            "heading",
+            "callout",
+          ].includes(block.type) && (
             <p className="text-xs text-gray-400 italic">
               Unsupported block type: {block.type}
             </p>

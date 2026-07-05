@@ -19,6 +19,8 @@ import {
   Code2,
   Sparkles,
   Layers,
+  Heading,
+  Lightbulb,
 } from "lucide-react";
 import { Module, Submodule, ContentBlock } from "../../types";
 import contentService from "../../services/contentService";
@@ -649,6 +651,16 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                           <Paperclip className="w-4 h-4" />
                         </div>
                       )}
+                      {bType === "heading" && (
+                        <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                          <Heading className="w-4 h-4" />
+                        </div>
+                      )}
+                      {bType === "callout" && (
+                        <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                          <Lightbulb className="w-4 h-4" />
+                        </div>
+                      )}
                     </div>
 
                     {/* Block content description preview */}
@@ -671,6 +683,47 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                         <p className="text-xs text-gray-700 leading-relaxed font-sans line-clamp-3 bg-gray-50/50 p-2.5 rounded-lg border border-gray-100">
                           {block.text || block.value}
                         </p>
+                      )}
+
+                      {bType === "heading" && (
+                        <div className="text-gray-900 font-bold tracking-tight">
+                          {block.headingLevel === 1 ? (
+                            <h1 className="text-base font-extrabold text-[#510047]">
+                              {block.value || block.text || block.title}
+                            </h1>
+                          ) : block.headingLevel === 2 ? (
+                            <h2 className="text-sm font-bold text-gray-900">
+                              {block.value || block.text || block.title}
+                            </h2>
+                          ) : (
+                            <h3 className="text-xs font-semibold text-gray-800">
+                              {block.value || block.text || block.title}
+                            </h3>
+                          )}
+                        </div>
+                      )}
+
+                      {bType === "callout" && (
+                        <div
+                          className={`p-3.5 rounded-lg border flex items-start gap-2.5 ${
+                            block.metadata?.calloutType === "warning"
+                              ? "bg-amber-50/70 border-amber-200/60 text-amber-900"
+                              : block.metadata?.calloutType === "danger"
+                                ? "bg-rose-50/70 border-rose-200/60 text-rose-900"
+                                : "bg-teal-50/60 border-teal-200/60 text-teal-950"
+                          }`}
+                        >
+                          <div className="shrink-0 mt-0.5">
+                            {block.metadata?.calloutType === "warning" ? (
+                              <AlertCircle className="w-4 h-4 text-amber-500" />
+                            ) : (
+                              <Lightbulb className="w-4 h-4 text-[#01AC9F]" />
+                            )}
+                          </div>
+                          <div className="text-xs leading-relaxed">
+                            {block.value || block.text}
+                          </div>
+                        </div>
                       )}
 
                       {bType === "code" && (
