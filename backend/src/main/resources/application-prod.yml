@@ -1,0 +1,62 @@
+spring:
+  # Database Configuration for enterprise-grade production
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      pool-name: HikariPool-Production
+      maximum-pool-size: 8
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 30000
+      max-lifetime: 1800000 # 30 minutes to recycle connections
+
+  # JPA & Hibernate Settings (Validation only, no structural alterations allowed)
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        default_batch_fetch_size: 32
+        format_sql: false
+        use_sql_comments: false
+        generate_statistics: false
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+  # Flyway Configuration for enterprise versioning
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: "1"
+
+  # Redis Configuration for production caching and session resilience
+  data:
+    redis:
+      url: ${SPRING_REDIS_URL:${REDIS_URL}}
+      timeout: 3000
+
+# Server configuration for production
+server:
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json,application/xml
+    min-response-size: 1024
+
+# Logging Configurations for production
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: WARN
+    com.geeknito.geeknito_backend: INFO
+
+app:
+  seed:
+    enabled: false
+

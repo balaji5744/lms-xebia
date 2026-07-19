@@ -1,0 +1,3080 @@
+{
+  "info": {
+    "_postman_id": "c1f7149a-e8fb-4b57-a36c-9411dc1055fa",
+    "name": "Geeknito LMS API",
+    "description": "Production-quality Postman Collection for the Geeknito Enterprise LMS backend. This collection supports dynamic variable synchronization for JWT authentication across Admin, Teacher, and Student roles, and contains complete test scripts and realistic request bodies matching the database seeder.\n\n### Collection Variables Used\n- `{{baseUrl}}` (defaults to http://localhost:8080 or the dev server URL)\n- `{{jwtToken}}` (currently active authentication token, set automatically upon logging in)\n- `{{adminToken}}` (automatically cached admin token)\n- `{{teacherToken}}` (automatically cached teacher token)\n- `{{studentToken}}` (automatically cached student token)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "Folder containing Authentication and registration APIs. Logging in as any of the roles will automatically update the collection's active `{{jwtToken}}` and cache that specific role's token.\n\nGeeknito LMS uses stateless JWT authentication. Logout is performed entirely on the client by removing the stored JWT token. No backend logout endpoint exists.",
+      "item": [
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.environment.set(\"jwtToken\", jsonData.token);",
+                  "    pm.environment.set(\"adminToken\", jsonData.token);",
+                  "    console.log(\"Saved Admin JWT to jwtToken and adminToken environment variables!\");",
+                  "}",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"JWT token exists in response\", function () {",
+                  "    pm.expect(jsonData.token).to.be.a('string');",
+                  "});",
+                  "pm.test(\"Role is admin\", function () {",
+                  "    pm.expect(jsonData.role).to.eql(\"admin\");",
+                  "});",
+                  "pm.test(\"Response time is less than 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@educorp.com\",\n  \"password\": \"adminpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "**Purpose:** Authenticate as the system Administrator using seeded credentials.\n\n**Required Role:** Any / Admin\n\n**Authentication:** Public (No authorization header required)\n\n**Expected Response:** JSON object containing `id`, `fullName`, `email`, `role`, and `token` fields."
+          },
+          "response": []
+        },
+        {
+          "name": "Teacher Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.environment.set(\"jwtToken\", jsonData.token);",
+                  "    pm.environment.set(\"teacherToken\", jsonData.token);",
+                  "    console.log(\"Saved Teacher JWT to jwtToken and teacherToken environment variables!\");",
+                  "}",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"JWT token exists in response\", function () {",
+                  "    pm.expect(jsonData.token).to.be.a('string');",
+                  "});",
+                  "pm.test(\"Role is teacher\", function () {",
+                  "    pm.expect(jsonData.role).to.eql(\"teacher\");",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"teacher@educorp.com\",\n  \"password\": \"teacherpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "**Purpose:** Authenticate as a Course Teacher using seeded credentials.\n\n**Required Role:** Any / Teacher\n\n**Authentication:** Public (No authorization header required)\n\n**Expected Response:** JSON object containing `id`, `fullName`, `email`, `role`, and `token` fields."
+          },
+          "response": []
+        },
+        {
+          "name": "Student Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.token) {",
+                  "    pm.environment.set(\"jwtToken\", jsonData.token);",
+                  "    pm.environment.set(\"studentToken\", jsonData.token);",
+                  "    console.log(\"Saved Student JWT to jwtToken and studentToken environment variables!\");",
+                  "}",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"JWT token exists in response\", function () {",
+                  "    pm.expect(jsonData.token).to.be.a('string');",
+                  "});",
+                  "pm.test(\"Role is student\", function () {",
+                  "    pm.expect(jsonData.role).to.eql(\"student\");",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"student@educorp.com\",\n  \"password\": \"studentpass123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "**Purpose:** Authenticate as a student using seeded credentials.\n\n**Required Role:** Any / Student\n\n**Authentication:** Public (No authorization header required)\n\n**Expected Response:** JSON object containing `id`, `fullName`, `email`, `role`, and `token` fields."
+          },
+          "response": []
+        },
+        {
+          "name": "Register New User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "pm.test(\"Response contains id and fullName\", function () {",
+                  "    pm.expect(jsonData.id).to.be.a('number');",
+                  "    pm.expect(jsonData.fullName).to.eql(\"Geeky Learner\");",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Geeky Learner\",\n  \"email\": \"newstudent@educorp.com\",\n  \"password\": \"securepassword\",\n  \"role\": \"student\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "**Purpose:** Register a new user in the LMS. Supports `student` or `admin` as explicit role values. Default is `student` unless `admin` is explicitly provided or detected in the email string.\n\n**Required Role:** Public\n\n**Authentication:** Public\n\n**Expected Response:** JSON object containing `id`, `fullName`, `email`, `role`, and a generated `token` for immediate sign-in."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "description": "Folder containing APIs to retrieve user accounts and details.",
+      "item": [
+        {
+          "name": "Admin: Get All Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "pm.test(\"Response is an array of users\", function () {",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "**Purpose:** Retrieve a complete list of users registered in the LMS.\n\n**Required Role:** Admin\n\n**Authentication:** JWT Admin Bearer Token (Bearer {{adminToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Teacher: Get Students",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "pm.test(\"Response is an array\", function () {",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "pm.test(\"All returned users are students\", function () {",
+                  "    jsonData.forEach(function(user) {",
+                  "        pm.expect(user.role.toUpperCase()).to.eql(\"STUDENT\");",
+                  "    });",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?role=STUDENT",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "STUDENT"
+                }
+              ]
+            },
+            "description": "**Purpose:** Fetch users filtered by Student role. Accessible to teachers.\n\n**Required Role:** Teacher\n\n**Authentication:** JWT Teacher Bearer Token (Bearer {{teacherToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Teacher: Get Teachers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "pm.test(\"Response is an array\", function () {",
+                  "    pm.expect(jsonData).to.be.an('array');",
+                  "});",
+                  "pm.test(\"All returned users are teachers\", function () {",
+                  "    jsonData.forEach(function(user) {",
+                  "        pm.expect(user.role.toUpperCase()).to.eql(\"TEACHER\");",
+                  "    });",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?role=TEACHER",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "TEACHER"
+                }
+              ]
+            },
+            "description": "**Purpose:** Fetch users filtered by Teacher role. Accessible to teachers.\n\n**Required Role:** Teacher\n\n**Authentication:** JWT Teacher Bearer Token (Bearer {{teacherToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Teacher: Get All Users (Forbidden)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 403 Forbidden\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "**Purpose:** Test that teachers cannot fetch all users without specifying a role parameter (RBAC safety check).\n\n**Required Role:** Teacher (expects 403 Forbidden when requested without role parameter)\n\n**Authentication:** JWT Teacher Bearer Token (Bearer {{teacherToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Student: Get All Users (Forbidden)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 403 Forbidden\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "**Purpose:** Test that students cannot access the user registry (RBAC safety check).\n\n**Required Role:** Student (expects 403 Forbidden)\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User Profile (Me)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});",
+                  "var jsonData = pm.response.json();",
+                  "pm.test(\"Response has user details\", function () {",
+                  "    pm.expect(jsonData.id).to.be.a('number');",
+                  "    pm.expect(jsonData.email).to.be.a('string');",
+                  "    pm.expect(jsonData.role).to.be.a('string');",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "me"
+              ]
+            },
+            "description": "**Purpose:** Fetch the active user's current authenticated profile details from the stateful /users/me endpoint.\n\n**Required Role:** Any Authenticated User\n\n**Authentication:** JWT Bearer Token (Bearer {{jwtToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Users - Unauthorized Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401 Unauthorized\", function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer invalid_token_format_or_expired"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "description": "**Purpose:** Verify that requests without a valid authentication token are rejected with 401 Unauthorized.\n\n**Required Role:** None (expects 401 Unauthorized)\n\n**Authentication:** Invalid/Omitted Token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "description": "Folder containing category management APIs.",
+      "item": [
+        {
+          "name": "List Categories (Public)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "description": "**Purpose:** Public retrieval of active curriculum categories (e.g. Cybersecurity, Software Engineering).\n\n**Required Role:** Public / Guest\n\n**Authentication:** Public (None required)\n\n**Expected Response:** List of categories."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Public retrieval of specific category detail by its database ID.\n\n**Required Role:** Public\n\n**Authentication:** Public\n\n**Expected Response:** Category details including `id`, `name`, `icon`, `description`, and `colorCode`."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Data Science & Analytics\",\n  \"icon\": \"📊\",\n  \"description\": \"Master statistics, predictive modeling, machine learning, and data visualization pipelines.\",\n  \"colorCode\": \"#0891B2\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "**Purpose:** Add a new course category to organize courses. Uses the Admin authoring route.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** Newly created category JSON with generated ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Data Science, AI & Analytics\",\n  \"icon\": \"📈\",\n  \"description\": \"Expanded: Master neural networks, statistics, predictive modeling, and data pipelines.\",\n  \"colorCode\": \"#06B6D4\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Update an existing category details.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/categories/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categories",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Delete a category (soft-delete to preserve references).\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Courses",
+      "description": "Folder containing course listing, creation, and detail lookup endpoints.",
+      "item": [
+        {
+          "name": "Get Courses (Public Catalog)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses?page=0&size=10&sortBy=id&direction=ASC",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "id"
+                },
+                {
+                  "key": "direction",
+                  "value": "ASC"
+                }
+              ]
+            },
+            "description": "**Purpose:** Public catalog endpoint to list active courses with pagination.\n\n**Required Role:** Public\n\n**Authentication:** None\n\n**Expected Response:** Page object with course list cards."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course Detail by Slug (Public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/introduction-to-cybersecurity",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "introduction-to-cybersecurity"
+              ]
+            },
+            "description": "**Purpose:** Get full details of a course by its unique URL slug (e.g. `introduction-to-cybersecurity`). Used by the frontend course landing page.\n\n**Required Role:** Public\n\n**Authentication:** None"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Courses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "active"
+              ]
+            },
+            "description": "**Purpose:** Retrieve active courses listing for catalog overview.\n\n**Required Role:** Public"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Courses (Admin List)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses"
+              ]
+            },
+            "description": "**Purpose:** Authoring/Management view listing of all courses in system (both active and inactive).\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Course by ID (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Retrieve a course details for editing.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Course (Admin/Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Cloud Architecture with Kubernetes\",\n  \"slug\": \"cloud-architecture-kubernetes\",\n  \"summary\": \"Deploy, scale, monitor, and safeguard containerized enterprise services.\",\n  \"description\": \"Learn orchestration at scale. Implement core concepts including Pods, Deployments, Services, Ingress, volumes, and monitoring.\",\n  \"difficulty\": \"Advanced\",\n  \"duration\": \"35 hours\",\n  \"categoryId\": 1,\n  \"coverImageUrl\": \"https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=600&auto=format&fit=crop\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses"
+              ]
+            },
+            "description": "**Purpose:** Author a new LMS course.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** Created course detail with a generated course ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Course (Admin/Teacher)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Advanced Cloud Architecture with Kubernetes\",\n  \"slug\": \"advanced-cloud-architecture-kubernetes\",\n  \"summary\": \"Deploy, scale, monitor, and safeguard containerized enterprise services.\",\n  \"description\": \"Learn orchestration at scale. Implement core concepts including Pods, Deployments, Services, Ingress, volumes, and monitoring.\",\n  \"difficulty\": \"Advanced\",\n  \"duration\": \"40 hours\",\n  \"categoryId\": 1,\n  \"coverImageUrl\": \"https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=600&auto=format&fit=crop\",\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Modify an existing course parameters.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Course (Admin/Teacher)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses/1?hard=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses",
+                "1"
+              ],
+              "query": [
+                {
+                  "key": "hard",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "**Purpose:** Delete a course. Supports hard delete or soft delete (the default) via the `hard` query parameter.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Curriculum",
+      "description": "Folder containing curriculum structure: Modules and Submodules management.",
+      "item": [
+        {
+          "name": "Get Course Curriculum Modules (Public Catalog)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/1/curriculum",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "1",
+                "curriculum"
+              ]
+            },
+            "description": "**Purpose:** Public/Learner fetch of curriculum structure (modules and submodules) for a course.\n\n**Required Role:** Public\n\n**Authentication:** None\n\n**Expected Response:** Hierarchical array of modules with nested submodules."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Module (Admin/Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Module 1: Advanced Ingress Control & Service Meshes\",\n  \"description\": \"Configure high-availability reverse proxy endpoints and traffic routing systems.\",\n  \"orderIndex\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses/1/modules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses",
+                "1",
+                "modules"
+              ]
+            },
+            "description": "**Purpose:** Add a root curriculum module to a course.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Submodule (Admin/Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"1.1: Configuring Nginx Ingress Controller with TLS cert-manager\",\n  \"description\": \"Step-by-step setup of ingress routes matching Let's Encrypt automated certificate issue.\",\n  \"orderIndex\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/courses/1/modules/1/submodules",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "courses",
+                "1",
+                "modules",
+                "1",
+                "submodules"
+              ]
+            },
+            "description": "**Purpose:** Add a nested submodule under a root module.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Content",
+      "description": "Folder containing submodule Content Block management: TEXT, VIDEO, and FILE content blocks.",
+      "item": [
+        {
+          "name": "Get Submodule Contents (Public Learner-Facing)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/courses/submodules/1/contents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "courses",
+                "submodules",
+                "1",
+                "contents"
+              ]
+            },
+            "description": "**Purpose:** Fetch content blocks (video links, code blocks, text) inside a submodule for standard learning playback.\n\n**Required Role:** Public\n\n**Authentication:** None"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Content Block (Admin/Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201 Created\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lab Guide: TLS Ingress Deployment\",\n  \"type\": \"text\",\n  \"text\": \"## Deploying Ingress with HTTPS\\nExecute the following manifest to apply a production Nginx routing with SSL termination...\",\n  \"videoUrl\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\",\n  \"fileUrl\": \"\",\n  \"contentOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/submodules/1/contents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "submodules",
+                "1",
+                "contents"
+              ]
+            },
+            "description": "**Purpose:** Create a content block (TEXT, VIDEO, or FILE download) inside a submodule.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Submodule Contents (Admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/submodules/1/contents",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "submodules",
+                "1",
+                "contents"
+              ]
+            },
+            "description": "**Purpose:** View content list under a submodule as an author.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Content Block (Admin/Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200 OK\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Lab Guide: TLS Ingress Deployment\",\n  \"type\": \"text\",\n  \"text\": \"## Updated: Deploying Ingress with HTTPS\\nModified content block details...\",\n  \"videoUrl\": \"https://www.youtube.com/watch?v=dQw4w9WgXcQ\",\n  \"fileUrl\": \"\",\n  \"contentOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/submodules/1/contents/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "submodules",
+                "1",
+                "contents",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Update an existing content block details.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Content Block (Admin/Teacher)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 204 No Content\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test(\"Response time < 2000ms\", function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(2000);",
+                  "});"
+                ],
+                "type": "javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/submodules/1/contents/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "submodules",
+                "1",
+                "contents",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Delete a content block by its database ID.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Enrollments",
+      "description": "Folder containing student course enrollment endpoints.",
+      "item": [
+        {
+          "name": "Enroll Student (Self)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enrollments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enrollments"
+              ]
+            },
+            "description": "**Purpose:** Enroll the currently authenticated student into a course.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token\n\n**Expected Response:** Enrollment object containing generated ID, student ID, course details, enrollment date, and status."
+          },
+          "response": []
+        },
+        {
+          "name": "My Enrollments (Student)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enrollments",
+                "me"
+              ]
+            },
+            "description": "**Purpose:** List all courses that the logged-in student is currently enrolled in.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Course Enrollment Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enrollments",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Get details of an enrollment for a specific course by course ID.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Enroll Student via Batch Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/students/batches/compliance/enroll",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "students",
+                "batches",
+                "compliance",
+                "enroll"
+              ]
+            },
+            "description": "**Purpose:** Auto-enroll a student into a course associated with a specific batch string key (e.g., `compliance`, `cyber`, `diversity`, etc.). Used when students use batch registration links.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Eligible Students for Batch Assign",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/enrollments/eligible-students?courseIds=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enrollments",
+                "eligible-students"
+              ],
+              "query": [
+                {
+                  "key": "courseIds",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "**Purpose:** Fetch students enrolled in specific courses who are eligible to be assigned to a batch for that course.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Batches",
+      "description": "Folder containing batch management and cohort cohort control APIs.",
+      "item": [
+        {
+          "name": "Create Batch (Admin/Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Summer 2026 Cyber Cohort A\",\n  \"batchCode\": \"CYB-2026-SA\",\n  \"courseId\": 1,\n  \"teacherId\": 3,\n  \"maxStudents\": 25,\n  \"startDate\": \"2026-06-01\",\n  \"endDate\": \"2026-09-30\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/batches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches"
+              ]
+            },
+            "description": "**Purpose:** Provision a new batch cohort under a course with a designated teacher.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** Created batch cohort details with generated ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Batch Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/batches/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Retrieve specific batch details.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Batches (Teacher)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/batches/my",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches",
+                "my"
+              ]
+            },
+            "description": "**Purpose:** Fetch the active batches assigned to the currently authenticated teacher.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Add Student to Batch",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/batches/1/students/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches",
+                "1",
+                "students",
+                "2"
+              ]
+            },
+            "description": "**Purpose:** Enroll / Add a student to a specific batch.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Students in Batch",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/batches/1/students",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches",
+                "1",
+                "students"
+              ]
+            },
+            "description": "**Purpose:** Retrieve the list of all students currently enrolled in a specific batch.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Get My Student Batches (Student)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/batches/student/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "batches",
+                "student",
+                "me"
+              ]
+            },
+            "description": "**Purpose:** Student endpoint to fetch all batches they are assigned to.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Export Batch Students (Trigger Download)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/batch/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "export",
+                "batch",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Export the entire list of students assigned to a batch as an Excel Spreadsheet. Note: In Postman, click the dropdown next to the Send button and select 'Send and Download' to save the generated spreadsheet file to your system.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** Excel Binary Spreadsheet (`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assignments",
+      "description": "Folder containing assignment, quiz, exam setup, and batch dispatching APIs.",
+      "item": [
+        {
+          "name": "Create Assignment (Admin/Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Security Systems Assessment Quiz\",\n  \"description\": \"Final examination quiz evaluating core network scanning and buffer overflow methodologies.\",\n  \"instructions\": \"Answer all 10 multiple choice questions. Standard 60 minute timer. Passing threshold is 50%.\",\n  \"courseId\": 1,\n  \"maxMarks\": 100,\n  \"passingMarks\": 50,\n  \"timeLimitMinutes\": 60,\n  \"allowLateSubmission\": false,\n  \"shuffleQuestions\": true,\n  \"shuffleOptions\": true,\n  \"maxAttempts\": 1,\n  \"enableCertificates\": true,\n  \"autoSubmit\": true,\n  \"dueDate\": \"2026-07-30T23:59:59\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assignments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignments"
+              ]
+            },
+            "description": "**Purpose:** Create a new assignment for a course with customized settings.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** Created assignment details containing generated ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Assignment (Admin/Teacher)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Security Systems Assessment Quiz\",\n  \"description\": \"Final examination quiz evaluating core network scanning and buffer overflow methodologies.\",\n  \"instructions\": \"Answer all multiple choice questions. Standard 60 minute timer. Passing threshold is 50%.\",\n  \"maxMarks\": 100,\n  \"passingMarks\": 50,\n  \"timeLimitMinutes\": 60,\n  \"allowLateSubmission\": true,\n  \"shuffleQuestions\": true,\n  \"shuffleOptions\": true,\n  \"maxAttempts\": 2,\n  \"enableCertificates\": true,\n  \"autoSubmit\": true,\n  \"dueDate\": \"2026-08-15T23:59:59\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assignments/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignments",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Modify an assignment settings.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Publish Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/assignments/1/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignments",
+                "1",
+                "publish"
+              ]
+            },
+            "description": "**Purpose:** Change the status of an assignment to PUBLISHED to make it visible to students.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Dispatch Assignment (Add Batch to Assignment)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[1, 2]"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/assignments/1/batches",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignments",
+                "1",
+                "batches"
+              ]
+            },
+            "description": "**Purpose:** Dispatch / link an assignment to specific batches so students in those cohorts receive it. Can accept either a query parameter `batchId` or a list of batch IDs in the body.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Student Assignments (List Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/assignments/student/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignments",
+                "student",
+                "me"
+              ]
+            },
+            "description": "**Purpose:** Retrieve all assignments published for the logged-in student's cohorts.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token"
+          },
+          "response": []
+        },
+        {
+          "name": "Assignment Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/assignments/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "assignments",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Get full details of a specific assignment. Accessible to teachers, admins, or enrolled students.\n\n**Required Role:** Authenticated / Enrolled"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Questions",
+      "description": "Folder containing assignment question configuration APIs.",
+      "item": [
+        {
+          "name": "Create Question (Admin/Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignmentId\": 1,\n  \"title\": \"What does a 3-way handshake in TCP accomplish?\",\n  \"questionType\": \"MCQ\",\n  \"marks\": 10,\n  \"orderIndex\": 1,\n  \"options\": [\n    {\n      \"optionText\": \"Establishes a reliable sync and connection state between client and server\",\n      \"isCorrect\": true,\n      \"explanation\": \"TCP handshake uses SYN, SYN-ACK, and ACK to sync sequence numbers.\"\n    },\n    {\n      \"optionText\": \"Encrypts the channel using SSL certificates\",\n      \"isCorrect\": false,\n      \"explanation\": \"Handshake does not encrypt the channel; TLS handshake does.\"\n    },\n    {\n      \"optionText\": \"Resolves domain names to IP addresses\",\n      \"isCorrect\": false,\n      \"explanation\": \"DNS handles domain name resolution.\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/questions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "questions"
+              ]
+            },
+            "description": "**Purpose:** Add an MCQ or subject-type question to an assignment with answers and rationales.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** Created question object with generated ID."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Question (Admin/Teacher)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"What does a TCP three-way handshake accomplish?\",\n  \"questionType\": \"MCQ\",\n  \"marks\": 15,\n  \"orderIndex\": 1,\n  \"options\": [\n    {\n      \"optionText\": \"Establishes synchronicity and connection state securely\",\n      \"isCorrect\": true,\n      \"explanation\": \"Synchronizes sequence numbers.\"\n    },\n    {\n      \"optionText\": \"Authenticates the server\",\n      \"isCorrect\": false,\n      \"explanation\": \"Handled by SSL/TLS.\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/questions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "questions",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Modify an existing question details.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Questions by Assignment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/questions/assignment/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "questions",
+                "assignment",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Retrieve questions in an assignment. Teachers/Admins get questions with correct options; students get scrambled questions/options without correct designations while the quiz is active.\n\n**Required Role:** Authenticated"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Question",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/questions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "questions",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Remove a question from an assignment.\n\n**Required Role:** Admin / Teacher"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Submissions",
+      "description": "Folder containing quiz attempts, drafts, answers submission, grading and performance results.",
+      "item": [
+        {
+          "name": "Start Attempt (Student)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"assignmentId\": 1,\n  \"studentId\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/submissions/start",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "start"
+              ]
+            },
+            "description": "**Purpose:** Open/Initiate an assignment attempt. Triggers the attempt timer and creates an IN_PROGRESS submission record.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})\n\n**Expected Response:** Submission object with a generated submission ID (save this ID for drafts/submitting)."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Draft Answers",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": 1,\n      \"selectedOptionId\": 1,\n      \"answerText\": \"\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/submissions/save?submissionId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "save"
+              ],
+              "query": [
+                {
+                  "key": "submissionId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "**Purpose:** Intermittently backup student's selected answers during the exam. Keeps submission status as IN_PROGRESS.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Submit Assignment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answers\": [\n    {\n      \"questionId\": 1,\n      \"selectedOptionId\": 1,\n      \"answerText\": \"\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/submissions/submit?submissionId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "submit"
+              ],
+              "query": [
+                {
+                  "key": "submissionId",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "**Purpose:** Finalize and lock the assignment submission. Status changes to SUBMITTED or automatically self-grades to GRADED if assignment contains MCQ-only questions.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Grade Submission (Teacher)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gradeFeedback\": \"Excellent technical elaboration on server ingress systems and buffer safety limits.\",\n  \"obtainedMarks\": 95,\n  \"answers\": [\n    {\n      \"questionId\": 1,\n      \"obtainedMarks\": 10\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/submissions/1/grade",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "1",
+                "grade"
+              ]
+            },
+            "description": "**Purpose:** Teacher evaluation of student's completed submission. Sets manual grading marks, feedback notes, and locks marks.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Teacher Bearer Token (Bearer {{teacherToken}})"
+          },
+          "response": []
+        },
+        {
+          "name": "Student Result Lookup",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/submissions/assignment/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "assignment",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Learner-facing result lookup for a specific assignment. If authenticated as a student, yields their active submission result with questions details, scoring, correctness, and feedback.\n\n**Required Role:** Student\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Certificates",
+      "description": "Folder containing certificate generation trigger endpoints.",
+      "item": [
+        {
+          "name": "View Certificate Eligibility & Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/submissions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Geeknito LMS renders certificates entirely on the client-side using responsive HTML/Canvas. This endpoint is called by the frontend viewer to fetch the submission details (obtainedMarks, passingMarks, enableCertificates, student's fullName, and course details) to verify certificate eligibility and render details on the certificate template. If eligible, a unique certificate is rendered.\n\n**Required Role:** Authenticated student / Teacher\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})\n\n**Expected Response:** Submission object details with passing details."
+          },
+          "response": []
+        },
+        {
+          "name": "Download Certificate (Client-side trigger)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{studentToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/submissions/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "submissions",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Initiates the download compilation of the certificate. The frontend reads the submission data from this endpoint and packages it into a PDF vector download. This request represents the API backing that download trigger.\n\n**Required Role:** Enrolled student\n\n**Authentication:** JWT Student Bearer Token (Bearer {{studentToken}})"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Exports",
+      "description": "Folder containing data extraction and export endpoints into Microsoft Excel templates.",
+      "item": [
+        {
+          "name": "Export Assignment Results (Excel)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/assignment/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "export",
+                "assignment",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Export the entire grading matrix of student submissions and scores for a specific assignment as an Excel sheet. In Postman, click the arrow beside Send and select 'Send and Download' to save the generated spreadsheet.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Teacher Bearer Token (Bearer {{teacherToken}})\n\n**Expected Response:** Excel Binary Spreadsheet (`application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`)"
+          },
+          "response": []
+        },
+        {
+          "name": "Export Batch Students (Excel)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{teacherToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/export/batch/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "export",
+                "batch",
+                "1"
+              ]
+            },
+            "description": "**Purpose:** Export the details of students assigned to a batch as an Excel Sheet. Note: select 'Send and Download' in Postman to save.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Teacher Bearer Token (Bearer {{teacherToken}})"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Files",
+      "description": "Folder containing file upload and attachment download helper APIs.",
+      "item": [
+        {
+          "name": "Upload File Attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwtToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/files/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "upload"
+              ]
+            },
+            "description": "**Purpose:** Upload a lecture document, assignment, or image. Saves the file to server storage under unique UUID filename and returns public download URL.\n\n**Required Role:** Admin / Teacher\n\n**Authentication:** JWT Bearer Token\n\n**Expected Response:** JSON mapping of local url and fileName."
+          },
+          "response": []
+        },
+        {
+          "name": "Download File Attachment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/files/download/sample_uuid_lecture1.pdf",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "files",
+                "download",
+                "sample_uuid_lecture1.pdf"
+              ]
+            },
+            "description": "**Purpose:** Download uploaded content blocks attachment.\n\n**Required Role:** Public / Authenticated"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Events",
+      "description": "Folder containing events catalog, registration, attendance, certification, and export APIs.",
+      "item": [
+        {
+          "name": "Events (Public)",
+          "description": "Public event catalog retrieval, filtering, and detail lookup APIs.",
+          "item": [
+            {
+              "name": "Get Events (Public Catalog)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Response is a paginated object\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('content');",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/catalog/events?size=10",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "catalog",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                },
+                "description": "Retrieve a paginated, sorted list of events based on status, mode, search query, and date range."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event by Slug (Public Catalog)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Response contains event slug\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.slug).to.not.be.undefined;",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/catalog/events/introduction-to-cybersecurity-fundamentals",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "catalog",
+                    "events",
+                    "introduction-to-cybersecurity-fundamentals"
+                  ]
+                },
+                "description": "Retrieve complete details of a specific event using its unique slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event - 404 Not Found",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {",
+                      "    pm.response.to.have.status(404);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/catalog/events/non-existent-event-slug-xyz",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "catalog",
+                    "events",
+                    "non-existent-event-slug-xyz"
+                  ]
+                },
+                "description": "Attempts to fetch a non-existent event to test 404 Not Found handling."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Event Registration",
+          "description": "Student event registration APIs",
+          "item": [
+            {
+              "name": "Register for Event (Student) - 201 Created",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201 or 409\", function () {",
+                      "    pm.expect(pm.response.code).to.be.oneOf([201, 409]);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/introduction-to-cybersecurity-fundamentals/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "introduction-to-cybersecurity-fundamentals",
+                    "register"
+                  ]
+                },
+                "description": "Register currently logged-in student for a specific event by slug."
+              },
+              "response": []
+            },
+            {
+              "name": "Duplicate Registration - 409 Conflict",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 409 or already registered conflict\", function () {",
+                      "    pm.expect(pm.response.code).to.be.oneOf([409, 400]);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/introduction-to-cybersecurity-fundamentals/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "introduction-to-cybersecurity-fundamentals",
+                    "register"
+                  ]
+                },
+                "description": "Attempt to register for the same event a second time to trigger a 409 Conflict response."
+              },
+              "response": []
+            },
+            {
+              "name": "Get My Registrations (Student) - 200 OK",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Response is an array of registrations\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.be.an('array');",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/my-registrations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "my-registrations"
+                  ]
+                },
+                "description": "Fetch all registrations for the currently authenticated student."
+              },
+              "response": []
+            },
+            {
+              "name": "Get My Registrations - 401 Unauthorized",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 401\", function () {",
+                      "    pm.response.to.have.status(401);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/events/my-registrations",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "my-registrations"
+                  ]
+                },
+                "description": "Request registrations without an authorization token to trigger a 401 Unauthorized response."
+              },
+              "response": []
+            },
+            {
+              "name": "Register as Teacher - 403 Forbidden",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 403\", function () {",
+                      "    pm.response.to.have.status(403);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{teacherToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/introduction-to-cybersecurity-fundamentals/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "introduction-to-cybersecurity-fundamentals",
+                    "register"
+                  ]
+                },
+                "description": "Request registration with a Teacher token (forbidden) to trigger a 403 Forbidden response."
+              },
+              "response": []
+            },
+            {
+              "name": "Cancel Registration (Student) - 204 No Content",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 204 or 404\", function () {",
+                      "    pm.expect(pm.response.code).to.be.oneOf([204, 404]);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{studentToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events/introduction-to-cybersecurity-fundamentals/register",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events",
+                    "introduction-to-cybersecurity-fundamentals",
+                    "register"
+                  ]
+                },
+                "description": "Unregister the student from a specific event."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Event Administration",
+          "description": "Event administration APIs for Admins and Teachers",
+          "item": [
+            {
+              "name": "Get Admin Events (Teacher/Admin)",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Response content is array\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.content).to.be.an('array');",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events?size=10",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                },
+                "description": "Retrieve admin events catalog list with pagination."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Event (Teacher/Admin) - 201 Created",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "var jsonData = pm.response.json();",
+                      "if (jsonData.id) {",
+                      "    pm.environment.set(\"lastCreatedEventId\", jsonData.id);",
+                      "    pm.environment.set(\"lastCreatedEventSlug\", jsonData.slug);",
+                      "}"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Advanced Postman Testing Workshop\",\n  \"description\": \"Mastering API testing workflows and status validations.\",\n  \"bannerUrl\": \"https://images.unsplash.com/photo-1620712943543-bcc4688e7485\",\n  \"locationMode\": \"ONLINE\",\n  \"meetingLink\": \"https://zoom.us/j/1234567890\",\n  \"meetingProvider\": \"ZOOM\",\n  \"startDate\": \"2026-09-01T15:00:00\",\n  \"endDate\": \"2026-09-01T18:00:00\",\n  \"registrationDeadline\": \"2026-08-31T23:59:59\",\n  \"capacity\": 150,\n  \"organizerName\": \"LMS Training Group\",\n  \"organizerEmail\": \"training@geeknito.com\",\n  \"status\": \"PUBLISHED\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events"
+                  ]
+                },
+                "description": "Create a new event as administrator."
+              },
+              "response": []
+            },
+            {
+              "name": "Create Event with Blank Title - 400 Bad Request",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {",
+                      "    pm.response.to.have.status(400);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"\",\n  \"description\": \"Valid description\",\n  \"locationMode\": \"ONLINE\",\n  \"meetingLink\": \"https://zoom.us/j/123\",\n  \"startDate\": \"2026-09-01T15:00:00\",\n  \"endDate\": \"2026-09-01T18:00:00\",\n  \"registrationDeadline\": \"2026-08-31T23:59:59\",\n  \"capacity\": 150,\n  \"organizerName\": \"LMS Training\",\n  \"organizerEmail\": \"training@geeknito.com\",\n  \"status\": \"PUBLISHED\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events"
+                  ]
+                },
+                "description": "Fails to create event due to empty title, expecting 400 Bad Request."
+              },
+              "response": []
+            },
+            {
+              "name": "Get Event by ID (Admin/Teacher) - 200 OK",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/{{lastCreatedEventId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "{{lastCreatedEventId}}"
+                  ]
+                },
+                "description": "Retrieve administrative details of a specific event."
+              },
+              "response": []
+            },
+            {
+              "name": "Update Event (Teacher/Admin) - 200 OK",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"title\": \"Advanced Postman Testing Workshop - Updated\",\n  \"description\": \"Mastering API testing workflows, assertions, and status validations.\",\n  \"bannerUrl\": \"https://images.unsplash.com/photo-1620712943543-bcc4688e7485\",\n  \"locationMode\": \"ONLINE\",\n  \"meetingLink\": \"https://zoom.us/j/1234567890\",\n  \"meetingProvider\": \"ZOOM\",\n  \"startDate\": \"2026-09-01T15:00:00\",\n  \"endDate\": \"2026-09-01T18:00:00\",\n  \"registrationDeadline\": \"2026-08-31T23:59:59\",\n  \"capacity\": 150,\n  \"organizerName\": \"LMS Training Group\",\n  \"organizerEmail\": \"training@geeknito.com\",\n  \"status\": \"PUBLISHED\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/{{lastCreatedEventId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "{{lastCreatedEventId}}"
+                  ]
+                },
+                "description": "Update an existing event by its ID."
+              },
+              "response": []
+            },
+            {
+              "name": "Delete Event (Admin/Teacher) - 204 No Content",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/{{lastCreatedEventId}}?hard=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "{{lastCreatedEventId}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "hard",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Perform soft delete (sets status to CANCELLED) or hard delete (deletes record completely)."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Attendance",
+          "description": "Attendance tracking and certificate issuance APIs",
+          "item": [
+            {
+              "name": "Update Attendance (Teacher/Admin) - 200 OK",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"attendanceStatus\": \"ATTENDED\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/1/attendance",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "1",
+                    "attendance"
+                  ]
+                },
+                "description": "Mark or update attendance status for an event registration. Open to ADMIN and TEACHER (Teachers restricted to their own events)."
+              },
+              "response": []
+            },
+            {
+              "name": "Issue Certificate (Teacher/Admin) - 200 OK",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200 or 400\", function () {",
+                      "    pm.expect(pm.response.code).to.be.oneOf([200, 400]);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/1/certificate",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "1",
+                    "certificate"
+                  ]
+                },
+                "description": "Issue a certificate to a student who attended the event. Open to ADMIN and TEACHER (Teachers restricted to their own events)."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Dashboard",
+          "description": "Event dashboard metrics APIs",
+          "item": [
+            {
+              "name": "Get Event Dashboard (Teacher/Admin) - 200 OK",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "pm.test(\"Dashboard properties are present\", function () {",
+                      "    var jsonData = pm.response.json();",
+                      "    pm.expect(jsonData).to.have.property('totalEvents');",
+                      "    pm.expect(jsonData).to.have.property('totalRegistrations');",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/dashboard",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "dashboard"
+                  ]
+                },
+                "description": "Retrieve metrics for events, registrations, attendance, and certificates."
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Export",
+          "description": "Event registrations export APIs",
+          "item": [
+            {
+              "name": "Export Registrations to Excel",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});"
+                    ],
+                    "type": "javascript"
+                  }
+                }
+              ],
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{adminToken}}"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/events/1/registrations/export",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "admin",
+                    "events",
+                    "1",
+                    "registrations",
+                    "export"
+                  ]
+                },
+                "description": "Generate and download a stylized Excel spreadsheet of all student registrations, attendance, and certificates for the event. Open to ADMIN and TEACHER (Teachers restricted to their own events)."
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
