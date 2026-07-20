@@ -36,23 +36,20 @@ spring:
             enabled: false
     open-in-view: false
 
-  # Deferred repository bootstrapping to parallelize initialization
+  # Spring Data settings (JPA bootstrap mode and Redis caching)
   data:
     jpa:
       repositories:
         bootstrap-mode: deferred
+    redis:
+      url: ${SPRING_REDIS_URL:${REDIS_URL}}
+      timeout: 3000
 
   # Flyway Configuration for enterprise versioning
   flyway:
     enabled: true
     baseline-on-migrate: true
     baseline-version: "1"
-
-  # Redis Configuration for production caching and session resilience
-  data:
-    redis:
-      url: ${SPRING_REDIS_URL:${REDIS_URL}}
-      timeout: 3000
 
 # Server configuration for production
 server:
