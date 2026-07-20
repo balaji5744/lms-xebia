@@ -21,4 +21,4 @@ COPY --from=build /app/target/geeknito-backend-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 
 # Start the Spring Boot application
-ENTRYPOINT ["java", "-XX:+UseSerialGC", "-Xms128m", "-Xmx256m", "-XX:MaxMetaspaceSize=96m", "-Xss256k", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-XX:+UseSerialGC", "-Xms128m", "-Xmx256m", "-XX:MaxMetaspaceSize=160m", "-Xss256k", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]

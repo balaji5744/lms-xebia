@@ -82,8 +82,8 @@ public class StartupValidator implements CommandLineRunner {
             connection = redisConnectionFactory.getConnection();
             String pingResult = connection.ping();
             return "PONG".equalsIgnoreCase(pingResult);
-        } catch (Exception e) {
-            log.error("Redis verification failed: {}", e.getMessage());
+        } catch (Throwable t) {
+            log.warn("Redis verification failed: {}. Entering Resilient Fallback Mode (Enterprise LMS continues to run securely).", t.getMessage());
             return false;
         } finally {
             if (connection != null) {

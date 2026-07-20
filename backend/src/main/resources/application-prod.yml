@@ -29,6 +29,18 @@ spring:
           batch_size: 50
         order_inserts: true
         order_updates: true
+        temp:
+          use_jdbc_metadata_defaults: false
+        integration:
+          envers:
+            enabled: false
+    open-in-view: false
+
+  # Deferred repository bootstrapping to parallelize initialization
+  data:
+    jpa:
+      repositories:
+        bootstrap-mode: deferred
 
   # Flyway Configuration for enterprise versioning
   flyway:
