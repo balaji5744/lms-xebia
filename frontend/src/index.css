@@ -34,6 +34,29 @@
   }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+@keyframes float-reverse {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(6px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+.animate-float-reverse {
+  animation: float-reverse 5s ease-in-out infinite;
+}
+
 body {
   @apply font-sans bg-[#F7F8FC] text-[#5A5A5A] antialiased selection:bg-brand-primary/10 selection:text-brand-primary;
 }

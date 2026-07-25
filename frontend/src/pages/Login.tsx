@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApp } from "../context/AppContext";
-import { Mail, Eye, EyeOff, User, ArrowRight, Shield, ClipboardList } from "lucide-react";
+import {
+  Mail,
+  Eye,
+  EyeOff,
+  User,
+  ArrowRight,
+  Shield,
+  ClipboardList,
+} from "lucide-react";
 import authService from "../services/authService";
+import logoPurple from "../assets/Logo-Purple.png";
 
 // Exact image representation of the green fire-breathing dragon mascot
 const DragonMascot: React.FC = () => (
@@ -15,6 +24,65 @@ const DragonMascot: React.FC = () => (
     />
   </div>
 );
+
+// Xebia Corporate Step-and-Repeat Backdrop Component
+const XebiaStepAndRepeatBackground: React.FC = () => {
+  const rows = Array.from({ length: 26 });
+  const cols = Array.from({ length: 22 });
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 bg-gradient-to-br from-[#fdf8fb] via-[#f7ebf5] to-[#f0e3f0]">
+      {/* Soft Ambient Radial Glows */}
+      <div className="absolute -top-36 -left-36 w-[600px] h-[600px] rounded-full bg-purple-200/30 blur-[140px]" />
+      <div className="absolute -bottom-36 -right-36 w-[600px] h-[600px] rounded-full bg-pink-200/30 blur-[140px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] rounded-full bg-purple-100/35 blur-[160px]" />
+
+      {/* Subtle Dotted Texture using exact Xebia brand purple */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "radial-gradient(#793B74 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+      />
+
+      {/* Official Xebia Corporate Step & Repeat Pattern Matrix */}
+      <div className="absolute inset-[-20%] flex flex-col items-center justify-center space-y-[90px] opacity-[0.33]">
+        {rows.map((_, rowIndex) => {
+          return (
+            <div
+              key={rowIndex}
+              className="flex items-center gap-[140px] whitespace-nowrap"
+            >
+              {cols.map((_, colIndex) => {
+                const isLogo = (rowIndex + colIndex) % 2 === 0;
+
+                return (
+                  <div
+                    key={colIndex}
+                    className="flex items-center justify-center w-[110px] h-[30px]"
+                  >
+                    {isLogo ? (
+                      <img
+                        src={logoPurple}
+                        alt="Xebia Logo"
+                        className="w-[85px] h-auto object-contain"
+                      />
+                    ) : (
+                      <span className="text-[19px] font-semibold tracking-[0.15em] text-[#793B74] font-sans">
+                        Xebia LMS
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 export const Login: React.FC = () => {
   const { userRole, login, showToast } = useApp();
@@ -82,7 +150,7 @@ export const Login: React.FC = () => {
         // Login using the real database auth endpoint
         const response = await authService.login(email, password);
         login(response);
-        
+
         switch (response.role) {
           case "admin":
             navigate("/admin/dashboard");
@@ -128,17 +196,16 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf0f5] flex items-center justify-center p-4 sm:p-6 md:p-12 font-sans relative overflow-hidden">
-      {/* Absolute Decorative Blobs to match references */}
-      <div className="absolute top-[-10%] right-[-10%] w-[35vw] h-[35vw] rounded-full bg-pink-100/50 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[35vw] h-[35vw] rounded-full bg-purple-100/40 blur-[100px] pointer-events-none" />
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-12 font-sans relative overflow-hidden">
+      {/* Corporate Xebia Step-and-Repeat Background Pattern */}
+      <XebiaStepAndRepeatBackground />
 
       {/* Main Responsive Split Layout Card container */}
-      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-xl overflow-hidden grid md:grid-cols-2 relative z-10 border border-[#f1e4ec]">
+      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden grid md:grid-cols-2 relative z-10 border border-[#f1e4ec]">
         {/* LEFT COLUMN: Pale Pinkish/Lavender Mascot Panel */}
         <div className="bg-[#fcf5f9] p-8 md:p-12 flex flex-col justify-center items-center relative border-b md:border-b-0 md:border-r border-[#f1e4ec]">
           {/* Elegant White Speech Bubble */}
-          <div className="relative bg-white text-[#2a2327] font-medium text-center text-sm sm:text-base px-6 py-4 rounded-2xl border border-[#ecdbe4] shadow-sm max-w-[280px] mb-6 animate-bounce">
+          <div className="relative bg-white text-[#2a2327] font-medium text-center text-sm sm:text-base px-6 py-4 rounded-2xl border border-[#ecdbe4] shadow-xs max-w-[280px] mb-6 animate-bounce">
             {isSignup ? (
               <span>Join me! Let's start your learning journey together.</span>
             ) : (
@@ -343,26 +410,44 @@ export const Login: React.FC = () => {
                 <div className="p-2.5 rounded border border-purple-100 bg-purple-50/30 text-left">
                   <div className="flex items-center gap-1 text-purple-700">
                     <Shield className="w-3 h-3 shrink-0" />
-                    <p className="text-[10px] font-bold uppercase font-display">Admin</p>
+                    <p className="text-[10px] font-bold uppercase font-display">
+                      Admin
+                    </p>
                   </div>
-                  <p className="text-[11px] font-semibold text-gray-700 mt-0.5 break-all">admin@educorp.com</p>
-                  <p className="text-[10px] text-gray-500 font-mono">pw: adminpass123</p>
+                  <p className="text-[11px] font-semibold text-gray-700 mt-0.5 break-all">
+                    admin@educorp.com
+                  </p>
+                  <p className="text-[10px] text-gray-500 font-mono">
+                    pw: adminpass123
+                  </p>
                 </div>
                 <div className="p-2.5 rounded border border-purple-100 bg-purple-50/30 text-left">
                   <div className="flex items-center gap-1 text-purple-700">
                     <ClipboardList className="w-3 h-3 shrink-0" />
-                    <p className="text-[10px] font-bold uppercase font-display">Teacher</p>
+                    <p className="text-[10px] font-bold uppercase font-display">
+                      Teacher
+                    </p>
                   </div>
-                  <p className="text-[11px] font-semibold text-gray-700 mt-0.5 break-all">teacher@educorp.com</p>
-                  <p className="text-[10px] text-gray-500 font-mono">pw: teacherpass123</p>
+                  <p className="text-[11px] font-semibold text-gray-700 mt-0.5 break-all">
+                    teacher@educorp.com
+                  </p>
+                  <p className="text-[10px] text-gray-500 font-mono">
+                    pw: teacherpass123
+                  </p>
                 </div>
                 <div className="p-2.5 rounded border border-[#01AC9F]/20 bg-[#01AC9F]/5 text-left">
                   <div className="flex items-center gap-1 text-[#01AC9F]">
                     <User className="w-3 h-3 shrink-0" />
-                    <p className="text-[10px] font-bold uppercase font-display">Student</p>
+                    <p className="text-[10px] font-bold uppercase font-display">
+                      Student
+                    </p>
                   </div>
-                  <p className="text-[11px] font-semibold text-gray-700 mt-0.5 break-all">student@educorp.com</p>
-                  <p className="text-[10px] text-gray-500 font-mono">pw: studentpass123</p>
+                  <p className="text-[11px] font-semibold text-gray-700 mt-0.5 break-all">
+                    student@educorp.com
+                  </p>
+                  <p className="text-[10px] text-gray-500 font-mono">
+                    pw: studentpass123
+                  </p>
                 </div>
               </div>
             </div>
