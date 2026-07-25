@@ -62,7 +62,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/categories", "/categories/**", "/api/categories", "/api/categories/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/courses", "/courses/**", "/catalog/courses", "/catalog/courses/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/catalog/events", "/catalog/events/**").permitAll()
-                .requestMatchers("/actuator/health", "/api/health").permitAll()
+                .requestMatchers("/actuator/health", "/api/health", "/health", "/ping").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
                 
                 // Admin & Teacher endpoints (Course management privileges)
