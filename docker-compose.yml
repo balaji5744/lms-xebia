@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: lms_postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: enterprise_lms_db
+      POSTGRES_USER: lms_admin
+      POSTGRES_PASSWORD: admin_secure_pass_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lms-network
+
+  redis:
+    image: redis:7.0-alpine
+    container_name: lms_redis_cache
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - lms-network
+
+  execution-service:
+    build:
+      context: ./execution-service
+      dockerfile: Dockerfile
+    container_name: lms_execution_service
+    restart: always
+    environment:
+      - PORT=8081
+      - HOST_SCRATCH_DIR=${HOST_SCRATCH_DIR}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./scratch:/app/scratch
+    networks:
+      - lms-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lms_spring_backend
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/enterprise_lms_db
+      - SPRING_DATASOURCE_USERNAME=lms_admin
+      - SPRING_DATASOURCE_PASSWORD=admin_secure_pass_2026
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - LMS_EXECUTION_SERVICE_URL=http://execution-service:8081
+    depends_on:
+      - postgres
+      - redis
+      - execution-service
+    networks:
+      - lms-network
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: lms_react_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - lms-network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  lms-network:
+    driver: bridge

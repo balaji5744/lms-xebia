@@ -31,4 +31,5 @@ public class ContentResponseDTO implements Serializable {
     private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private com.geeknito.geeknito_backend.coding.dto.CodingProblemResponseDTO codingProblem;
 }

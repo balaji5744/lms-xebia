@@ -1,0 +1,3 @@
+FROM alpine:3.18
+RUN apk add --no-cache openjdk17-jdk python3 g++ gcc make
+WORKDIR /sandbox

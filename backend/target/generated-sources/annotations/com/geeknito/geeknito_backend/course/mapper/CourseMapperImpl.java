@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-06-26T14:14:39+0530",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
+    date = "2026-08-15T16:06:59+0530",
+    comments = "version: 1.5.5.Final, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
 public class CourseMapperImpl implements CourseMapper {
@@ -28,12 +28,12 @@ public class CourseMapperImpl implements CourseMapper {
 
         CourseCatalogCardDTO.CourseCatalogCardDTOBuilder courseCatalogCardDTO = CourseCatalogCardDTO.builder();
 
-        courseCatalogCardDTO.id( entity.getId() );
-        courseCatalogCardDTO.title( entity.getTitle() );
-        courseCatalogCardDTO.slug( entity.getSlug() );
-        courseCatalogCardDTO.shortDescription( entity.getShortDescription() );
-        courseCatalogCardDTO.level( entity.getLevel() );
         courseCatalogCardDTO.duration( entity.getDuration() );
+        courseCatalogCardDTO.id( entity.getId() );
+        courseCatalogCardDTO.level( entity.getLevel() );
+        courseCatalogCardDTO.shortDescription( entity.getShortDescription() );
+        courseCatalogCardDTO.slug( entity.getSlug() );
+        courseCatalogCardDTO.title( entity.getTitle() );
 
         return courseCatalogCardDTO.build();
     }
@@ -46,15 +46,15 @@ public class CourseMapperImpl implements CourseMapper {
 
         CourseCatalogDetailDTO.CourseCatalogDetailDTOBuilder courseCatalogDetailDTO = CourseCatalogDetailDTO.builder();
 
+        courseCatalogDetailDTO.description( entity.getDescription() );
+        courseCatalogDetailDTO.duration( entity.getDuration() );
         courseCatalogDetailDTO.id( entity.getId() );
-        courseCatalogDetailDTO.title( entity.getTitle() );
+        courseCatalogDetailDTO.level( entity.getLevel() );
+        courseCatalogDetailDTO.modules( moduleEntityListToModuleResponseDTOList( entity.getModules() ) );
+        courseCatalogDetailDTO.shortDescription( entity.getShortDescription() );
         courseCatalogDetailDTO.slug( entity.getSlug() );
         courseCatalogDetailDTO.thumbnail( entity.getThumbnail() );
-        courseCatalogDetailDTO.shortDescription( entity.getShortDescription() );
-        courseCatalogDetailDTO.description( entity.getDescription() );
-        courseCatalogDetailDTO.level( entity.getLevel() );
-        courseCatalogDetailDTO.duration( entity.getDuration() );
-        courseCatalogDetailDTO.modules( moduleEntityListToModuleResponseDTOList( entity.getModules() ) );
+        courseCatalogDetailDTO.title( entity.getTitle() );
 
         return courseCatalogDetailDTO.build();
     }
@@ -67,11 +67,11 @@ public class CourseMapperImpl implements CourseMapper {
 
         ModuleResponseDTO.ModuleResponseDTOBuilder moduleResponseDTO = ModuleResponseDTO.builder();
 
-        moduleResponseDTO.id( entity.getId() );
-        moduleResponseDTO.title( entity.getTitle() );
         moduleResponseDTO.description( entity.getDescription() );
+        moduleResponseDTO.id( entity.getId() );
         moduleResponseDTO.moduleOrder( entity.getModuleOrder() );
         moduleResponseDTO.submodules( submoduleEntityListToSubmoduleResponseDTOList( entity.getSubmodules() ) );
+        moduleResponseDTO.title( entity.getTitle() );
 
         return moduleResponseDTO.build();
     }
@@ -84,11 +84,11 @@ public class CourseMapperImpl implements CourseMapper {
 
         SubmoduleResponseDTO.SubmoduleResponseDTOBuilder submoduleResponseDTO = SubmoduleResponseDTO.builder();
 
-        submoduleResponseDTO.id( entity.getId() );
-        submoduleResponseDTO.title( entity.getTitle() );
         submoduleResponseDTO.description( entity.getDescription() );
+        submoduleResponseDTO.id( entity.getId() );
         submoduleResponseDTO.slug( entity.getSlug() );
         submoduleResponseDTO.submoduleOrder( entity.getSubmoduleOrder() );
+        submoduleResponseDTO.title( entity.getTitle() );
 
         return submoduleResponseDTO.build();
     }

@@ -10,6 +10,12 @@ import com.geeknito.geeknito_backend.entity.learning.ContentEntity;
 import com.geeknito.geeknito_backend.entity.learning.CourseEntity;
 import com.geeknito.geeknito_backend.entity.learning.ModuleEntity;
 import com.geeknito.geeknito_backend.entity.learning.SubmoduleEntity;
+import com.geeknito.geeknito_backend.coding.repository.CodingProblemRepository;
+import com.geeknito.geeknito_backend.coding.repository.TestCaseRepository;
+import com.geeknito.geeknito_backend.coding.repository.StarterCodeRepository;
+import com.geeknito.geeknito_backend.entity.learning.CodingProblemEntity;
+import com.geeknito.geeknito_backend.entity.learning.TestCaseEntity;
+import com.geeknito.geeknito_backend.entity.learning.StarterCodeEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -35,6 +41,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final ModuleRepository moduleRepository;
     private final SubmoduleRepository submoduleRepository;
     private final ContentRepository contentRepository;
+    private final CodingProblemRepository codingProblemRepository;
+    private final TestCaseRepository testCaseRepository;
+    private final StarterCodeRepository starterCodeRepository;
     private final JdbcTemplate jdbcTemplate;
 
     @Override
@@ -260,6 +269,69 @@ public class DatabaseSeeder implements CommandLineRunner {
                 .build();
 
         submoduleRepository.save(sub2_1);
+
+        // Seed a sample coding assignment in submodule sub2_1
+        ContentEntity codingAssignment = ContentEntity.builder()
+                .title("Find Maximum Element")
+                .type("coding_assignment")
+                .contentOrder(1)
+                .isActive(true)
+                .submodule(sub2_1)
+                .build();
+        codingAssignment = contentRepository.save(codingAssignment);
+
+        CodingProblemEntity problem = CodingProblemEntity.builder()
+                .content(codingAssignment)
+                .slug("find-maximum-element")
+                .description("Given an integer array, find the maximum element.")
+                .inputFormat("The first line contains N, the size of the array.\nThe second line contains N integers.")
+                .outputFormat("Print the maximum element.")
+                .constraints("1 <= N <= 10^5\n-10^9 <= array[i] <= 10^9")
+                .explanation("For input size 5 with elements [10, 20, 5, 40, 30], the largest element is 40.")
+                .difficulty("Easy")
+                .points(100)
+                .timeLimit(2000)
+                .memoryLimit(256)
+                .isActive(true)
+                .build();
+        problem = codingProblemRepository.save(problem);
+
+        // Public test cases
+        TestCaseEntity tc1 = TestCaseEntity.builder()
+                .problem(problem)
+                .input("5\n10 20 5 40 30\n")
+                .expectedOutput("40\n")
+                .isHidden(false)
+                .points(50)
+                .testOrder(1)
+                .build();
+        testCaseRepository.save(tc1);
+
+        // Hidden test cases
+        TestCaseEntity tc2 = TestCaseEntity.builder()
+                .problem(problem)
+                .input("3\n-5 -2 -10\n")
+                .expectedOutput("-2\n")
+                .isHidden(true)
+                .points(50)
+                .testOrder(2)
+                .build();
+        testCaseRepository.save(tc2);
+
+        // Starter code
+        StarterCodeEntity scJava = StarterCodeEntity.builder()
+                .problem(problem)
+                .language("java")
+                .code("import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n        if (sc.hasNextInt()) {\n            int n = sc.nextInt();\n            int max = Integer.MIN_VALUE;\n            for (int i = 0; i < n; i++) {\n                int val = sc.nextInt();\n                if (val > max) max = val;\n            }\n            System.out.println(max);\n        }\n    }\n}")
+                .build();
+        starterCodeRepository.save(scJava);
+
+        StarterCodeEntity scPython = StarterCodeEntity.builder()
+                .problem(problem)
+                .language("python")
+                .code("# Read input from stdin\nimport sys\n\ndef main():\n    lines = sys.stdin.read().split()\n    if not lines:\n        return\n    n = int(lines[0])\n    arr = [int(x) for x in lines[1:n+1]]\n    print(max(arr))\n\nif __name__ == '__main__':\n    main()")
+                .build();
+        starterCodeRepository.save(scPython);
 
         // Module 2 - Submodule 2: Kafka
         SubmoduleEntity sub2_2 = SubmoduleEntity.builder()

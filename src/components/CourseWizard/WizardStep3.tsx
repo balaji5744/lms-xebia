@@ -76,6 +76,24 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
   const [videoUrlVal, setVideoUrlVal] = useState("");
   const [videoCaptionVal, setVideoCaptionVal] = useState("");
 
+  // Coding Assignment fields
+  const [probSlug, setProbSlug] = useState("find-max");
+  const [probDifficulty, setProbDifficulty] = useState<"Easy" | "Medium" | "Hard">("Easy");
+  const [probPoints, setProbPoints] = useState(100);
+  const [probTimeLimit, setProbTimeLimit] = useState(2000);
+  const [probMemoryLimit, setProbMemoryLimit] = useState(256);
+  const [probDesc, setProbDesc] = useState("");
+  const [probInputFormat, setProbInputFormat] = useState("");
+  const [probOutputFormat, setProbOutputFormat] = useState("");
+  const [probConstraints, setProbConstraints] = useState("");
+  const [probExplanation, setProbExplanation] = useState("");
+  const [pubInput, setPubInput] = useState("");
+  const [pubOutput, setPubOutput] = useState("");
+  const [hidInput, setHidInput] = useState("");
+  const [hidOutput, setHidOutput] = useState("");
+  const [starterJava, setStarterJava] = useState("import java.util.*;\n\npublic class Main {\n    public static void main(String[] args) {\n        // Write code here\n    }\n}");
+  const [starterPython, setStarterPython] = useState("# Write code here");
+
   // 1. Query: Fetch all content blocks for active submodule
   const {
     data: fetchedBlocks = [],
@@ -175,13 +193,19 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
       alert("Please enter a valid Video link.");
       return;
     }
+    if (selectedType === ("coding_assignment" as any) && !probDesc.trim()) {
+      alert("Please fill in the Problem Description.");
+      return;
+    }
 
     const nextOrder = sortedBlocks.length + 1;
 
     // Build the new block payload with both modern and backward compatible fields
     const payload: Partial<ContentBlock> = {
       type: selectedType,
-      title: `${selectedType.toUpperCase()} Block ${nextOrder}`,
+      title: selectedType === ("coding_assignment" as any)
+        ? probSlug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
+        : `${selectedType.toUpperCase()} Block ${nextOrder}`,
       contentOrder: nextOrder,
       isActive: true,
 
@@ -198,13 +222,56 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
           ? textVal.trim()
           : selectedType === "code"
             ? codeVal.trim()
-            : videoUrlVal.trim(),
+            : selectedType === "video"
+              ? videoUrlVal.trim()
+              : probSlug,
       metadata: {
         language: selectedType === "code" ? codeLang : undefined,
         videoUrl: selectedType === "video" ? videoUrlVal.trim() : undefined,
         caption: selectedType === "video" ? videoCaptionVal.trim() : undefined,
       },
     };
+
+    if (selectedType === ("coding_assignment" as any)) {
+      (payload as any).codingProblem = {
+        slug: probSlug.trim(),
+        description: probDesc.trim(),
+        inputFormat: probInputFormat.trim(),
+        outputFormat: probOutputFormat.trim(),
+        constraints: probConstraints.trim(),
+        explanation: probExplanation.trim(),
+        difficulty: probDifficulty,
+        points: probPoints,
+        timeLimit: probTimeLimit,
+        memoryLimit: probMemoryLimit,
+        testCases: [
+          {
+            input: pubInput,
+            expectedOutput: pubOutput,
+            isHidden: false,
+            points: 50,
+            testOrder: 1
+          },
+          {
+            input: hidInput,
+            expectedOutput: hidOutput,
+            isHidden: true,
+            points: 50,
+            testOrder: 2
+          }
+        ],
+        starterCodes: [
+          {
+            language: "java",
+            code: starterJava
+          },
+          {
+            language: "python",
+            code: starterPython
+          }
+        ]
+      };
+    }
 
     createBlockMutation.mutate(payload);
   };
@@ -421,6 +488,22 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                           </div>
                         </div>
                       )}
+
+                      {bType === "coding_assignment" && (
+                        <div className="bg-indigo-50/30 border border-indigo-100/50 rounded-xl p-3 flex items-center gap-3">
+                          <div className="w-10 h-7 bg-indigo-100 rounded flex items-center justify-center text-indigo-600 shrink-0">
+                            <Code2 className="w-3.5 h-3.5" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-gray-800 truncate">
+                              Coding Assignment: {block.title}
+                            </p>
+                            <p className="text-[10px] text-gray-400 font-mono truncate">
+                              Difficulty: {block.codingProblem?.difficulty || "Easy"} | Max Points: {block.codingProblem?.points || 100}
+                            </p>
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Operations Button panel */}
@@ -468,7 +551,7 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
             </div>
 
             {/* Block Type Selection tabs */}
-            <div className="grid grid-cols-3 gap-1 bg-gray-200/50 p-1 rounded-xl">
+            <div className="grid grid-cols-4 gap-1 bg-gray-200/50 p-1 rounded-xl">
               <button
                 type="button"
                 onClick={() => setSelectedType("text")}
@@ -506,6 +589,19 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
               >
                 <CodeIcon className="w-3.5 h-3.5" />
                 Code
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSelectedType("coding_assignment" as any)}
+                className={`py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                  selectedType === "coding_assignment"
+                    ? "bg-[#510047] text-white shadow-sm"
+                    : "text-gray-500 hover:bg-white/50 hover:text-gray-800"
+                }`}
+              >
+                <Code2 className="w-3.5 h-3.5" />
+                Judge
               </button>
             </div>
 
@@ -595,6 +691,179 @@ export const WizardStep3: React.FC<WizardStep3Props> = ({
                       value={codeVal}
                       onChange={(e) => setCodeVal(e.target.value)}
                       className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-indigo-500 transition-all resize-none text-gray-200 font-mono leading-normal"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Coding Assignment Inputs */}
+              {selectedType === ("coding_assignment" as any) && (
+                <div className="space-y-4 animate-fade-in max-h-[450px] overflow-y-auto pr-1">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Slug (e.g. find-max)</label>
+                      <input
+                        type="text"
+                        required
+                        value={probSlug}
+                        onChange={(e) => setProbSlug(e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-[#510047]"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Difficulty</label>
+                      <select
+                        value={probDifficulty}
+                        onChange={(e) => setProbDifficulty(e.target.value as any)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-3 py-1.5 text-xs focus:outline-none focus:border-[#510047]"
+                      >
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Points</label>
+                      <input
+                        type="number"
+                        required
+                        value={probPoints}
+                        onChange={(e) => setProbPoints(parseInt(e.target.value))}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Time Lmt (ms)</label>
+                      <input
+                        type="number"
+                        required
+                        value={probTimeLimit}
+                        onChange={(e) => setProbTimeLimit(parseInt(e.target.value))}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Mem Lmt (MB)</label>
+                      <input
+                        type="number"
+                        required
+                        value={probMemoryLimit}
+                        onChange={(e) => setProbMemoryLimit(parseInt(e.target.value))}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Problem Description</label>
+                    <textarea
+                      rows={3}
+                      required
+                      placeholder="Write problem statement..."
+                      value={probDesc}
+                      onChange={(e) => setProbDesc(e.target.value)}
+                      className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Input Format</label>
+                      <textarea
+                        rows={2}
+                        value={probInputFormat}
+                        onChange={(e) => setProbInputFormat(e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none resize-none"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Output Format</label>
+                      <textarea
+                        rows={2}
+                        value={probOutputFormat}
+                        onChange={(e) => setProbOutputFormat(e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Constraints</label>
+                      <textarea
+                        rows={2}
+                        value={probConstraints}
+                        onChange={(e) => setProbConstraints(e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none resize-none"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Explanation</label>
+                      <textarea
+                        rows={2}
+                        value={probExplanation}
+                        onChange={(e) => setProbExplanation(e.target.value)}
+                        className="w-full bg-white border border-gray-200 rounded-xl px-2 py-1.5 text-xs focus:outline-none resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="border border-dashed border-gray-200 p-2.5 rounded-xl space-y-3">
+                    <span className="text-[10px] font-black text-indigo-700 font-mono">Example TestCase (Public)</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        placeholder="Public Input"
+                        value={pubInput}
+                        onChange={(e) => setPubInput(e.target.value)}
+                        className="bg-white border border-gray-200 rounded-lg p-1.5 text-xs"
+                      />
+                      <input
+                        placeholder="Public Expected Output"
+                        value={pubOutput}
+                        onChange={(e) => setPubOutput(e.target.value)}
+                        className="bg-white border border-gray-200 rounded-lg p-1.5 text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="border border-dashed border-gray-200 p-2.5 rounded-xl space-y-3">
+                    <span className="text-[10px] font-black text-rose-700 font-mono">Grading TestCase (Hidden)</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        placeholder="Hidden Input"
+                        value={hidInput}
+                        onChange={(e) => setHidInput(e.target.value)}
+                        className="bg-white border border-gray-200 rounded-lg p-1.5 text-xs"
+                      />
+                      <input
+                        placeholder="Hidden Expected Output"
+                        value={hidOutput}
+                        onChange={(e) => setHidOutput(e.target.value)}
+                        className="bg-white border border-gray-200 rounded-lg p-1.5 text-xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Java Starter Template</label>
+                    <textarea
+                      rows={4}
+                      value={starterJava}
+                      onChange={(e) => setStarterJava(e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-gray-200 font-mono"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-[9px] font-bold text-gray-500 uppercase font-mono">Python Starter Template</label>
+                    <textarea
+                      rows={3}
+                      value={starterPython}
+                      onChange={(e) => setStarterPython(e.target.value)}
+                      className="w-full bg-gray-900 border border-gray-800 rounded-xl px-3 py-2 text-xs focus:outline-none text-gray-200 font-mono"
                     />
                   </div>
                 </div>

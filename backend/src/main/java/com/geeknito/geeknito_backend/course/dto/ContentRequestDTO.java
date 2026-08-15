@@ -26,4 +26,5 @@ public class ContentRequestDTO implements Serializable {
     private String caption;
     private Integer headingLevel;
     private Integer contentOrder;
+    private com.geeknito.geeknito_backend.coding.dto.CodingProblemRequestDTO codingProblem;
 }

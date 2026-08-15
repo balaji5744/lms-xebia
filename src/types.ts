@@ -117,3 +117,81 @@ export interface Course {
   isActive?: boolean;
   isPublished?: boolean;
 }
+
+export interface TestCase {
+  id?: number;
+  input?: string;
+  expectedOutput?: string;
+  isHidden: boolean;
+  points: number;
+  testOrder: number;
+}
+
+export interface StarterCode {
+  id?: number;
+  language: string;
+  code: string;
+}
+
+export interface CodingProblem {
+  id?: number;
+  slug: string;
+  description: string;
+  inputFormat?: string;
+  outputFormat?: string;
+  constraints?: string;
+  explanation?: string;
+  difficulty: "Easy" | "Medium" | "Hard";
+  points: number;
+  timeLimit: number;
+  memoryLimit: number;
+  testCases?: TestCase[];
+  starterCodes?: StarterCode[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface TestCaseRunResult {
+  testCaseId: number;
+  status: string;
+  input?: string;
+  expectedOutput?: string;
+  actualOutput?: string;
+  executionTime: number;
+  memoryUsed: number;
+}
+
+export interface RunResponse {
+  status: "SUCCESS" | "COMPILATION_ERROR" | "SYSTEM_ERROR";
+  compileError?: string;
+  testCaseResults?: TestCaseRunResult[];
+}
+
+export interface TestCaseSubmissionResult {
+  testCaseId: number;
+  isHidden: boolean;
+  status: string;
+  input?: string;
+  expectedOutput?: string;
+  actualOutput?: string;
+  executionTime: number;
+  memoryUsed: number;
+}
+
+export interface SubmissionResponse {
+  id: number;
+  problemId: number;
+  studentId: string;
+  language: string;
+  sourceCode: string;
+  status: string;
+  score: number;
+  passedTests: number;
+  totalTests: number;
+  executionTime: number;
+  memoryUsed: number;
+  errorMessage?: string;
+  testCaseResults?: TestCaseSubmissionResult[];
+  submittedAt: string;
+}
+

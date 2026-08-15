@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useApp } from "../context/AppContext";
+import { useQuery } from "@tanstack/react-query";
 import {
   ArrowLeft,
   Clock,
@@ -16,8 +17,12 @@ import {
   Globe2,
   CheckCircle2,
   Lock,
+  Loader2,
+  Code,
 } from "lucide-react";
-import { Course, Module, Submodule } from "../types";
+import { Course, Module, Submodule, ContentBlock } from "../types";
+import contentService from "../services/contentService";
+import { StudentCodingWorkspace } from "./StudentCodingWorkspace";
 
 // ============================================================================
 // Fallback Mock Data for demoing rich Curriculum Accordions
@@ -74,10 +79,132 @@ const DEFAULT_MOCK_MODULES: Module[] = [
 export const CourseDetailView: React.FC = () => {
   const { selectedCourseId, courses, setCurrentView } = useApp();
 
+  const [selectedSubmodule, setSelectedSubmodule] = useState<{ id: number; title: string } | null>(null);
+  const [activeCodingProblemId, setActiveCodingProblemId] = useState<number | null>(null);
+
+  // Load content blocks of selected submodule
+  const { data: contentBlocks = [], isLoading: isContentLoading } = useQuery<ContentBlock[], Error>({
+    queryKey: ["submoduleContents", selectedSubmodule?.id],
+    queryFn: () => contentService.getContentBySubmodule(selectedSubmodule!.id),
+    enabled: !!selectedSubmodule?.id,
+  });
+
   // Find currently active course
   const course = useMemo(() => {
     return courses.find((c) => c.id === selectedCourseId) || courses[0];
   }, [courses, selectedCourseId]);
+
+  // If coding problem is active, render Monaco editor workspace side-by-side
+  if (activeCodingProblemId !== null) {
+    return (
+      <StudentCodingWorkspace
+        problemId={activeCodingProblemId}
+        onBack={() => setActiveCodingProblemId(null)}
+      />
+    );
+  }
+
+  // If a submodule lesson is active, render details view
+  if (selectedSubmodule !== null) {
+    return (
+      <div className="pb-24 animate-fade-in space-y-6 max-w-4xl mx-auto">
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setSelectedSubmodule(null)}
+            className="group flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-100 text-xs font-bold text-[#510047] hover:border-[#ffd7f0] hover:bg-[#ffd7f0]/10 transition-all shadow-sm cursor-pointer"
+          >
+            &larr; Back to Syllabus
+          </button>
+          <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest">
+            Lesson Workspace
+          </span>
+        </div>
+
+        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm space-y-6">
+          <div className="space-y-1">
+            <span className="text-[10px] bg-[#510047]/10 text-[#510047] px-2.5 py-1 rounded-full font-bold uppercase select-none">
+              Active Lesson
+            </span>
+            <h2 className="text-lg font-black text-[#510047] pt-2">{selectedSubmodule.title}</h2>
+          </div>
+
+          {isContentLoading ? (
+            <div className="py-20 flex flex-col items-center justify-center gap-2 text-gray-500">
+              <Loader2 className="w-6 h-6 text-[#510047] animate-spin" />
+              <p className="text-xs">Fetching lesson contents...</p>
+            </div>
+          ) : contentBlocks.length === 0 ? (
+            <div className="py-16 text-center text-gray-400 italic text-xs">
+              No reading material configured for this lesson yet.
+            </div>
+          ) : (
+            <div className="space-y-8 divide-y divide-gray-50 pt-2">
+              {contentBlocks.map((block: ContentBlock, idx: number) => {
+                const bType = block.type || "text";
+                return (
+                  <div key={block.id ?? idx} className="space-y-3 pt-6 first:pt-0 first:border-none">
+                    <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">
+                      {block.title || `${bType.toUpperCase()} BLOCK`}
+                    </h4>
+                    
+                    {bType === "text" && (
+                      <p className="text-xs text-gray-700 leading-relaxed font-sans whitespace-pre-wrap bg-gray-50/50 p-4 rounded-xl border border-gray-100/50">
+                        {block.text || block.value}
+                      </p>
+                    )}
+
+                    {bType === "code" && (
+                      <div className="relative group select-all">
+                        <pre className="bg-gray-900 text-gray-200 rounded-xl p-4 font-mono text-[11px] overflow-x-auto border border-gray-800 leading-relaxed">
+                          <code>{block.code || block.value}</code>
+                        </pre>
+                        <span className="absolute right-3 top-3 text-[9px] bg-gray-800 text-gray-400 px-2 py-0.5 rounded font-mono uppercase">
+                          {block.language || block.metadata?.language || "Code"}
+                        </span>
+                      </div>
+                    )}
+
+                    {bType === "video" && (
+                      <div className="aspect-video w-full rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-black">
+                        <iframe
+                          src={block.videoUrl || block.metadata?.videoUrl}
+                          title={block.title}
+                          className="w-full h-full border-none"
+                          allowFullScreen
+                        />
+                      </div>
+                    )}
+
+                    {bType === "coding_assignment" && block.codingProblem && (
+                      <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 border border-indigo-100/80 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+                        <div className="space-y-1">
+                          <span className="text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full text-white bg-indigo-500 font-mono">
+                            Coding Assignment
+                          </span>
+                          <h4 className="font-bold text-sm text-gray-800 mt-2">
+                            {block.codingProblem.slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+                          </h4>
+                          <p className="text-[11px] text-gray-500">
+                            Difficulty: {block.codingProblem.difficulty} | Points: {block.codingProblem.points}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setActiveCodingProblemId(block.codingProblem!.id!)}
+                          className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-[0.98] cursor-pointer flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+                        >
+                          <Code className="w-4 h-4" /> Start Coding Assignment
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   // If no course whatsoever is found, return simple error/empty notice
   if (!course) {
@@ -476,7 +603,14 @@ export const CourseDetailView: React.FC = () => {
                             return (
                               <div
                                 key={sub.id ?? `sub-${subIdx}`}
-                                className="p-6 hover:bg-white transition-colors duration-150 flex flex-col sm:flex-row sm:items-start justify-between gap-4"
+                                onClick={() => {
+                                  if (isEnrolled && sub.id !== undefined) {
+                                    setSelectedSubmodule({ id: sub.id, title: sub.title });
+                                  }
+                                }}
+                                className={`p-6 hover:bg-white transition-colors duration-150 flex flex-col sm:flex-row sm:items-start justify-between gap-4 ${
+                                  isEnrolled ? "cursor-pointer hover:border-l-4 hover:border-l-[#01AC9F]" : ""
+                                }`}
                               >
                                 <div className="flex items-start gap-3 max-w-xl">
                                   {/* Submodule order index marker */}
