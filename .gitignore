@@ -6,3 +6,7 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Maven Build Artifacts
+**/target/
+**/*.class

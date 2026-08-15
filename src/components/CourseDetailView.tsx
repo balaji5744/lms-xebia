@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { Course, Module, Submodule, ContentBlock } from "../types";
 import contentService from "../services/contentService";
+import curriculumService from "../services/curriculumService";
 import { StudentCodingWorkspace } from "./StudentCodingWorkspace";
 
 // ============================================================================
@@ -93,6 +94,117 @@ export const CourseDetailView: React.FC = () => {
   const course = useMemo(() => {
     return courses.find((c) => c.id === selectedCourseId) || courses[0];
   }, [courses, selectedCourseId]);
+
+  // Load real modules and submodules from API
+  const { data: apiModules = [] } = useQuery<Module[], Error>({
+    queryKey: ["courseCurriculum", course?.id],
+    queryFn: () => curriculumService.getCourseCurriculum(course!.id),
+    enabled: !!course?.id,
+  });
+
+
+
+  // Ensure course has modules. If not, supply the high-fidelity mock curriculum requested.
+  const modulesToShow = useMemo(() => {
+    if (apiModules && apiModules.length > 0) {
+      return apiModules;
+    }
+    return DEFAULT_MOCK_MODULES;
+  }, [apiModules]);
+
+  // Accordion state - dictionary tracking open/collapsed state of each module ID
+  const [expandedModules, setExpandedModules] = useState<
+    Record<number, boolean>
+  >(() => {
+    const initial: Record<number, boolean> = {};
+    modulesToShow.forEach((mod, index) => {
+      // Default expand the first module, collapse the rest
+      if (mod.id !== undefined) {
+        initial[mod.id] = index === 0;
+      }
+    });
+    return initial;
+  });
+
+  // Toggles auto-expansion of modules on fetch
+  useEffect(() => {
+    if (modulesToShow && modulesToShow.length > 0) {
+      setExpandedModules((prev) => {
+        const next = { ...prev };
+        modulesToShow.forEach((mod, index) => {
+          if (mod.id !== undefined && next[mod.id] === undefined) {
+            next[mod.id] = index === 0;
+          }
+        });
+        return next;
+      });
+    }
+  }, [modulesToShow]);
+
+  // Toggle single module accordion row
+  const toggleModule = (moduleId: number) => {
+    setExpandedModules((prev) => ({
+      ...prev,
+      [moduleId]: !prev[moduleId],
+    }));
+  };
+
+  // Student Enrollment Simulation states
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [completedLessons, setCompletedLessons] = useState<
+    Record<number, boolean>
+  >({});
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const handleEnroll = () => {
+    setIsEnrolled(true);
+    setShowConfetti(true);
+    setTimeout(() => setShowConfetti(false), 4000);
+  };
+
+  const toggleLessonComplete = (lessonId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCompletedLessons((prev) => ({
+      ...prev,
+      [lessonId]: !prev[lessonId],
+    }));
+  };
+
+  // Calculate syllabus statistics
+  const totalLessonsCount = useMemo(() => {
+    return modulesToShow.reduce(
+      (acc, mod) => acc + (mod.submodules?.length || 0),
+      0,
+    );
+  }, [modulesToShow]);
+
+  const completedCount = useMemo(() => {
+    return Object.values(completedLessons).filter(Boolean).length;
+  }, [completedLessons]);
+
+  const progressPercentage = useMemo(() => {
+    if (totalLessonsCount === 0) return 0;
+    return Math.round((completedCount / totalLessonsCount) * 100);
+  }, [completedCount, totalLessonsCount]);
+
+  // If no course whatsoever is found, return simple error/empty notice
+  if (!course) {
+    return (
+      <div className="text-center p-12 bg-white rounded-3xl border border-gray-100 max-w-md mx-auto my-12 shadow-sm">
+        <BookOpen className="w-12 h-12 text-[#510047] opacity-20 mx-auto mb-4" />
+        <h3 className="text-lg font-bold text-gray-800">No course selected</h3>
+        <p className="text-xs text-gray-400 mt-2">
+          Please select a course from the catalog page.
+        </p>
+        <button
+          onClick={() => setCurrentView("courses")}
+          className="mt-4 px-4 py-2 bg-[#01AC9F] text-white text-xs font-bold rounded-xl"
+        >
+          Return to Catalog
+        </button>
+      </div>
+    );
+  }
 
   // If coding problem is active, render Monaco editor workspace side-by-side
   if (activeCodingProblemId !== null) {
@@ -205,93 +317,6 @@ export const CourseDetailView: React.FC = () => {
       </div>
     );
   }
-
-  // If no course whatsoever is found, return simple error/empty notice
-  if (!course) {
-    return (
-      <div className="text-center p-12 bg-white rounded-3xl border border-gray-100 max-w-md mx-auto my-12 shadow-sm">
-        <BookOpen className="w-12 h-12 text-[#510047] opacity-20 mx-auto mb-4" />
-        <h3 className="text-lg font-bold text-gray-800">No course selected</h3>
-        <p className="text-xs text-gray-400 mt-2">
-          Please select a course from the catalog page.
-        </p>
-        <button
-          onClick={() => setCurrentView("courses")}
-          className="mt-4 px-4 py-2 bg-[#01AC9F] text-white text-xs font-bold rounded-xl"
-        >
-          Return to Catalog
-        </button>
-      </div>
-    );
-  }
-
-  // Ensure course has modules. If not, supply the high-fidelity mock curriculum requested.
-  const modulesToShow = useMemo(() => {
-    if (course.modules && course.modules.length > 0) {
-      return course.modules;
-    }
-    return DEFAULT_MOCK_MODULES;
-  }, [course]);
-
-  // Accordion state - dictionary tracking open/collapsed state of each module ID
-  const [expandedModules, setExpandedModules] = useState<
-    Record<number, boolean>
-  >(() => {
-    const initial: Record<number, boolean> = {};
-    modulesToShow.forEach((mod, index) => {
-      // Default expand the first module, collapse the rest
-      if (mod.id !== undefined) {
-        initial[mod.id] = index === 0;
-      }
-    });
-    return initial;
-  });
-
-  // Toggle single module accordion row
-  const toggleModule = (moduleId: number) => {
-    setExpandedModules((prev) => ({
-      ...prev,
-      [moduleId]: !prev[moduleId],
-    }));
-  };
-
-  // Student Enrollment Simulation states
-  const [isEnrolled, setIsEnrolled] = useState(false);
-  const [completedLessons, setCompletedLessons] = useState<
-    Record<number, boolean>
-  >({});
-  const [showConfetti, setShowConfetti] = useState(false);
-
-  const handleEnroll = () => {
-    setIsEnrolled(true);
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 4000);
-  };
-
-  const toggleLessonComplete = (lessonId: number, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setCompletedLessons((prev) => ({
-      ...prev,
-      [lessonId]: !prev[lessonId],
-    }));
-  };
-
-  // Calculate syllabus statistics
-  const totalLessonsCount = useMemo(() => {
-    return modulesToShow.reduce(
-      (acc, mod) => acc + (mod.submodules?.length || 0),
-      0,
-    );
-  }, [modulesToShow]);
-
-  const completedCount = useMemo(() => {
-    return Object.values(completedLessons).filter(Boolean).length;
-  }, [completedLessons]);
-
-  const progressPercentage = useMemo(() => {
-    if (totalLessonsCount === 0) return 0;
-    return Math.round((completedCount / totalLessonsCount) * 100);
-  }, [completedCount, totalLessonsCount]);
 
   return (
     <div className="pb-24 animate-fade-in space-y-8 max-w-6xl mx-auto">

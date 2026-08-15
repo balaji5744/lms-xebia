@@ -46,9 +46,16 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final StarterCodeRepository starterCodeRepository;
     private final JdbcTemplate jdbcTemplate;
 
+    @org.springframework.beans.factory.annotation.Value("${LMS_DB_SEED_ENABLED:false}")
+    private boolean seedEnabled;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        if (!seedEnabled) {
+            log.info("LMS Database Seeding is disabled (LMS_DB_SEED_ENABLED=false). Skipping database seed/reset.");
+            return;
+        }
         log.info("Starting Enterprise LMS Database Seeding process...");
 
         // 1. Wipe existing data using native PostgreSQL truncate with CASCADE to bypass FK constraints and soft deletes
