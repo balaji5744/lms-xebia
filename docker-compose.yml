@@ -53,6 +53,7 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - LMS_EXECUTION_SERVICE_URL=http://execution-service:8081
+      - LMS_EXECUTION_SERVICE_API_KEY=${LMS_EXECUTION_SERVICE_API_KEY:-}
       - LMS_DB_SEED_ENABLED=${LMS_DB_SEED_ENABLED:-false}
     depends_on:
       - postgres

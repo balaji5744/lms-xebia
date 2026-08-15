@@ -4,10 +4,50 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const { v4: uuidv4 } = require('uuid');
+const crypto = require('crypto');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const API_KEY = process.env.EXECUTION_SERVICE_API_KEY;
+const IS_PROD = process.env.NODE_ENV === 'production';
+
+// Fail-fast if running in production without a configured API key
+if (IS_PROD && (!API_KEY || API_KEY.trim() === '')) {
+  console.error('[CRITICAL ERROR] EXECUTION_SERVICE_API_KEY environment variable MUST be configured in production!');
+  process.exit(1);
+}
+
+// Timing-safe comparison helper
+function safeCompare(a, b) {
+  if (!a || !b) return false;
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
+// Authentication middleware
+app.use((req, res, next) => {
+  if (API_KEY) {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({
+        status: 'SYSTEM_ERROR',
+        compileError: 'Unauthorized: Missing or invalid token format.'
+      });
+    }
+    const token = authHeader.substring(7);
+    if (!safeCompare(token, API_KEY)) {
+      return res.status(401).json({
+        status: 'SYSTEM_ERROR',
+        compileError: 'Unauthorized: Invalid credentials.'
+      });
+    }
+  }
+  next();
+});
 
 const PORT = process.env.PORT || 8081;
 const SCRATCH_BASE_DIR = '/app/scratch';

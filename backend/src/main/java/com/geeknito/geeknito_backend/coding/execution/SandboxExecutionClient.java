@@ -19,10 +19,21 @@ public class SandboxExecutionClient {
     @Value("${lms.execution-service.url:http://localhost:8081}")
     private String executionServiceUrl;
 
+    @Value("${lms.execution-service.api-key:}")
+    private String executionServiceApiKey;
+
     public ExecutionResponse execute(ExecutionRequest request) {
         String url = executionServiceUrl + "/execute";
         try {
-            return restTemplate.postForObject(url, request, ExecutionResponse.class);
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+            if (executionServiceApiKey != null && !executionServiceApiKey.trim().isEmpty()) {
+                headers.set("Authorization", "Bearer " + executionServiceApiKey.trim());
+            }
+            org.springframework.http.HttpEntity<ExecutionRequest> entity = 
+                new org.springframework.http.HttpEntity<>(request, headers);
+                
+            return restTemplate.postForObject(url, entity, ExecutionResponse.class);
         } catch (Exception e) {
             return ExecutionResponse.builder()
                     .status("SYSTEM_ERROR")
