@@ -24,6 +24,8 @@ public class ContentResponseDTO implements Serializable {
     private String language;
     private String videoUrl;
     private String imageUrl;
+    private String fileUrl;
+    private String fileName;
     private String alt;
     private String caption;
     private Integer headingLevel;
@@ -31,5 +33,4 @@ public class ContentResponseDTO implements Serializable {
     private boolean isActive;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private com.geeknito.geeknito_backend.coding.dto.CodingProblemResponseDTO codingProblem;
 }

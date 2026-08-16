@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RequestMapping("/admin/submodules/{submoduleId}/contents")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@Tag(name = "Curriculum", description = "Curriculum modules and submodules APIs")
 public class ContentAdminController {
 
     private final ContentAdminService contentAdminService;

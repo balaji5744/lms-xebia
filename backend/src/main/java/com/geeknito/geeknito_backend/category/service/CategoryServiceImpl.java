@@ -2,14 +2,17 @@ package com.geeknito.geeknito_backend.category.service;
 
 import com.geeknito.geeknito_backend.category.dto.CategoryRequestDTO;
 import com.geeknito.geeknito_backend.category.dto.CategoryResponseDTO;
+import com.geeknito.geeknito_backend.category.dto.CategoryWithCourseCount;
 import com.geeknito.geeknito_backend.category.mapper.CategoryMapper;
 import com.geeknito.geeknito_backend.category.repository.CategoryRepository;
 import com.geeknito.geeknito_backend.course.repository.CourseRepository;
 import com.geeknito.geeknito_backend.entity.learning.CategoryEntity;
+import com.geeknito.geeknito_backend.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,12 +47,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "categories", key = "#id")
     public CategoryResponseDTO getCategoryById(Long id) {
         log.info("Fetching category details with ID: {}", id);
-        Object[] result = categoryRepository.findByIdWithCourseCount(id)
-                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
-        CategoryEntity entity = (CategoryEntity) result[0];
-        Long count = (Long) result[1];
+        CategoryWithCourseCount result = categoryRepository.findByIdWithCourseCount(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
+        CategoryEntity entity = result.getCategory();
+        Long count = result.getCourseCount();
         CategoryResponseDTO dto = categoryMapper.toResponseDTO(entity);
         dto.setCourseCount(count != null ? count : 0L);
         return dto;
@@ -62,8 +66,8 @@ public class CategoryServiceImpl implements CategoryService {
         log.info("Fetching active category nodes from backend database store");
         return categoryRepository.findByIsActiveTrueWithCourseCount().stream()
                 .map(result -> {
-                    CategoryEntity entity = (CategoryEntity) result[0];
-                    Long count = (Long) result[1];
+                    CategoryEntity entity = result.getCategory();
+                    Long count = result.getCourseCount();
                     CategoryResponseDTO dto = categoryMapper.toResponseDTO(entity);
                     dto.setCourseCount(count != null ? count : 0L);
                     return dto;
@@ -73,11 +77,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "categories", key = "'active'")
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id")
+    })
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO requestDTO) {
         log.info("Updating existing category node with ID: {}", id);
         CategoryEntity entity = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
 
         categoryMapper.updateEntityFromDto(requestDTO, entity);
         if (requestDTO.getActive() != null) {
@@ -93,11 +100,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    @CacheEvict(value = "categories", key = "'active'")
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id")
+    })
     public void deleteCategory(Long id) {
         log.info("Performing enterprise-level soft-delete of category with ID: {}", id);
         CategoryEntity entity = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with ID: " + id));
 
         entity.setActive(false);
         categoryRepository.save(entity);

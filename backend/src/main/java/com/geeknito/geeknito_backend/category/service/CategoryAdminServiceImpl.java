@@ -2,17 +2,24 @@ package com.geeknito.geeknito_backend.category.service;
 
 import com.geeknito.geeknito_backend.category.dto.CategoryRequestDTO;
 import com.geeknito.geeknito_backend.category.dto.CategoryResponseDTO;
+import com.geeknito.geeknito_backend.category.dto.CategoryWithCourseCount;
 import com.geeknito.geeknito_backend.category.repository.CategoryRepository;
 import com.geeknito.geeknito_backend.course.repository.CourseRepository;
 import com.geeknito.geeknito_backend.entity.learning.CategoryEntity;
+import com.geeknito.geeknito_backend.entity.learning.CourseEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CategoryAdminServiceImpl implements CategoryAdminService {
@@ -22,7 +29,13 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories-admin", key = "'all'")
+    })
     public CategoryResponseDTO create(CategoryRequestDTO requestDTO) {
+        log.info("Admin Service: Creating new category with name: {}", requestDTO.getName());
+        
         CategoryEntity entity = CategoryEntity.builder()
                 .name(requestDTO.getName())
                 .icon(requestDTO.getIcon())
@@ -39,11 +52,14 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "categories-admin", key = "#id")
     public CategoryResponseDTO getById(Long id) {
-        Object[] result = categoryRepository.findByIdWithCourseCount(id)
+        log.info("Admin Service: Fetching category details for ID: {}", id);
+        
+        CategoryWithCourseCount result = categoryRepository.findByIdWithCourseCount(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + id));
-        CategoryEntity entity = (CategoryEntity) result[0];
-        Long count = (Long) result[1];
+        CategoryEntity entity = result.getCategory();
+        Long count = result.getCourseCount();
         CategoryResponseDTO dto = mapToResponse(entity);
         dto.setCourseCount(count != null ? count : 0L);
         return dto;
@@ -51,11 +67,14 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "categories-admin", key = "'all'")
     public List<CategoryResponseDTO> getAll() {
+        log.info("Admin Service: Fetching all categories for admin dashboard");
+        
         return categoryRepository.findAllWithCourseCount().stream()
                 .map(result -> {
-                    CategoryEntity entity = (CategoryEntity) result[0];
-                    Long count = (Long) result[1];
+                    CategoryEntity entity = result.getCategory();
+                    Long count = result.getCourseCount();
                     CategoryResponseDTO dto = mapToResponse(entity);
                     dto.setCourseCount(count != null ? count : 0L);
                     return dto;
@@ -65,7 +84,15 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id"),
+        @CacheEvict(value = "categories-admin", key = "'all'"),
+        @CacheEvict(value = "categories-admin", key = "#id")
+    })
     public CategoryResponseDTO update(Long id, CategoryRequestDTO requestDTO) {
+        log.info("Admin Service: Updating category ID: {}", id);
+        
         CategoryEntity entity = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + id));
 
@@ -87,16 +114,31 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
 
     @Override
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "categories", key = "'active'"),
+        @CacheEvict(value = "categories", key = "#id"),
+        @CacheEvict(value = "categories-admin", key = "'all'"),
+        @CacheEvict(value = "categories-admin", key = "#id")
+    })
     public void softDelete(Long id) {
+        log.info("Admin Service: Hard deleting category ID: {}", id);
+        
         CategoryEntity entity = categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Category not found with ID: " + id));
 
-        entity.setActive(false);
-        categoryRepository.save(entity);
+        // Disassociate any courses belonging to this category
+        List<CourseEntity> courses = courseRepository.findByCategoryId(id);
+        if (courses != null) {
+            for (CourseEntity course : courses) {
+                course.setCategory(null);
+                courseRepository.save(course);
+            }
+        }
+
+        categoryRepository.delete(entity);
     }
 
     private CategoryResponseDTO mapToResponse(CategoryEntity entity) {
-        // 1. Build the DTO without the active field to bypass the Builder cache
         CategoryResponseDTO dto = CategoryResponseDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
@@ -108,9 +150,7 @@ public class CategoryAdminServiceImpl implements CategoryAdminService {
                 .courseCount(0L)
                 .build();
 
-        // 2. Set the active field using the standard setter
         dto.setActive(entity.isActive());
-
         return dto;
     }
 }

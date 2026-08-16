@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"category", "modules"})
+@ToString(exclude = {"category", "modules", "enrollments"})
 public class CourseEntity {
 
     @Id
@@ -32,7 +32,7 @@ public class CourseEntity {
     @Column(nullable = false, unique = true)
     private String slug;
 
-    @Column(name = "thumbnail_url")
+    @Column(name = "thumbnail_url", columnDefinition = "TEXT")
     private String thumbnail;
 
     @Column(name = "short_description", columnDefinition = "TEXT")
@@ -59,6 +59,10 @@ public class CourseEntity {
     @OrderBy("moduleOrder ASC")
     @Builder.Default
     private List<ModuleEntity> modules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<EnrollmentEntity> enrollments = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

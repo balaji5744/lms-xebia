@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RequestMapping("/admin/courses")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@Tag(name = "Courses", description = "Course administration and public catalog APIs")
 public class CourseAdminController {
 
     private final CourseAdminService courseAdminService;
@@ -43,8 +45,12 @@ public class CourseAdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        courseAdminService.softDelete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestParam(value = "hard", defaultValue = "false") boolean hard) {
+        if (hard) {
+            courseAdminService.hardDelete(id);
+        } else {
+            courseAdminService.softDelete(id);
+        }
         return ResponseEntity.noContent().build();
     }
 }

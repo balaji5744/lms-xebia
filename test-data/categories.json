@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "name": "Cloud Architecture Specialization",
+    "icon": "🛡️",
+    "description": "Master high-level competencies in Cloud Architecture Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#DC2626",
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "name": "Cybersecurity Specialization",
+    "icon": "💻",
+    "description": "Master high-level competencies in Cybersecurity Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#059669",
+    "isActive": true
+  },
+  {
+    "id": 3,
+    "name": "Software Engineering Specialization",
+    "icon": "🤖",
+    "description": "Master high-level competencies in Software Engineering Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#4F46E5",
+    "isActive": true
+  },
+  {
+    "id": 4,
+    "name": "Programming Specialization",
+    "icon": "🌐",
+    "description": "Master high-level competencies in Programming Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#8B5CF6",
+    "isActive": true
+  },
+  {
+    "id": 5,
+    "name": "Artificial Intelligence Specialization",
+    "icon": "📱",
+    "description": "Master high-level competencies in Artificial Intelligence Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#EC4899",
+    "isActive": true
+  },
+  {
+    "id": 6,
+    "name": "Machine Learning Specialization",
+    "icon": "⚙️",
+    "description": "Master high-level competencies in Machine Learning Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#F59E0B",
+    "isActive": true
+  },
+  {
+    "id": 7,
+    "name": "Web Development Specialization",
+    "icon": "🗄️",
+    "description": "Master high-level competencies in Web Development Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#10B981",
+    "isActive": true
+  },
+  {
+    "id": 8,
+    "name": "Mobile Development Specialization",
+    "icon": "💬",
+    "description": "Master high-level competencies in Mobile Development Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#6B7280",
+    "isActive": true
+  },
+  {
+    "id": 9,
+    "name": "DevOps Specialization",
+    "icon": "📊",
+    "description": "Master high-level competencies in DevOps Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#3B82F6",
+    "isActive": true
+  },
+  {
+    "id": 10,
+    "name": "Database Systems Specialization",
+    "icon": "☁️",
+    "description": "Master high-level competencies in Database Systems Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#0284C7",
+    "isActive": true
+  },
+  {
+    "id": 11,
+    "name": "Soft Skills Specialization",
+    "icon": "🛡️",
+    "description": "Master high-level competencies in Soft Skills Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#DC2626",
+    "isActive": true
+  },
+  {
+    "id": 12,
+    "name": "Data Science Specialization",
+    "icon": "💻",
+    "description": "Master high-level competencies in Data Science Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#059669",
+    "isActive": true
+  },
+  {
+    "id": 13,
+    "name": "Blockchain Technologies Specialization",
+    "icon": "🤖",
+    "description": "Master high-level competencies in Blockchain Technologies Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#4F46E5",
+    "isActive": true
+  },
+  {
+    "id": 14,
+    "name": "Systems Engineering Specialization",
+    "icon": "🌐",
+    "description": "Master high-level competencies in Systems Engineering Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#8B5CF6",
+    "isActive": true
+  },
+  {
+    "id": 15,
+    "name": "Quantum Computing Specialization",
+    "icon": "📱",
+    "description": "Master high-level competencies in Quantum Computing Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#EC4899",
+    "isActive": true
+  },
+  {
+    "id": 16,
+    "name": "Data Structures Specialization",
+    "icon": "⚙️",
+    "description": "Master high-level competencies in Data Structures Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#F59E0B",
+    "isActive": true
+  },
+  {
+    "id": 17,
+    "name": "Agile Methodologies Specialization",
+    "icon": "🗄️",
+    "description": "Master high-level competencies in Agile Methodologies Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#10B981",
+    "isActive": true
+  },
+  {
+    "id": 18,
+    "name": "User Experience Design Specialization",
+    "icon": "💬",
+    "description": "Master high-level competencies in User Experience Design Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#6B7280",
+    "isActive": true
+  },
+  {
+    "id": 19,
+    "name": "Product Management Specialization",
+    "icon": "📊",
+    "description": "Master high-level competencies in Product Management Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#3B82F6",
+    "isActive": true
+  },
+  {
+    "id": 20,
+    "name": "Computer Networks Specialization",
+    "icon": "☁️",
+    "description": "Master high-level competencies in Computer Networks Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#0284C7",
+    "isActive": true
+  },
+  {
+    "id": 21,
+    "name": "Threat Hunting Specialization",
+    "icon": "🛡️",
+    "description": "Master high-level competencies in Threat Hunting Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#DC2626",
+    "isActive": true
+  },
+  {
+    "id": 22,
+    "name": "Penetration Testing Specialization",
+    "icon": "💻",
+    "description": "Master high-level competencies in Penetration Testing Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#059669",
+    "isActive": true
+  },
+  {
+    "id": 23,
+    "name": "Serverless Architectures Specialization",
+    "icon": "🤖",
+    "description": "Master high-level competencies in Serverless Architectures Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#4F46E5",
+    "isActive": true
+  },
+  {
+    "id": 24,
+    "name": "Infrastructure as Code Specialization",
+    "icon": "🌐",
+    "description": "Master high-level competencies in Infrastructure as Code Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#8B5CF6",
+    "isActive": true
+  },
+  {
+    "id": 25,
+    "name": "Continuous Integration Specialization",
+    "icon": "📱",
+    "description": "Master high-level competencies in Continuous Integration Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#EC4899",
+    "isActive": true
+  },
+  {
+    "id": 26,
+    "name": "Parallel Computing Specialization",
+    "icon": "⚙️",
+    "description": "Master high-level competencies in Parallel Computing Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#F59E0B",
+    "isActive": true
+  },
+  {
+    "id": 27,
+    "name": "Compiler Design Specialization",
+    "icon": "🗄️",
+    "description": "Master high-level competencies in Compiler Design Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#10B981",
+    "isActive": true
+  },
+  {
+    "id": 28,
+    "name": "Distributed Databases Specialization",
+    "icon": "💬",
+    "description": "Master high-level competencies in Distributed Databases Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#6B7280",
+    "isActive": true
+  },
+  {
+    "id": 29,
+    "name": "Natural Language Processing Specialization",
+    "icon": "📊",
+    "description": "Master high-level competencies in Natural Language Processing Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#3B82F6",
+    "isActive": true
+  },
+  {
+    "id": 30,
+    "name": "Deep Learning Specialization",
+    "icon": "☁️",
+    "description": "Master high-level competencies in Deep Learning Specialization through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#0284C7",
+    "isActive": true
+  },
+  {
+    "id": 31,
+    "name": "Cloud Architecture III",
+    "icon": "🛡️",
+    "description": "Master high-level competencies in Cloud Architecture III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#DC2626",
+    "isActive": true
+  },
+  {
+    "id": 32,
+    "name": "Cybersecurity III",
+    "icon": "💻",
+    "description": "Master high-level competencies in Cybersecurity III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#059669",
+    "isActive": true
+  },
+  {
+    "id": 33,
+    "name": "Software Engineering III",
+    "icon": "🤖",
+    "description": "Master high-level competencies in Software Engineering III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#4F46E5",
+    "isActive": true
+  },
+  {
+    "id": 34,
+    "name": "Programming III",
+    "icon": "🌐",
+    "description": "Master high-level competencies in Programming III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#8B5CF6",
+    "isActive": true
+  },
+  {
+    "id": 35,
+    "name": "Artificial Intelligence III",
+    "icon": "📱",
+    "description": "Master high-level competencies in Artificial Intelligence III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#EC4899",
+    "isActive": true
+  },
+  {
+    "id": 36,
+    "name": "Machine Learning III",
+    "icon": "⚙️",
+    "description": "Master high-level competencies in Machine Learning III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#F59E0B",
+    "isActive": true
+  },
+  {
+    "id": 37,
+    "name": "Web Development III",
+    "icon": "🗄️",
+    "description": "Master high-level competencies in Web Development III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#10B981",
+    "isActive": true
+  },
+  {
+    "id": 38,
+    "name": "Mobile Development III",
+    "icon": "💬",
+    "description": "Master high-level competencies in Mobile Development III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#6B7280",
+    "isActive": true
+  },
+  {
+    "id": 39,
+    "name": "DevOps III",
+    "icon": "📊",
+    "description": "Master high-level competencies in DevOps III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#3B82F6",
+    "isActive": true
+  },
+  {
+    "id": 40,
+    "name": "Database Systems III",
+    "icon": "☁️",
+    "description": "Master high-level competencies in Database Systems III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#0284C7",
+    "isActive": true
+  },
+  {
+    "id": 41,
+    "name": "Soft Skills III",
+    "icon": "🛡️",
+    "description": "Master high-level competencies in Soft Skills III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#DC2626",
+    "isActive": true
+  },
+  {
+    "id": 42,
+    "name": "Data Science III",
+    "icon": "💻",
+    "description": "Master high-level competencies in Data Science III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#059669",
+    "isActive": true
+  },
+  {
+    "id": 43,
+    "name": "Blockchain Technologies III",
+    "icon": "🤖",
+    "description": "Master high-level competencies in Blockchain Technologies III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#4F46E5",
+    "isActive": true
+  },
+  {
+    "id": 44,
+    "name": "Systems Engineering III",
+    "icon": "🌐",
+    "description": "Master high-level competencies in Systems Engineering III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#8B5CF6",
+    "isActive": true
+  },
+  {
+    "id": 45,
+    "name": "Quantum Computing III",
+    "icon": "📱",
+    "description": "Master high-level competencies in Quantum Computing III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#EC4899",
+    "isActive": true
+  },
+  {
+    "id": 46,
+    "name": "Data Structures III",
+    "icon": "⚙️",
+    "description": "Master high-level competencies in Data Structures III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#F59E0B",
+    "isActive": true
+  },
+  {
+    "id": 47,
+    "name": "Agile Methodologies III",
+    "icon": "🗄️",
+    "description": "Master high-level competencies in Agile Methodologies III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#10B981",
+    "isActive": true
+  },
+  {
+    "id": 48,
+    "name": "User Experience Design III",
+    "icon": "💬",
+    "description": "Master high-level competencies in User Experience Design III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#6B7280",
+    "isActive": true
+  },
+  {
+    "id": 49,
+    "name": "Product Management III",
+    "icon": "📊",
+    "description": "Master high-level competencies in Product Management III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#3B82F6",
+    "isActive": true
+  },
+  {
+    "id": 50,
+    "name": "Computer Networks III",
+    "icon": "☁️",
+    "description": "Master high-level competencies in Computer Networks III through production-grade curricula, active validation sandboxes, and expert mentoring.",
+    "color": "#0284C7",
+    "isActive": true
+  }
+]

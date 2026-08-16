@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
@@ -13,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Builder
 public class CategoryRequestDTO {
 
+    @NotBlank(message = "Category name is required and cannot be empty")
     private String name;
     private String icon;
     private String description;

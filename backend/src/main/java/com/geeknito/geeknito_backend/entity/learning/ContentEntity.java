@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"submodule", "codingProblem"})
+@ToString(exclude = "submodule")
 public class ContentEntity {
 
     @Id
@@ -28,7 +28,7 @@ public class ContentEntity {
     private String title;
 
     @Column(nullable = false)
-    private String type; // e.g., text, code, video, image, heading, callout, table, coding_assignment
+    private String type; // e.g., text, code, video, image, heading, callout, table
 
     @Column(columnDefinition = "TEXT")
     private String text;
@@ -43,6 +43,12 @@ public class ContentEntity {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "file_url")
+    private String fileUrl;
+
+    @Column(name = "file_name")
+    private String fileName;
 
     private String alt;
 
@@ -61,9 +67,6 @@ public class ContentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "submodule_id", nullable = false)
     private SubmoduleEntity submodule;
-
-    @OneToOne(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private CodingProblemEntity codingProblem;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

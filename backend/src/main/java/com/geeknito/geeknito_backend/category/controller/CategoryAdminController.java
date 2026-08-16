@@ -3,10 +3,12 @@ package com.geeknito.geeknito_backend.category.controller;
 import com.geeknito.geeknito_backend.category.dto.CategoryRequestDTO;
 import com.geeknito.geeknito_backend.category.dto.CategoryResponseDTO;
 import com.geeknito.geeknito_backend.category.service.CategoryAdminService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
@@ -14,12 +16,13 @@ import java.util.List;
 @RequestMapping("/categories")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+@Tag(name = "Categories", description = "Category management and retrieval APIs")
 public class CategoryAdminController {
 
     private final CategoryAdminService categoryAdminService;
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> create(@RequestBody CategoryRequestDTO requestDTO) {
+    public ResponseEntity<CategoryResponseDTO> create(@Valid @RequestBody CategoryRequestDTO requestDTO) {
         CategoryResponseDTO created = categoryAdminService.create(requestDTO);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
@@ -37,7 +40,7 @@ public class CategoryAdminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id, @RequestBody CategoryRequestDTO requestDTO) {
+    public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO requestDTO) {
         CategoryResponseDTO updated = categoryAdminService.update(id, requestDTO);
         return ResponseEntity.ok(updated);
     }

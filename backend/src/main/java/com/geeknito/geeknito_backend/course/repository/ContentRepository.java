@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface ContentRepository extends JpaRepository<ContentEntity, Long> {
 
+    List<ContentEntity> findBySubmoduleIdAndIsActiveTrueOrderByContentOrderAsc(Long submoduleId);
     List<ContentEntity> findBySubmoduleIdOrderByContentOrderAsc(Long submoduleId);
 }

@@ -6,33 +6,30 @@ import com.geeknito.geeknito_backend.course.repository.ContentRepository;
 import com.geeknito.geeknito_backend.course.repository.SubmoduleRepository;
 import com.geeknito.geeknito_backend.entity.learning.ContentEntity;
 import com.geeknito.geeknito_backend.entity.learning.SubmoduleEntity;
-import com.geeknito.geeknito_backend.coding.repository.CodingProblemRepository;
-import com.geeknito.geeknito_backend.coding.repository.TestCaseRepository;
-import com.geeknito.geeknito_backend.coding.repository.StarterCodeRepository;
-import com.geeknito.geeknito_backend.entity.learning.CodingProblemEntity;
-import com.geeknito.geeknito_backend.entity.learning.TestCaseEntity;
-import com.geeknito.geeknito_backend.entity.learning.StarterCodeEntity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ContentAdminServiceImpl implements ContentAdminService {
 
     private final ContentRepository contentRepository;
     private final SubmoduleRepository submoduleRepository;
-    private final CodingProblemRepository codingProblemRepository;
-    private final TestCaseRepository testCaseRepository;
-    private final StarterCodeRepository starterCodeRepository;
 
     @Override
     @Transactional
+    @CacheEvict(value = "submodule-contents", key = "#submoduleId")
     public ContentResponseDTO createContent(Long submoduleId, ContentRequestDTO dto) {
+        log.info("Creating content block for Submodule ID: {}", submoduleId);
         SubmoduleEntity submodule = submoduleRepository.findById(submoduleId)
                 .orElseThrow(() -> new EntityNotFoundException("Submodule not found with ID: " + submoduleId));
 
@@ -44,6 +41,8 @@ public class ContentAdminServiceImpl implements ContentAdminService {
                 .language(dto.getLanguage())
                 .videoUrl(dto.getVideoUrl())
                 .imageUrl(dto.getImageUrl())
+                .fileUrl(dto.getFileUrl())
+                .fileName(dto.getFileName())
                 .alt(dto.getAlt())
                 .caption(dto.getCaption())
                 .headingLevel(dto.getHeadingLevel())
@@ -53,17 +52,14 @@ public class ContentAdminServiceImpl implements ContentAdminService {
                 .build();
 
         ContentEntity saved = contentRepository.save(content);
-
-        if ("coding_assignment".equals(dto.getType()) && dto.getCodingProblem() != null) {
-            saveCodingProblem(saved, dto.getCodingProblem());
-        }
-
         return mapToResponse(saved);
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "submodule-contents", allEntries = true)
     public ContentResponseDTO updateContent(Long contentId, ContentRequestDTO dto) {
+        log.info("Updating content block with ID: {}", contentId);
         ContentEntity content = contentRepository.findById(contentId)
                 .orElseThrow(() -> new EntityNotFoundException("Content not found with ID: " + contentId));
 
@@ -74,111 +70,22 @@ public class ContentAdminServiceImpl implements ContentAdminService {
         content.setLanguage(dto.getLanguage());
         content.setVideoUrl(dto.getVideoUrl());
         content.setImageUrl(dto.getImageUrl());
+        content.setFileUrl(dto.getFileUrl());
+        content.setFileName(dto.getFileName());
         content.setAlt(dto.getAlt());
         content.setCaption(dto.getCaption());
         content.setHeadingLevel(dto.getHeadingLevel());
         content.setContentOrder(dto.getContentOrder());
 
         ContentEntity updated = contentRepository.save(content);
-
-        if ("coding_assignment".equals(dto.getType()) && dto.getCodingProblem() != null) {
-            CodingProblemEntity existingProblem = codingProblemRepository.findByContentId(contentId).orElse(null);
-            if (existingProblem == null) {
-                saveCodingProblem(updated, dto.getCodingProblem());
-            } else {
-                existingProblem.setSlug(dto.getCodingProblem().getSlug());
-                existingProblem.setDescription(dto.getCodingProblem().getDescription());
-                existingProblem.setInputFormat(dto.getCodingProblem().getInputFormat());
-                existingProblem.setOutputFormat(dto.getCodingProblem().getOutputFormat());
-                existingProblem.setConstraints(dto.getCodingProblem().getConstraints());
-                existingProblem.setExplanation(dto.getCodingProblem().getExplanation());
-                existingProblem.setDifficulty(dto.getCodingProblem().getDifficulty());
-                existingProblem.setPoints(dto.getCodingProblem().getPoints());
-                existingProblem.setTimeLimit(dto.getCodingProblem().getTimeLimit());
-                existingProblem.setMemoryLimit(dto.getCodingProblem().getMemoryLimit());
-                CodingProblemEntity savedProblem = codingProblemRepository.save(existingProblem);
-
-                List<TestCaseEntity> oldTcs = testCaseRepository.findByProblemIdOrderByTestOrderAsc(savedProblem.getId());
-                testCaseRepository.deleteAll(oldTcs);
-                if (dto.getCodingProblem().getTestCases() != null) {
-                    List<TestCaseEntity> newTcs = dto.getCodingProblem().getTestCases().stream()
-                        .map(tc -> TestCaseEntity.builder()
-                            .problem(savedProblem)
-                            .input(tc.getInput())
-                            .expectedOutput(tc.getExpectedOutput())
-                            .isHidden(tc.isHidden())
-                            .points(tc.getPoints())
-                            .testOrder(tc.getTestOrder())
-                            .build())
-                        .collect(Collectors.toList());
-                    testCaseRepository.saveAll(newTcs);
-                }
-
-                List<StarterCodeEntity> oldScs = starterCodeRepository.findByProblemId(savedProblem.getId());
-                starterCodeRepository.deleteAll(oldScs);
-                if (dto.getCodingProblem().getStarterCodes() != null) {
-                    List<StarterCodeEntity> newScs = dto.getCodingProblem().getStarterCodes().stream()
-                        .map(sc -> StarterCodeEntity.builder()
-                            .problem(savedProblem)
-                            .language(sc.getLanguage())
-                            .code(sc.getCode())
-                            .build())
-                        .collect(Collectors.toList());
-                    starterCodeRepository.saveAll(newScs);
-                }
-            }
-        }
-
         return mapToResponse(updated);
-    }
-
-    private void saveCodingProblem(ContentEntity content, com.geeknito.geeknito_backend.coding.dto.CodingProblemRequestDTO dto) {
-        CodingProblemEntity problem = CodingProblemEntity.builder()
-                .content(content)
-                .slug(dto.getSlug())
-                .description(dto.getDescription())
-                .inputFormat(dto.getInputFormat())
-                .outputFormat(dto.getOutputFormat())
-                .constraints(dto.getConstraints())
-                .explanation(dto.getExplanation())
-                .difficulty(dto.getDifficulty())
-                .points(dto.getPoints())
-                .timeLimit(dto.getTimeLimit())
-                .memoryLimit(dto.getMemoryLimit())
-                .isActive(true)
-                .build();
-
-        CodingProblemEntity savedProblem = codingProblemRepository.save(problem);
-
-        if (dto.getTestCases() != null) {
-            List<TestCaseEntity> tcs = dto.getTestCases().stream()
-                .map(tc -> TestCaseEntity.builder()
-                    .problem(savedProblem)
-                    .input(tc.getInput())
-                    .expectedOutput(tc.getExpectedOutput())
-                    .isHidden(tc.isHidden())
-                    .points(tc.getPoints())
-                    .testOrder(tc.getTestOrder())
-                    .build())
-                .collect(Collectors.toList());
-            testCaseRepository.saveAll(tcs);
-        }
-
-        if (dto.getStarterCodes() != null) {
-            List<StarterCodeEntity> scs = dto.getStarterCodes().stream()
-                .map(sc -> StarterCodeEntity.builder()
-                    .problem(savedProblem)
-                    .language(sc.getLanguage())
-                    .code(sc.getCode())
-                    .build())
-                .collect(Collectors.toList());
-            starterCodeRepository.saveAll(scs);
-        }
     }
 
     @Override
     @Transactional
+    @CacheEvict(value = "submodule-contents", allEntries = true)
     public void deleteContent(Long contentId) {
+        log.info("Soft deleting content block with ID: {}", contentId);
         ContentEntity content = contentRepository.findById(contentId)
                 .orElseThrow(() -> new EntityNotFoundException("Content not found with ID: " + contentId));
 
@@ -188,12 +95,14 @@ public class ContentAdminServiceImpl implements ContentAdminService {
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "submodule-contents", key = "#submoduleId")
     public List<ContentResponseDTO> getContentBySubmodule(Long submoduleId) {
+        log.info("Fetching content blocks for Submodule ID: {}", submoduleId);
         if (!submoduleRepository.existsById(submoduleId)) {
             throw new EntityNotFoundException("Submodule not found with ID: " + submoduleId);
         }
 
-        List<ContentEntity> contents = contentRepository.findBySubmoduleIdOrderByContentOrderAsc(submoduleId);
+        List<ContentEntity> contents = contentRepository.findBySubmoduleIdAndIsActiveTrueOrderByContentOrderAsc(submoduleId);
         return contents.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
@@ -204,7 +113,7 @@ public class ContentAdminServiceImpl implements ContentAdminService {
             return null;
         }
 
-        ContentResponseDTO.ContentResponseDTOBuilder builder = ContentResponseDTO.builder()
+        return ContentResponseDTO.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .type(entity.getType())
@@ -213,65 +122,15 @@ public class ContentAdminServiceImpl implements ContentAdminService {
                 .language(entity.getLanguage())
                 .videoUrl(entity.getVideoUrl())
                 .imageUrl(entity.getImageUrl())
+                .fileUrl(entity.getFileUrl())
+                .fileName(entity.getFileName())
                 .alt(entity.getAlt())
                 .caption(entity.getCaption())
                 .headingLevel(entity.getHeadingLevel())
                 .contentOrder(entity.getContentOrder())
                 .isActive(entity.isActive())
                 .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt());
-
-        if ("coding_assignment".equals(entity.getType()) && entity.getCodingProblem() != null) {
-            builder.codingProblem(mapProblemToResponse(entity.getCodingProblem()));
-        }
-
-        return builder.build();
-    }
-
-    private com.geeknito.geeknito_backend.coding.dto.CodingProblemResponseDTO mapProblemToResponse(CodingProblemEntity problem) {
-        if (problem == null) return null;
-
-        List<com.geeknito.geeknito_backend.coding.dto.TestCaseResponseDTO> tcs = null;
-        if (problem.getTestCases() != null) {
-            tcs = problem.getTestCases().stream()
-                .map(tc -> com.geeknito.geeknito_backend.coding.dto.TestCaseResponseDTO.builder()
-                    .id(tc.getId())
-                    .input(tc.getInput())
-                    .expectedOutput(tc.getExpectedOutput())
-                    .isHidden(tc.isHidden())
-                    .points(tc.getPoints())
-                    .testOrder(tc.getTestOrder())
-                    .build())
-                .collect(Collectors.toList());
-        }
-
-        List<com.geeknito.geeknito_backend.coding.dto.StarterCodeResponseDTO> scs = null;
-        if (problem.getStarterCodes() != null) {
-            scs = problem.getStarterCodes().stream()
-                .map(sc -> com.geeknito.geeknito_backend.coding.dto.StarterCodeResponseDTO.builder()
-                    .id(sc.getId())
-                    .language(sc.getLanguage())
-                    .code(sc.getCode())
-                    .build())
-                .collect(Collectors.toList());
-        }
-
-        return com.geeknito.geeknito_backend.coding.dto.CodingProblemResponseDTO.builder()
-            .id(problem.getId())
-            .slug(problem.getSlug())
-            .description(problem.getDescription())
-            .inputFormat(problem.getInputFormat())
-            .outputFormat(problem.getOutputFormat())
-            .constraints(problem.getConstraints())
-            .explanation(problem.getExplanation())
-            .difficulty(problem.getDifficulty())
-            .points(problem.getPoints())
-            .timeLimit(problem.getTimeLimit())
-            .memoryLimit(problem.getMemoryLimit())
-            .testCases(tcs)
-            .starterCodes(scs)
-            .createdAt(problem.getCreatedAt())
-            .updatedAt(problem.getUpdatedAt())
-            .build();
+                .updatedAt(entity.getUpdatedAt())
+                .build();
     }
 }
