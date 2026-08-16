@@ -33,6 +33,7 @@ import {
   Lightbulb,
 } from "lucide-react";
 import { Module, ContentBlock, Course } from "../../../types";
+import { StudentCodingWorkspace } from "../../../components/StudentCodingWorkspace";
 
 export const CourseDetailView: React.FC = () => {
   const { id } = useParams();
@@ -40,6 +41,7 @@ export const CourseDetailView: React.FC = () => {
   const selectedCourseId = id ? parseInt(id, 10) : null;
 
   const { showToast, userRole, enrolledCourseIds } = useApp();
+  const [activeCodingProblemId, setActiveCodingProblemId] = useState<number | null>(null);
 
   const { data: courses = [] } = useQuery<Course[], Error>({
     queryKey: ["courses", userRole],
@@ -163,6 +165,15 @@ export const CourseDetailView: React.FC = () => {
           Return to Catalog
         </button>
       </div>
+    );
+  }
+
+  if (activeCodingProblemId !== null) {
+    return (
+      <StudentCodingWorkspace
+        problemId={activeCodingProblemId}
+        onBack={() => setActiveCodingProblemId(null)}
+      />
     );
   }
 
@@ -453,6 +464,7 @@ export const CourseDetailView: React.FC = () => {
                                       {isEnrolled && sub.id !== undefined && (
                                         <LessonContentRenderer
                                           submoduleId={sub.id}
+                                          setActiveCodingProblemId={setActiveCodingProblemId}
                                         />
                                       )}
                                     </div>
@@ -538,9 +550,10 @@ export const CourseDetailView: React.FC = () => {
 // ============================================================================
 // 🚨 NEW LAZY-LOADING COMPONENT FOR CONTENT BLOCKS
 // ============================================================================
-const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
-  submoduleId,
-}) => {
+const LessonContentRenderer: React.FC<{
+  submoduleId: number;
+  setActiveCodingProblemId: (id: number | null) => void;
+}> = ({ submoduleId, setActiveCodingProblemId }) => {
   const { userRole } = useApp();
   const {
     data: blocks = [],
@@ -614,8 +627,11 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
             {block.type === "callout" && (
               <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
             )}
+            {block.type === "coding_assignment" && (
+              <CodeIcon className="w-3.5 h-3.5 text-indigo-400" />
+            )}
             <span className="text-[10px] uppercase font-bold tracking-wider text-gray-500">
-              {block.type} Block
+              {block.type === "coding_assignment" ? "Coding Assignment" : `${block.type} Block`}
             </span>
           </div>
 
@@ -742,6 +758,29 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
             </a>
           )}
 
+          {/* Coding Assignment Block */}
+          {block.type === "coding_assignment" && block.codingProblem && (
+            <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 border border-indigo-100/80 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+              <div className="space-y-1">
+                <span className="text-[9px] font-extrabold uppercase px-2.5 py-0.5 rounded-full text-white bg-indigo-500 font-mono">
+                  Coding Assignment
+                </span>
+                <h4 className="font-bold text-sm text-gray-800 mt-2">
+                  {block.codingProblem.slug.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")}
+                </h4>
+                <p className="text-[11px] text-gray-500">
+                  Difficulty: {block.codingProblem.difficulty} | Points: {block.codingProblem.points}
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveCodingProblemId(block.codingProblem!.id!)}
+                className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md hover:shadow-lg transition-all active:scale-[0.98] cursor-pointer flex items-center gap-1.5 shrink-0 self-start sm:self-center"
+              >
+                <CodeIcon className="w-4 h-4" /> Start Coding Assignment
+              </button>
+            </div>
+          )}
+
           {/* Fallback for any other/unknown block type */}
           {![
             "text",
@@ -751,6 +790,7 @@ const LessonContentRenderer: React.FC<{ submoduleId: number }> = ({
             "file",
             "heading",
             "callout",
+            "coding_assignment",
           ].includes(block.type) && (
             <p className="text-xs text-gray-400 italic">
               Unsupported block type: {block.type}

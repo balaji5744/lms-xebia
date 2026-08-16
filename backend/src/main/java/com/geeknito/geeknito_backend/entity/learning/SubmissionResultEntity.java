@@ -22,7 +22,7 @@ public class SubmissionResultEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "submission_id", nullable = false)
-    private SubmissionEntity submission;
+    private CodingSubmissionEntity submission;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "test_case_id", nullable = false)

@@ -163,7 +163,7 @@ public class StudentCodingServiceImpl implements StudentCodingService {
         // Invoke sandbox
         SandboxExecutionClient.ExecutionResponse execResponse = executionClient.execute(execRequest);
 
-        SubmissionEntity.SubmissionEntityBuilder subBuilder = SubmissionEntity.builder()
+        CodingSubmissionEntity.CodingSubmissionEntityBuilder subBuilder = CodingSubmissionEntity.builder()
                 .problem(problem)
                 .studentId(request.getStudentId())
                 .language(request.getLanguage())
@@ -180,7 +180,7 @@ public class StudentCodingServiceImpl implements StudentCodingService {
                     .executionTime(0)
                     .memoryUsed(0.0);
 
-            SubmissionEntity saved = submissionRepository.save(subBuilder.build());
+            CodingSubmissionEntity saved = submissionRepository.save(subBuilder.build());
             return mapSubmissionToResponse(saved);
         }
 
@@ -193,7 +193,7 @@ public class StudentCodingServiceImpl implements StudentCodingService {
                     .executionTime(0)
                     .memoryUsed(0.0);
 
-            SubmissionEntity saved = submissionRepository.save(subBuilder.build());
+            CodingSubmissionEntity saved = submissionRepository.save(subBuilder.build());
             return mapSubmissionToResponse(saved);
         }
 
@@ -272,8 +272,8 @@ public class StudentCodingServiceImpl implements StudentCodingService {
                 .executionTime(maxTime)
                 .memoryUsed(maxMemory);
 
-        SubmissionEntity submission = subBuilder.build();
-        SubmissionEntity savedSubmission = submissionRepository.save(submission);
+        CodingSubmissionEntity submission = subBuilder.build();
+        CodingSubmissionEntity savedSubmission = submissionRepository.save(submission);
 
         // Save individual case results
         for (SubmissionResultEntity resEnt : resultEntities) {
@@ -288,14 +288,14 @@ public class StudentCodingServiceImpl implements StudentCodingService {
     @Override
     @Transactional(readOnly = true)
     public List<SubmissionResponseDTO> getSubmissions(Long problemId, String studentId) {
-        List<SubmissionEntity> subs = submissionRepository.findByProblemIdAndStudentIdOrderBySubmittedAtDesc(problemId, studentId);
+        List<CodingSubmissionEntity> subs = submissionRepository.findByProblemIdAndStudentIdOrderBySubmittedAtDesc(problemId, studentId);
         return subs.stream().map(this::mapSubmissionToResponse).collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
     public SubmissionResponseDTO getSubmissionDetails(Long submissionId) {
-        SubmissionEntity sub = submissionRepository.findById(submissionId)
+        CodingSubmissionEntity sub = submissionRepository.findById(submissionId)
                 .orElseThrow(() -> new EntityNotFoundException("Submission not found with ID: " + submissionId));
         return mapSubmissionToResponse(sub);
     }
@@ -343,7 +343,7 @@ public class StudentCodingServiceImpl implements StudentCodingService {
                 .build();
     }
 
-    private SubmissionResponseDTO mapSubmissionToResponse(SubmissionEntity sub) {
+    private SubmissionResponseDTO mapSubmissionToResponse(CodingSubmissionEntity sub) {
         List<SubmissionResponseDTO.TestCaseSubmissionResultDTO> results = null;
         if (sub.getResults() != null) {
             results = sub.getResults().stream()
