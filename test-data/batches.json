@@ -1,0 +1,2002 @@
+[
+  {
+    "id": 1,
+    "name": "Foundational Microservices with Spring Boot Cohort 1 - Cohort Alpha 1",
+    "batchCode": "BATCH-FOUNDATIONAL-MICROSERVICES-WITH-SPRING-BOOT-COHORT-1_A1",
+    "courseId": 1,
+    "teacherId": 22,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 2,
+    "name": "Enterprise Python Machine Learning Pipelines Cohort 1 - Cohort Alpha 2",
+    "batchCode": "BATCH-ENTERPRISE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-1_A2",
+    "courseId": 2,
+    "teacherId": 23,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 3,
+    "name": "Scalable React with Next.js Cohort 1 - Cohort Alpha 3",
+    "batchCode": "BATCH-SCALABLE-REACT-WITH-NEXT-JS-COHORT-1_A3",
+    "courseId": 3,
+    "teacherId": 24,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 4,
+    "name": "Modern Ethical Hacking Methodologies Cohort 1 - Cohort Alpha 4",
+    "batchCode": "BATCH-MODERN-ETHICAL-HACKING-METHODOLOGIES-COHORT-1_A4",
+    "courseId": 4,
+    "teacherId": 25,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 5,
+    "name": "Secure PostgreSQL Query Optimization Cohort 1 - Cohort Alpha 5",
+    "batchCode": "BATCH-SECURE-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-1_A5",
+    "courseId": 5,
+    "teacherId": 26,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 6,
+    "name": "High-Performance AWS Cloud Architectures Cohort 1 - Cohort Alpha 6",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-AWS-CLOUD-ARCHITECTURES-COHORT-1_A6",
+    "courseId": 6,
+    "teacherId": 27,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 7,
+    "name": "Distributed Apache Kafka Streaming Cohort 1 - Cohort Alpha 7",
+    "batchCode": "BATCH-DISTRIBUTED-APACHE-KAFKA-STREAMING-COHORT-1_A7",
+    "courseId": 7,
+    "teacherId": 28,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 8,
+    "name": "Applied API Security Best Practices Cohort 1 - Cohort Alpha 8",
+    "batchCode": "BATCH-APPLIED-API-SECURITY-BEST-PRACTICES-COHORT-1_A8",
+    "courseId": 8,
+    "teacherId": 29,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 9,
+    "name": "Deep CI/CD Pipeline Automation Cohort 1 - Cohort Alpha 9",
+    "batchCode": "BATCH-DEEP-CI-CD-PIPELINE-AUTOMATION-COHORT-1_A9",
+    "courseId": 9,
+    "teacherId": 30,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 10,
+    "name": "Interactive Docker Containers Cohort 2 - Cohort Alpha 10",
+    "batchCode": "BATCH-INTERACTIVE-DOCKER-CONTAINERS-COHORT-2_A10",
+    "courseId": 10,
+    "teacherId": 31,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 11,
+    "name": "Practical Rust System Programming Cohort 2 - Cohort Alpha 11",
+    "batchCode": "BATCH-PRACTICAL-RUST-SYSTEM-PROGRAMMING-COHORT-2_A11",
+    "courseId": 11,
+    "teacherId": 32,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 12,
+    "name": "Professional Kubernetes Orchestration Cohort 2 - Cohort Alpha 12",
+    "batchCode": "BATCH-PROFESSIONAL-KUBERNETES-ORCHESTRATION-COHORT-2_A12",
+    "courseId": 12,
+    "teacherId": 33,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 13,
+    "name": "Automated Microservices with Spring Boot Cohort 2 - Cohort Alpha 13",
+    "batchCode": "BATCH-AUTOMATED-MICROSERVICES-WITH-SPRING-BOOT-COHORT-2_A13",
+    "courseId": 13,
+    "teacherId": 34,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 14,
+    "name": "Certified Python Machine Learning Pipelines Cohort 2 - Cohort Alpha 14",
+    "batchCode": "BATCH-CERTIFIED-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-2_A14",
+    "courseId": 14,
+    "teacherId": 35,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 15,
+    "name": "Zero-Trust React with Next.js Cohort 2 - Cohort Alpha 15",
+    "batchCode": "BATCH-ZERO-TRUST-REACT-WITH-NEXT-JS-COHORT-2_A15",
+    "courseId": 15,
+    "teacherId": 36,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 16,
+    "name": "Advanced Ethical Hacking Methodologies Cohort 2 - Cohort Alpha 16",
+    "batchCode": "BATCH-ADVANCED-ETHICAL-HACKING-METHODOLOGIES-COHORT-2_A16",
+    "courseId": 16,
+    "teacherId": 37,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 17,
+    "name": "Foundational PostgreSQL Query Optimization Cohort 2 - Cohort Alpha 17",
+    "batchCode": "BATCH-FOUNDATIONAL-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-2_A17",
+    "courseId": 17,
+    "teacherId": 38,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 18,
+    "name": "Enterprise AWS Cloud Architectures Cohort 2 - Cohort Alpha 18",
+    "batchCode": "BATCH-ENTERPRISE-AWS-CLOUD-ARCHITECTURES-COHORT-2_A18",
+    "courseId": 18,
+    "teacherId": 39,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 19,
+    "name": "Scalable Apache Kafka Streaming Cohort 2 - Cohort Alpha 19",
+    "batchCode": "BATCH-SCALABLE-APACHE-KAFKA-STREAMING-COHORT-2_A19",
+    "courseId": 19,
+    "teacherId": 40,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 20,
+    "name": "Modern API Security Best Practices Cohort 3 - Cohort Alpha 20",
+    "batchCode": "BATCH-MODERN-API-SECURITY-BEST-PRACTICES-COHORT-3_A20",
+    "courseId": 20,
+    "teacherId": 41,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 21,
+    "name": "Secure CI/CD Pipeline Automation Cohort 3 - Cohort Alpha 21",
+    "batchCode": "BATCH-SECURE-CI-CD-PIPELINE-AUTOMATION-COHORT-3_A21",
+    "courseId": 21,
+    "teacherId": 42,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 22,
+    "name": "High-Performance Docker Containers Cohort 3 - Cohort Alpha 22",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-DOCKER-CONTAINERS-COHORT-3_A22",
+    "courseId": 22,
+    "teacherId": 43,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 23,
+    "name": "Distributed Rust System Programming Cohort 3 - Cohort Alpha 23",
+    "batchCode": "BATCH-DISTRIBUTED-RUST-SYSTEM-PROGRAMMING-COHORT-3_A23",
+    "courseId": 23,
+    "teacherId": 44,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 24,
+    "name": "Applied Kubernetes Orchestration Cohort 3 - Cohort Alpha 24",
+    "batchCode": "BATCH-APPLIED-KUBERNETES-ORCHESTRATION-COHORT-3_A24",
+    "courseId": 24,
+    "teacherId": 45,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 25,
+    "name": "Deep Microservices with Spring Boot Cohort 3 - Cohort Alpha 25",
+    "batchCode": "BATCH-DEEP-MICROSERVICES-WITH-SPRING-BOOT-COHORT-3_A25",
+    "courseId": 25,
+    "teacherId": 46,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 26,
+    "name": "Interactive Python Machine Learning Pipelines Cohort 3 - Cohort Alpha 26",
+    "batchCode": "BATCH-INTERACTIVE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-3_A26",
+    "courseId": 26,
+    "teacherId": 47,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 27,
+    "name": "Practical React with Next.js Cohort 3 - Cohort Alpha 27",
+    "batchCode": "BATCH-PRACTICAL-REACT-WITH-NEXT-JS-COHORT-3_A27",
+    "courseId": 27,
+    "teacherId": 48,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 28,
+    "name": "Professional Ethical Hacking Methodologies Cohort 3 - Cohort Alpha 28",
+    "batchCode": "BATCH-PROFESSIONAL-ETHICAL-HACKING-METHODOLOGIES-COHORT-3_A28",
+    "courseId": 28,
+    "teacherId": 49,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 29,
+    "name": "Automated PostgreSQL Query Optimization Cohort 3 - Cohort Alpha 29",
+    "batchCode": "BATCH-AUTOMATED-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-3_A29",
+    "courseId": 29,
+    "teacherId": 50,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 30,
+    "name": "Certified AWS Cloud Architectures Cohort 4 - Cohort Alpha 30",
+    "batchCode": "BATCH-CERTIFIED-AWS-CLOUD-ARCHITECTURES-COHORT-4_A30",
+    "courseId": 30,
+    "teacherId": 51,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 31,
+    "name": "Zero-Trust Apache Kafka Streaming Cohort 4 - Cohort Alpha 31",
+    "batchCode": "BATCH-ZERO-TRUST-APACHE-KAFKA-STREAMING-COHORT-4_A31",
+    "courseId": 31,
+    "teacherId": 52,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 32,
+    "name": "Advanced API Security Best Practices Cohort 4 - Cohort Alpha 32",
+    "batchCode": "BATCH-ADVANCED-API-SECURITY-BEST-PRACTICES-COHORT-4_A32",
+    "courseId": 32,
+    "teacherId": 53,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 33,
+    "name": "Foundational CI/CD Pipeline Automation Cohort 4 - Cohort Alpha 33",
+    "batchCode": "BATCH-FOUNDATIONAL-CI-CD-PIPELINE-AUTOMATION-COHORT-4_A33",
+    "courseId": 33,
+    "teacherId": 54,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 34,
+    "name": "Enterprise Docker Containers Cohort 4 - Cohort Alpha 34",
+    "batchCode": "BATCH-ENTERPRISE-DOCKER-CONTAINERS-COHORT-4_A34",
+    "courseId": 34,
+    "teacherId": 55,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 35,
+    "name": "Scalable Rust System Programming Cohort 4 - Cohort Alpha 35",
+    "batchCode": "BATCH-SCALABLE-RUST-SYSTEM-PROGRAMMING-COHORT-4_A35",
+    "courseId": 35,
+    "teacherId": 56,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 36,
+    "name": "Modern Kubernetes Orchestration Cohort 4 - Cohort Alpha 36",
+    "batchCode": "BATCH-MODERN-KUBERNETES-ORCHESTRATION-COHORT-4_A36",
+    "courseId": 36,
+    "teacherId": 57,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 37,
+    "name": "Secure Microservices with Spring Boot Cohort 4 - Cohort Alpha 37",
+    "batchCode": "BATCH-SECURE-MICROSERVICES-WITH-SPRING-BOOT-COHORT-4_A37",
+    "courseId": 37,
+    "teacherId": 58,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 38,
+    "name": "High-Performance Python Machine Learning Pipelines Cohort 4 - Cohort Alpha 38",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-4_A38",
+    "courseId": 38,
+    "teacherId": 59,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 39,
+    "name": "Distributed React with Next.js Cohort 4 - Cohort Alpha 39",
+    "batchCode": "BATCH-DISTRIBUTED-REACT-WITH-NEXT-JS-COHORT-4_A39",
+    "courseId": 39,
+    "teacherId": 60,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 40,
+    "name": "Applied Ethical Hacking Methodologies Cohort 5 - Cohort Alpha 40",
+    "batchCode": "BATCH-APPLIED-ETHICAL-HACKING-METHODOLOGIES-COHORT-5_A40",
+    "courseId": 40,
+    "teacherId": 61,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 41,
+    "name": "Deep PostgreSQL Query Optimization Cohort 5 - Cohort Alpha 41",
+    "batchCode": "BATCH-DEEP-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-5_A41",
+    "courseId": 41,
+    "teacherId": 62,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 42,
+    "name": "Interactive AWS Cloud Architectures Cohort 5 - Cohort Alpha 42",
+    "batchCode": "BATCH-INTERACTIVE-AWS-CLOUD-ARCHITECTURES-COHORT-5_A42",
+    "courseId": 42,
+    "teacherId": 63,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 43,
+    "name": "Practical Apache Kafka Streaming Cohort 5 - Cohort Alpha 43",
+    "batchCode": "BATCH-PRACTICAL-APACHE-KAFKA-STREAMING-COHORT-5_A43",
+    "courseId": 43,
+    "teacherId": 64,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 44,
+    "name": "Professional API Security Best Practices Cohort 5 - Cohort Alpha 44",
+    "batchCode": "BATCH-PROFESSIONAL-API-SECURITY-BEST-PRACTICES-COHORT-5_A44",
+    "courseId": 44,
+    "teacherId": 65,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 45,
+    "name": "Automated CI/CD Pipeline Automation Cohort 5 - Cohort Alpha 45",
+    "batchCode": "BATCH-AUTOMATED-CI-CD-PIPELINE-AUTOMATION-COHORT-5_A45",
+    "courseId": 45,
+    "teacherId": 66,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 46,
+    "name": "Certified Docker Containers Cohort 5 - Cohort Alpha 46",
+    "batchCode": "BATCH-CERTIFIED-DOCKER-CONTAINERS-COHORT-5_A46",
+    "courseId": 46,
+    "teacherId": 67,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 47,
+    "name": "Zero-Trust Rust System Programming Cohort 5 - Cohort Alpha 47",
+    "batchCode": "BATCH-ZERO-TRUST-RUST-SYSTEM-PROGRAMMING-COHORT-5_A47",
+    "courseId": 47,
+    "teacherId": 68,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 48,
+    "name": "Advanced Kubernetes Orchestration Cohort 5 - Cohort Alpha 48",
+    "batchCode": "BATCH-ADVANCED-KUBERNETES-ORCHESTRATION-COHORT-5_A48",
+    "courseId": 48,
+    "teacherId": 69,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 49,
+    "name": "Foundational Microservices with Spring Boot Cohort 5 - Cohort Alpha 49",
+    "batchCode": "BATCH-FOUNDATIONAL-MICROSERVICES-WITH-SPRING-BOOT-COHORT-5_A49",
+    "courseId": 49,
+    "teacherId": 70,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 50,
+    "name": "Enterprise Python Machine Learning Pipelines Cohort 6 - Cohort Alpha 50",
+    "batchCode": "BATCH-ENTERPRISE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-6_A50",
+    "courseId": 50,
+    "teacherId": 71,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 51,
+    "name": "Scalable React with Next.js Cohort 6 - Cohort Alpha 51",
+    "batchCode": "BATCH-SCALABLE-REACT-WITH-NEXT-JS-COHORT-6_A51",
+    "courseId": 51,
+    "teacherId": 72,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 52,
+    "name": "Modern Ethical Hacking Methodologies Cohort 6 - Cohort Alpha 52",
+    "batchCode": "BATCH-MODERN-ETHICAL-HACKING-METHODOLOGIES-COHORT-6_A52",
+    "courseId": 52,
+    "teacherId": 73,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 53,
+    "name": "Secure PostgreSQL Query Optimization Cohort 6 - Cohort Alpha 53",
+    "batchCode": "BATCH-SECURE-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-6_A53",
+    "courseId": 53,
+    "teacherId": 74,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 54,
+    "name": "High-Performance AWS Cloud Architectures Cohort 6 - Cohort Alpha 54",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-AWS-CLOUD-ARCHITECTURES-COHORT-6_A54",
+    "courseId": 54,
+    "teacherId": 75,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 55,
+    "name": "Distributed Apache Kafka Streaming Cohort 6 - Cohort Alpha 55",
+    "batchCode": "BATCH-DISTRIBUTED-APACHE-KAFKA-STREAMING-COHORT-6_A55",
+    "courseId": 55,
+    "teacherId": 76,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 56,
+    "name": "Applied API Security Best Practices Cohort 6 - Cohort Alpha 56",
+    "batchCode": "BATCH-APPLIED-API-SECURITY-BEST-PRACTICES-COHORT-6_A56",
+    "courseId": 56,
+    "teacherId": 77,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 57,
+    "name": "Deep CI/CD Pipeline Automation Cohort 6 - Cohort Alpha 57",
+    "batchCode": "BATCH-DEEP-CI-CD-PIPELINE-AUTOMATION-COHORT-6_A57",
+    "courseId": 57,
+    "teacherId": 78,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 58,
+    "name": "Interactive Docker Containers Cohort 6 - Cohort Alpha 58",
+    "batchCode": "BATCH-INTERACTIVE-DOCKER-CONTAINERS-COHORT-6_A58",
+    "courseId": 58,
+    "teacherId": 79,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 59,
+    "name": "Practical Rust System Programming Cohort 6 - Cohort Alpha 59",
+    "batchCode": "BATCH-PRACTICAL-RUST-SYSTEM-PROGRAMMING-COHORT-6_A59",
+    "courseId": 59,
+    "teacherId": 80,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 60,
+    "name": "Professional Kubernetes Orchestration Cohort 7 - Cohort Alpha 60",
+    "batchCode": "BATCH-PROFESSIONAL-KUBERNETES-ORCHESTRATION-COHORT-7_A60",
+    "courseId": 60,
+    "teacherId": 81,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 61,
+    "name": "Automated Microservices with Spring Boot Cohort 7 - Cohort Alpha 61",
+    "batchCode": "BATCH-AUTOMATED-MICROSERVICES-WITH-SPRING-BOOT-COHORT-7_A61",
+    "courseId": 61,
+    "teacherId": 82,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 62,
+    "name": "Certified Python Machine Learning Pipelines Cohort 7 - Cohort Alpha 62",
+    "batchCode": "BATCH-CERTIFIED-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-7_A62",
+    "courseId": 62,
+    "teacherId": 83,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 63,
+    "name": "Zero-Trust React with Next.js Cohort 7 - Cohort Alpha 63",
+    "batchCode": "BATCH-ZERO-TRUST-REACT-WITH-NEXT-JS-COHORT-7_A63",
+    "courseId": 63,
+    "teacherId": 84,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 64,
+    "name": "Advanced Ethical Hacking Methodologies Cohort 7 - Cohort Alpha 64",
+    "batchCode": "BATCH-ADVANCED-ETHICAL-HACKING-METHODOLOGIES-COHORT-7_A64",
+    "courseId": 64,
+    "teacherId": 85,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 65,
+    "name": "Foundational PostgreSQL Query Optimization Cohort 7 - Cohort Alpha 65",
+    "batchCode": "BATCH-FOUNDATIONAL-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-7_A65",
+    "courseId": 65,
+    "teacherId": 86,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 66,
+    "name": "Enterprise AWS Cloud Architectures Cohort 7 - Cohort Alpha 66",
+    "batchCode": "BATCH-ENTERPRISE-AWS-CLOUD-ARCHITECTURES-COHORT-7_A66",
+    "courseId": 66,
+    "teacherId": 87,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 67,
+    "name": "Scalable Apache Kafka Streaming Cohort 7 - Cohort Alpha 67",
+    "batchCode": "BATCH-SCALABLE-APACHE-KAFKA-STREAMING-COHORT-7_A67",
+    "courseId": 67,
+    "teacherId": 88,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 68,
+    "name": "Modern API Security Best Practices Cohort 7 - Cohort Alpha 68",
+    "batchCode": "BATCH-MODERN-API-SECURITY-BEST-PRACTICES-COHORT-7_A68",
+    "courseId": 68,
+    "teacherId": 89,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 69,
+    "name": "Secure CI/CD Pipeline Automation Cohort 7 - Cohort Alpha 69",
+    "batchCode": "BATCH-SECURE-CI-CD-PIPELINE-AUTOMATION-COHORT-7_A69",
+    "courseId": 69,
+    "teacherId": 90,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 70,
+    "name": "High-Performance Docker Containers Cohort 8 - Cohort Alpha 70",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-DOCKER-CONTAINERS-COHORT-8_A70",
+    "courseId": 70,
+    "teacherId": 91,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 71,
+    "name": "Distributed Rust System Programming Cohort 8 - Cohort Alpha 71",
+    "batchCode": "BATCH-DISTRIBUTED-RUST-SYSTEM-PROGRAMMING-COHORT-8_A71",
+    "courseId": 71,
+    "teacherId": 92,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 72,
+    "name": "Applied Kubernetes Orchestration Cohort 8 - Cohort Alpha 72",
+    "batchCode": "BATCH-APPLIED-KUBERNETES-ORCHESTRATION-COHORT-8_A72",
+    "courseId": 72,
+    "teacherId": 93,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 73,
+    "name": "Deep Microservices with Spring Boot Cohort 8 - Cohort Alpha 73",
+    "batchCode": "BATCH-DEEP-MICROSERVICES-WITH-SPRING-BOOT-COHORT-8_A73",
+    "courseId": 73,
+    "teacherId": 94,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 74,
+    "name": "Interactive Python Machine Learning Pipelines Cohort 8 - Cohort Alpha 74",
+    "batchCode": "BATCH-INTERACTIVE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-8_A74",
+    "courseId": 74,
+    "teacherId": 95,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 75,
+    "name": "Practical React with Next.js Cohort 8 - Cohort Alpha 75",
+    "batchCode": "BATCH-PRACTICAL-REACT-WITH-NEXT-JS-COHORT-8_A75",
+    "courseId": 75,
+    "teacherId": 96,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 76,
+    "name": "Professional Ethical Hacking Methodologies Cohort 8 - Cohort Alpha 76",
+    "batchCode": "BATCH-PROFESSIONAL-ETHICAL-HACKING-METHODOLOGIES-COHORT-8_A76",
+    "courseId": 76,
+    "teacherId": 97,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 77,
+    "name": "Automated PostgreSQL Query Optimization Cohort 8 - Cohort Alpha 77",
+    "batchCode": "BATCH-AUTOMATED-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-8_A77",
+    "courseId": 77,
+    "teacherId": 98,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 78,
+    "name": "Certified AWS Cloud Architectures Cohort 8 - Cohort Alpha 78",
+    "batchCode": "BATCH-CERTIFIED-AWS-CLOUD-ARCHITECTURES-COHORT-8_A78",
+    "courseId": 78,
+    "teacherId": 99,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 79,
+    "name": "Zero-Trust Apache Kafka Streaming Cohort 8 - Cohort Alpha 79",
+    "batchCode": "BATCH-ZERO-TRUST-APACHE-KAFKA-STREAMING-COHORT-8_A79",
+    "courseId": 79,
+    "teacherId": 100,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 80,
+    "name": "Advanced API Security Best Practices Cohort 9 - Cohort Alpha 80",
+    "batchCode": "BATCH-ADVANCED-API-SECURITY-BEST-PRACTICES-COHORT-9_A80",
+    "courseId": 80,
+    "teacherId": 101,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 81,
+    "name": "Foundational CI/CD Pipeline Automation Cohort 9 - Cohort Alpha 81",
+    "batchCode": "BATCH-FOUNDATIONAL-CI-CD-PIPELINE-AUTOMATION-COHORT-9_A81",
+    "courseId": 81,
+    "teacherId": 102,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 82,
+    "name": "Enterprise Docker Containers Cohort 9 - Cohort Alpha 82",
+    "batchCode": "BATCH-ENTERPRISE-DOCKER-CONTAINERS-COHORT-9_A82",
+    "courseId": 82,
+    "teacherId": 103,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 83,
+    "name": "Scalable Rust System Programming Cohort 9 - Cohort Alpha 83",
+    "batchCode": "BATCH-SCALABLE-RUST-SYSTEM-PROGRAMMING-COHORT-9_A83",
+    "courseId": 83,
+    "teacherId": 104,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 84,
+    "name": "Modern Kubernetes Orchestration Cohort 9 - Cohort Alpha 84",
+    "batchCode": "BATCH-MODERN-KUBERNETES-ORCHESTRATION-COHORT-9_A84",
+    "courseId": 84,
+    "teacherId": 105,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 85,
+    "name": "Secure Microservices with Spring Boot Cohort 9 - Cohort Alpha 85",
+    "batchCode": "BATCH-SECURE-MICROSERVICES-WITH-SPRING-BOOT-COHORT-9_A85",
+    "courseId": 85,
+    "teacherId": 106,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 86,
+    "name": "High-Performance Python Machine Learning Pipelines Cohort 9 - Cohort Alpha 86",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-9_A86",
+    "courseId": 86,
+    "teacherId": 107,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 87,
+    "name": "Distributed React with Next.js Cohort 9 - Cohort Alpha 87",
+    "batchCode": "BATCH-DISTRIBUTED-REACT-WITH-NEXT-JS-COHORT-9_A87",
+    "courseId": 87,
+    "teacherId": 108,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 88,
+    "name": "Applied Ethical Hacking Methodologies Cohort 9 - Cohort Alpha 88",
+    "batchCode": "BATCH-APPLIED-ETHICAL-HACKING-METHODOLOGIES-COHORT-9_A88",
+    "courseId": 88,
+    "teacherId": 109,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 89,
+    "name": "Deep PostgreSQL Query Optimization Cohort 9 - Cohort Alpha 89",
+    "batchCode": "BATCH-DEEP-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-9_A89",
+    "courseId": 89,
+    "teacherId": 110,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 90,
+    "name": "Interactive AWS Cloud Architectures Cohort 10 - Cohort Alpha 90",
+    "batchCode": "BATCH-INTERACTIVE-AWS-CLOUD-ARCHITECTURES-COHORT-10_A90",
+    "courseId": 90,
+    "teacherId": 111,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 91,
+    "name": "Practical Apache Kafka Streaming Cohort 10 - Cohort Alpha 91",
+    "batchCode": "BATCH-PRACTICAL-APACHE-KAFKA-STREAMING-COHORT-10_A91",
+    "courseId": 91,
+    "teacherId": 112,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 92,
+    "name": "Professional API Security Best Practices Cohort 10 - Cohort Alpha 92",
+    "batchCode": "BATCH-PROFESSIONAL-API-SECURITY-BEST-PRACTICES-COHORT-10_A92",
+    "courseId": 92,
+    "teacherId": 113,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 93,
+    "name": "Automated CI/CD Pipeline Automation Cohort 10 - Cohort Alpha 93",
+    "batchCode": "BATCH-AUTOMATED-CI-CD-PIPELINE-AUTOMATION-COHORT-10_A93",
+    "courseId": 93,
+    "teacherId": 114,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 94,
+    "name": "Certified Docker Containers Cohort 10 - Cohort Alpha 94",
+    "batchCode": "BATCH-CERTIFIED-DOCKER-CONTAINERS-COHORT-10_A94",
+    "courseId": 94,
+    "teacherId": 115,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 95,
+    "name": "Zero-Trust Rust System Programming Cohort 10 - Cohort Alpha 95",
+    "batchCode": "BATCH-ZERO-TRUST-RUST-SYSTEM-PROGRAMMING-COHORT-10_A95",
+    "courseId": 95,
+    "teacherId": 116,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 96,
+    "name": "Advanced Kubernetes Orchestration Cohort 10 - Cohort Alpha 96",
+    "batchCode": "BATCH-ADVANCED-KUBERNETES-ORCHESTRATION-COHORT-10_A96",
+    "courseId": 96,
+    "teacherId": 117,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 97,
+    "name": "Foundational Microservices with Spring Boot Cohort 10 - Cohort Alpha 97",
+    "batchCode": "BATCH-FOUNDATIONAL-MICROSERVICES-WITH-SPRING-BOOT-COHORT-10_A97",
+    "courseId": 97,
+    "teacherId": 118,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 98,
+    "name": "Enterprise Python Machine Learning Pipelines Cohort 10 - Cohort Alpha 98",
+    "batchCode": "BATCH-ENTERPRISE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-10_A98",
+    "courseId": 98,
+    "teacherId": 119,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 99,
+    "name": "Scalable React with Next.js Cohort 10 - Cohort Alpha 99",
+    "batchCode": "BATCH-SCALABLE-REACT-WITH-NEXT-JS-COHORT-10_A99",
+    "courseId": 99,
+    "teacherId": 120,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 100,
+    "name": "Modern Ethical Hacking Methodologies Cohort 11 - Cohort Alpha 100",
+    "batchCode": "BATCH-MODERN-ETHICAL-HACKING-METHODOLOGIES-COHORT-11_A100",
+    "courseId": 100,
+    "teacherId": 121,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 101,
+    "name": "Secure PostgreSQL Query Optimization Cohort 11 - Cohort Alpha 101",
+    "batchCode": "BATCH-SECURE-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-11_A101",
+    "courseId": 101,
+    "teacherId": 122,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 102,
+    "name": "High-Performance AWS Cloud Architectures Cohort 11 - Cohort Alpha 102",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-AWS-CLOUD-ARCHITECTURES-COHORT-11_A102",
+    "courseId": 102,
+    "teacherId": 123,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 103,
+    "name": "Distributed Apache Kafka Streaming Cohort 11 - Cohort Alpha 103",
+    "batchCode": "BATCH-DISTRIBUTED-APACHE-KAFKA-STREAMING-COHORT-11_A103",
+    "courseId": 103,
+    "teacherId": 124,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 104,
+    "name": "Applied API Security Best Practices Cohort 11 - Cohort Alpha 104",
+    "batchCode": "BATCH-APPLIED-API-SECURITY-BEST-PRACTICES-COHORT-11_A104",
+    "courseId": 104,
+    "teacherId": 125,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 105,
+    "name": "Deep CI/CD Pipeline Automation Cohort 11 - Cohort Alpha 105",
+    "batchCode": "BATCH-DEEP-CI-CD-PIPELINE-AUTOMATION-COHORT-11_A105",
+    "courseId": 105,
+    "teacherId": 126,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 106,
+    "name": "Interactive Docker Containers Cohort 11 - Cohort Alpha 106",
+    "batchCode": "BATCH-INTERACTIVE-DOCKER-CONTAINERS-COHORT-11_A106",
+    "courseId": 106,
+    "teacherId": 127,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 107,
+    "name": "Practical Rust System Programming Cohort 11 - Cohort Alpha 107",
+    "batchCode": "BATCH-PRACTICAL-RUST-SYSTEM-PROGRAMMING-COHORT-11_A107",
+    "courseId": 107,
+    "teacherId": 128,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 108,
+    "name": "Professional Kubernetes Orchestration Cohort 11 - Cohort Alpha 108",
+    "batchCode": "BATCH-PROFESSIONAL-KUBERNETES-ORCHESTRATION-COHORT-11_A108",
+    "courseId": 108,
+    "teacherId": 129,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 109,
+    "name": "Automated Microservices with Spring Boot Cohort 11 - Cohort Alpha 109",
+    "batchCode": "BATCH-AUTOMATED-MICROSERVICES-WITH-SPRING-BOOT-COHORT-11_A109",
+    "courseId": 109,
+    "teacherId": 130,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 110,
+    "name": "Certified Python Machine Learning Pipelines Cohort 12 - Cohort Alpha 110",
+    "batchCode": "BATCH-CERTIFIED-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-12_A110",
+    "courseId": 110,
+    "teacherId": 131,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 111,
+    "name": "Zero-Trust React with Next.js Cohort 12 - Cohort Alpha 111",
+    "batchCode": "BATCH-ZERO-TRUST-REACT-WITH-NEXT-JS-COHORT-12_A111",
+    "courseId": 111,
+    "teacherId": 132,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 112,
+    "name": "Advanced Ethical Hacking Methodologies Cohort 12 - Cohort Alpha 112",
+    "batchCode": "BATCH-ADVANCED-ETHICAL-HACKING-METHODOLOGIES-COHORT-12_A112",
+    "courseId": 112,
+    "teacherId": 133,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 113,
+    "name": "Foundational PostgreSQL Query Optimization Cohort 12 - Cohort Alpha 113",
+    "batchCode": "BATCH-FOUNDATIONAL-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-12_A113",
+    "courseId": 113,
+    "teacherId": 134,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 114,
+    "name": "Enterprise AWS Cloud Architectures Cohort 12 - Cohort Alpha 114",
+    "batchCode": "BATCH-ENTERPRISE-AWS-CLOUD-ARCHITECTURES-COHORT-12_A114",
+    "courseId": 114,
+    "teacherId": 135,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 115,
+    "name": "Scalable Apache Kafka Streaming Cohort 12 - Cohort Alpha 115",
+    "batchCode": "BATCH-SCALABLE-APACHE-KAFKA-STREAMING-COHORT-12_A115",
+    "courseId": 115,
+    "teacherId": 136,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 116,
+    "name": "Modern API Security Best Practices Cohort 12 - Cohort Alpha 116",
+    "batchCode": "BATCH-MODERN-API-SECURITY-BEST-PRACTICES-COHORT-12_A116",
+    "courseId": 116,
+    "teacherId": 137,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 117,
+    "name": "Secure CI/CD Pipeline Automation Cohort 12 - Cohort Alpha 117",
+    "batchCode": "BATCH-SECURE-CI-CD-PIPELINE-AUTOMATION-COHORT-12_A117",
+    "courseId": 117,
+    "teacherId": 138,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 118,
+    "name": "High-Performance Docker Containers Cohort 12 - Cohort Alpha 118",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-DOCKER-CONTAINERS-COHORT-12_A118",
+    "courseId": 118,
+    "teacherId": 139,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 119,
+    "name": "Distributed Rust System Programming Cohort 12 - Cohort Alpha 119",
+    "batchCode": "BATCH-DISTRIBUTED-RUST-SYSTEM-PROGRAMMING-COHORT-12_A119",
+    "courseId": 119,
+    "teacherId": 140,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 120,
+    "name": "Applied Kubernetes Orchestration Cohort 13 - Cohort Alpha 120",
+    "batchCode": "BATCH-APPLIED-KUBERNETES-ORCHESTRATION-COHORT-13_A120",
+    "courseId": 120,
+    "teacherId": 141,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 121,
+    "name": "Deep Microservices with Spring Boot Cohort 13 - Cohort Alpha 121",
+    "batchCode": "BATCH-DEEP-MICROSERVICES-WITH-SPRING-BOOT-COHORT-13_A121",
+    "courseId": 121,
+    "teacherId": 142,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 122,
+    "name": "Interactive Python Machine Learning Pipelines Cohort 13 - Cohort Alpha 122",
+    "batchCode": "BATCH-INTERACTIVE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-13_A122",
+    "courseId": 122,
+    "teacherId": 143,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 123,
+    "name": "Practical React with Next.js Cohort 13 - Cohort Alpha 123",
+    "batchCode": "BATCH-PRACTICAL-REACT-WITH-NEXT-JS-COHORT-13_A123",
+    "courseId": 123,
+    "teacherId": 144,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 124,
+    "name": "Professional Ethical Hacking Methodologies Cohort 13 - Cohort Alpha 124",
+    "batchCode": "BATCH-PROFESSIONAL-ETHICAL-HACKING-METHODOLOGIES-COHORT-13_A124",
+    "courseId": 124,
+    "teacherId": 145,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 125,
+    "name": "Automated PostgreSQL Query Optimization Cohort 13 - Cohort Alpha 125",
+    "batchCode": "BATCH-AUTOMATED-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-13_A125",
+    "courseId": 125,
+    "teacherId": 146,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 126,
+    "name": "Certified AWS Cloud Architectures Cohort 13 - Cohort Alpha 126",
+    "batchCode": "BATCH-CERTIFIED-AWS-CLOUD-ARCHITECTURES-COHORT-13_A126",
+    "courseId": 126,
+    "teacherId": 147,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 127,
+    "name": "Zero-Trust Apache Kafka Streaming Cohort 13 - Cohort Alpha 127",
+    "batchCode": "BATCH-ZERO-TRUST-APACHE-KAFKA-STREAMING-COHORT-13_A127",
+    "courseId": 127,
+    "teacherId": 148,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 128,
+    "name": "Advanced API Security Best Practices Cohort 13 - Cohort Alpha 128",
+    "batchCode": "BATCH-ADVANCED-API-SECURITY-BEST-PRACTICES-COHORT-13_A128",
+    "courseId": 128,
+    "teacherId": 149,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 129,
+    "name": "Foundational CI/CD Pipeline Automation Cohort 13 - Cohort Alpha 129",
+    "batchCode": "BATCH-FOUNDATIONAL-CI-CD-PIPELINE-AUTOMATION-COHORT-13_A129",
+    "courseId": 129,
+    "teacherId": 150,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 130,
+    "name": "Enterprise Docker Containers Cohort 14 - Cohort Alpha 130",
+    "batchCode": "BATCH-ENTERPRISE-DOCKER-CONTAINERS-COHORT-14_A130",
+    "courseId": 130,
+    "teacherId": 151,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 131,
+    "name": "Scalable Rust System Programming Cohort 14 - Cohort Alpha 131",
+    "batchCode": "BATCH-SCALABLE-RUST-SYSTEM-PROGRAMMING-COHORT-14_A131",
+    "courseId": 131,
+    "teacherId": 152,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 132,
+    "name": "Modern Kubernetes Orchestration Cohort 14 - Cohort Alpha 132",
+    "batchCode": "BATCH-MODERN-KUBERNETES-ORCHESTRATION-COHORT-14_A132",
+    "courseId": 132,
+    "teacherId": 153,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 133,
+    "name": "Secure Microservices with Spring Boot Cohort 14 - Cohort Alpha 133",
+    "batchCode": "BATCH-SECURE-MICROSERVICES-WITH-SPRING-BOOT-COHORT-14_A133",
+    "courseId": 133,
+    "teacherId": 154,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 134,
+    "name": "High-Performance Python Machine Learning Pipelines Cohort 14 - Cohort Alpha 134",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-14_A134",
+    "courseId": 134,
+    "teacherId": 155,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 135,
+    "name": "Distributed React with Next.js Cohort 14 - Cohort Alpha 135",
+    "batchCode": "BATCH-DISTRIBUTED-REACT-WITH-NEXT-JS-COHORT-14_A135",
+    "courseId": 135,
+    "teacherId": 156,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 136,
+    "name": "Applied Ethical Hacking Methodologies Cohort 14 - Cohort Alpha 136",
+    "batchCode": "BATCH-APPLIED-ETHICAL-HACKING-METHODOLOGIES-COHORT-14_A136",
+    "courseId": 136,
+    "teacherId": 157,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 137,
+    "name": "Deep PostgreSQL Query Optimization Cohort 14 - Cohort Alpha 137",
+    "batchCode": "BATCH-DEEP-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-14_A137",
+    "courseId": 137,
+    "teacherId": 158,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 138,
+    "name": "Interactive AWS Cloud Architectures Cohort 14 - Cohort Alpha 138",
+    "batchCode": "BATCH-INTERACTIVE-AWS-CLOUD-ARCHITECTURES-COHORT-14_A138",
+    "courseId": 138,
+    "teacherId": 159,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 139,
+    "name": "Practical Apache Kafka Streaming Cohort 14 - Cohort Alpha 139",
+    "batchCode": "BATCH-PRACTICAL-APACHE-KAFKA-STREAMING-COHORT-14_A139",
+    "courseId": 139,
+    "teacherId": 160,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 140,
+    "name": "Professional API Security Best Practices Cohort 15 - Cohort Alpha 140",
+    "batchCode": "BATCH-PROFESSIONAL-API-SECURITY-BEST-PRACTICES-COHORT-15_A140",
+    "courseId": 140,
+    "teacherId": 161,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 141,
+    "name": "Automated CI/CD Pipeline Automation Cohort 15 - Cohort Alpha 141",
+    "batchCode": "BATCH-AUTOMATED-CI-CD-PIPELINE-AUTOMATION-COHORT-15_A141",
+    "courseId": 141,
+    "teacherId": 162,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 142,
+    "name": "Certified Docker Containers Cohort 15 - Cohort Alpha 142",
+    "batchCode": "BATCH-CERTIFIED-DOCKER-CONTAINERS-COHORT-15_A142",
+    "courseId": 142,
+    "teacherId": 163,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 143,
+    "name": "Zero-Trust Rust System Programming Cohort 15 - Cohort Alpha 143",
+    "batchCode": "BATCH-ZERO-TRUST-RUST-SYSTEM-PROGRAMMING-COHORT-15_A143",
+    "courseId": 143,
+    "teacherId": 164,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 144,
+    "name": "Advanced Kubernetes Orchestration Cohort 15 - Cohort Alpha 144",
+    "batchCode": "BATCH-ADVANCED-KUBERNETES-ORCHESTRATION-COHORT-15_A144",
+    "courseId": 144,
+    "teacherId": 165,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 145,
+    "name": "Foundational Microservices with Spring Boot Cohort 15 - Cohort Alpha 145",
+    "batchCode": "BATCH-FOUNDATIONAL-MICROSERVICES-WITH-SPRING-BOOT-COHORT-15_A145",
+    "courseId": 145,
+    "teacherId": 166,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 146,
+    "name": "Enterprise Python Machine Learning Pipelines Cohort 15 - Cohort Alpha 146",
+    "batchCode": "BATCH-ENTERPRISE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-15_A146",
+    "courseId": 146,
+    "teacherId": 167,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 147,
+    "name": "Scalable React with Next.js Cohort 15 - Cohort Alpha 147",
+    "batchCode": "BATCH-SCALABLE-REACT-WITH-NEXT-JS-COHORT-15_A147",
+    "courseId": 147,
+    "teacherId": 168,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 148,
+    "name": "Modern Ethical Hacking Methodologies Cohort 15 - Cohort Alpha 148",
+    "batchCode": "BATCH-MODERN-ETHICAL-HACKING-METHODOLOGIES-COHORT-15_A148",
+    "courseId": 148,
+    "teacherId": 169,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 149,
+    "name": "Secure PostgreSQL Query Optimization Cohort 15 - Cohort Alpha 149",
+    "batchCode": "BATCH-SECURE-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-15_A149",
+    "courseId": 149,
+    "teacherId": 170,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 150,
+    "name": "High-Performance AWS Cloud Architectures Cohort 16 - Cohort Alpha 150",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-AWS-CLOUD-ARCHITECTURES-COHORT-16_A150",
+    "courseId": 150,
+    "teacherId": 171,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 151,
+    "name": "Distributed Apache Kafka Streaming Cohort 16 - Cohort Alpha 151",
+    "batchCode": "BATCH-DISTRIBUTED-APACHE-KAFKA-STREAMING-COHORT-16_A151",
+    "courseId": 151,
+    "teacherId": 172,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 152,
+    "name": "Applied API Security Best Practices Cohort 16 - Cohort Alpha 152",
+    "batchCode": "BATCH-APPLIED-API-SECURITY-BEST-PRACTICES-COHORT-16_A152",
+    "courseId": 152,
+    "teacherId": 173,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 153,
+    "name": "Deep CI/CD Pipeline Automation Cohort 16 - Cohort Alpha 153",
+    "batchCode": "BATCH-DEEP-CI-CD-PIPELINE-AUTOMATION-COHORT-16_A153",
+    "courseId": 153,
+    "teacherId": 174,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 154,
+    "name": "Interactive Docker Containers Cohort 16 - Cohort Alpha 154",
+    "batchCode": "BATCH-INTERACTIVE-DOCKER-CONTAINERS-COHORT-16_A154",
+    "courseId": 154,
+    "teacherId": 175,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 155,
+    "name": "Practical Rust System Programming Cohort 16 - Cohort Alpha 155",
+    "batchCode": "BATCH-PRACTICAL-RUST-SYSTEM-PROGRAMMING-COHORT-16_A155",
+    "courseId": 155,
+    "teacherId": 176,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 156,
+    "name": "Professional Kubernetes Orchestration Cohort 16 - Cohort Alpha 156",
+    "batchCode": "BATCH-PROFESSIONAL-KUBERNETES-ORCHESTRATION-COHORT-16_A156",
+    "courseId": 156,
+    "teacherId": 177,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 157,
+    "name": "Automated Microservices with Spring Boot Cohort 16 - Cohort Alpha 157",
+    "batchCode": "BATCH-AUTOMATED-MICROSERVICES-WITH-SPRING-BOOT-COHORT-16_A157",
+    "courseId": 157,
+    "teacherId": 178,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 158,
+    "name": "Certified Python Machine Learning Pipelines Cohort 16 - Cohort Alpha 158",
+    "batchCode": "BATCH-CERTIFIED-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-16_A158",
+    "courseId": 158,
+    "teacherId": 179,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 159,
+    "name": "Zero-Trust React with Next.js Cohort 16 - Cohort Alpha 159",
+    "batchCode": "BATCH-ZERO-TRUST-REACT-WITH-NEXT-JS-COHORT-16_A159",
+    "courseId": 159,
+    "teacherId": 180,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 160,
+    "name": "Advanced Ethical Hacking Methodologies Cohort 17 - Cohort Alpha 160",
+    "batchCode": "BATCH-ADVANCED-ETHICAL-HACKING-METHODOLOGIES-COHORT-17_A160",
+    "courseId": 160,
+    "teacherId": 181,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 161,
+    "name": "Foundational PostgreSQL Query Optimization Cohort 17 - Cohort Alpha 161",
+    "batchCode": "BATCH-FOUNDATIONAL-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-17_A161",
+    "courseId": 161,
+    "teacherId": 182,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 162,
+    "name": "Enterprise AWS Cloud Architectures Cohort 17 - Cohort Alpha 162",
+    "batchCode": "BATCH-ENTERPRISE-AWS-CLOUD-ARCHITECTURES-COHORT-17_A162",
+    "courseId": 162,
+    "teacherId": 183,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 163,
+    "name": "Scalable Apache Kafka Streaming Cohort 17 - Cohort Alpha 163",
+    "batchCode": "BATCH-SCALABLE-APACHE-KAFKA-STREAMING-COHORT-17_A163",
+    "courseId": 163,
+    "teacherId": 184,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 164,
+    "name": "Modern API Security Best Practices Cohort 17 - Cohort Alpha 164",
+    "batchCode": "BATCH-MODERN-API-SECURITY-BEST-PRACTICES-COHORT-17_A164",
+    "courseId": 164,
+    "teacherId": 185,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 165,
+    "name": "Secure CI/CD Pipeline Automation Cohort 17 - Cohort Alpha 165",
+    "batchCode": "BATCH-SECURE-CI-CD-PIPELINE-AUTOMATION-COHORT-17_A165",
+    "courseId": 165,
+    "teacherId": 186,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 166,
+    "name": "High-Performance Docker Containers Cohort 17 - Cohort Alpha 166",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-DOCKER-CONTAINERS-COHORT-17_A166",
+    "courseId": 166,
+    "teacherId": 187,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 167,
+    "name": "Distributed Rust System Programming Cohort 17 - Cohort Alpha 167",
+    "batchCode": "BATCH-DISTRIBUTED-RUST-SYSTEM-PROGRAMMING-COHORT-17_A167",
+    "courseId": 167,
+    "teacherId": 188,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 168,
+    "name": "Applied Kubernetes Orchestration Cohort 17 - Cohort Alpha 168",
+    "batchCode": "BATCH-APPLIED-KUBERNETES-ORCHESTRATION-COHORT-17_A168",
+    "courseId": 168,
+    "teacherId": 189,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 169,
+    "name": "Deep Microservices with Spring Boot Cohort 17 - Cohort Alpha 169",
+    "batchCode": "BATCH-DEEP-MICROSERVICES-WITH-SPRING-BOOT-COHORT-17_A169",
+    "courseId": 169,
+    "teacherId": 190,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 170,
+    "name": "Interactive Python Machine Learning Pipelines Cohort 18 - Cohort Alpha 170",
+    "batchCode": "BATCH-INTERACTIVE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-18_A170",
+    "courseId": 170,
+    "teacherId": 191,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 171,
+    "name": "Practical React with Next.js Cohort 18 - Cohort Alpha 171",
+    "batchCode": "BATCH-PRACTICAL-REACT-WITH-NEXT-JS-COHORT-18_A171",
+    "courseId": 171,
+    "teacherId": 192,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 172,
+    "name": "Professional Ethical Hacking Methodologies Cohort 18 - Cohort Alpha 172",
+    "batchCode": "BATCH-PROFESSIONAL-ETHICAL-HACKING-METHODOLOGIES-COHORT-18_A172",
+    "courseId": 172,
+    "teacherId": 193,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 173,
+    "name": "Automated PostgreSQL Query Optimization Cohort 18 - Cohort Alpha 173",
+    "batchCode": "BATCH-AUTOMATED-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-18_A173",
+    "courseId": 173,
+    "teacherId": 194,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 174,
+    "name": "Certified AWS Cloud Architectures Cohort 18 - Cohort Alpha 174",
+    "batchCode": "BATCH-CERTIFIED-AWS-CLOUD-ARCHITECTURES-COHORT-18_A174",
+    "courseId": 174,
+    "teacherId": 195,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 175,
+    "name": "Zero-Trust Apache Kafka Streaming Cohort 18 - Cohort Alpha 175",
+    "batchCode": "BATCH-ZERO-TRUST-APACHE-KAFKA-STREAMING-COHORT-18_A175",
+    "courseId": 175,
+    "teacherId": 196,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 176,
+    "name": "Advanced API Security Best Practices Cohort 18 - Cohort Alpha 176",
+    "batchCode": "BATCH-ADVANCED-API-SECURITY-BEST-PRACTICES-COHORT-18_A176",
+    "courseId": 176,
+    "teacherId": 197,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 177,
+    "name": "Foundational CI/CD Pipeline Automation Cohort 18 - Cohort Alpha 177",
+    "batchCode": "BATCH-FOUNDATIONAL-CI-CD-PIPELINE-AUTOMATION-COHORT-18_A177",
+    "courseId": 177,
+    "teacherId": 198,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 178,
+    "name": "Enterprise Docker Containers Cohort 18 - Cohort Alpha 178",
+    "batchCode": "BATCH-ENTERPRISE-DOCKER-CONTAINERS-COHORT-18_A178",
+    "courseId": 178,
+    "teacherId": 199,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 179,
+    "name": "Scalable Rust System Programming Cohort 18 - Cohort Alpha 179",
+    "batchCode": "BATCH-SCALABLE-RUST-SYSTEM-PROGRAMMING-COHORT-18_A179",
+    "courseId": 179,
+    "teacherId": 200,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 180,
+    "name": "Modern Kubernetes Orchestration Cohort 19 - Cohort Alpha 180",
+    "batchCode": "BATCH-MODERN-KUBERNETES-ORCHESTRATION-COHORT-19_A180",
+    "courseId": 180,
+    "teacherId": 201,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 181,
+    "name": "Secure Microservices with Spring Boot Cohort 19 - Cohort Alpha 181",
+    "batchCode": "BATCH-SECURE-MICROSERVICES-WITH-SPRING-BOOT-COHORT-19_A181",
+    "courseId": 181,
+    "teacherId": 202,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 182,
+    "name": "High-Performance Python Machine Learning Pipelines Cohort 19 - Cohort Alpha 182",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-19_A182",
+    "courseId": 182,
+    "teacherId": 203,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 183,
+    "name": "Distributed React with Next.js Cohort 19 - Cohort Alpha 183",
+    "batchCode": "BATCH-DISTRIBUTED-REACT-WITH-NEXT-JS-COHORT-19_A183",
+    "courseId": 183,
+    "teacherId": 204,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 184,
+    "name": "Applied Ethical Hacking Methodologies Cohort 19 - Cohort Alpha 184",
+    "batchCode": "BATCH-APPLIED-ETHICAL-HACKING-METHODOLOGIES-COHORT-19_A184",
+    "courseId": 184,
+    "teacherId": 205,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 185,
+    "name": "Deep PostgreSQL Query Optimization Cohort 19 - Cohort Alpha 185",
+    "batchCode": "BATCH-DEEP-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-19_A185",
+    "courseId": 185,
+    "teacherId": 206,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 186,
+    "name": "Interactive AWS Cloud Architectures Cohort 19 - Cohort Alpha 186",
+    "batchCode": "BATCH-INTERACTIVE-AWS-CLOUD-ARCHITECTURES-COHORT-19_A186",
+    "courseId": 186,
+    "teacherId": 207,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 187,
+    "name": "Practical Apache Kafka Streaming Cohort 19 - Cohort Alpha 187",
+    "batchCode": "BATCH-PRACTICAL-APACHE-KAFKA-STREAMING-COHORT-19_A187",
+    "courseId": 187,
+    "teacherId": 208,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 188,
+    "name": "Professional API Security Best Practices Cohort 19 - Cohort Alpha 188",
+    "batchCode": "BATCH-PROFESSIONAL-API-SECURITY-BEST-PRACTICES-COHORT-19_A188",
+    "courseId": 188,
+    "teacherId": 209,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 189,
+    "name": "Automated CI/CD Pipeline Automation Cohort 19 - Cohort Alpha 189",
+    "batchCode": "BATCH-AUTOMATED-CI-CD-PIPELINE-AUTOMATION-COHORT-19_A189",
+    "courseId": 189,
+    "teacherId": 210,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 190,
+    "name": "Certified Docker Containers Cohort 20 - Cohort Alpha 190",
+    "batchCode": "BATCH-CERTIFIED-DOCKER-CONTAINERS-COHORT-20_A190",
+    "courseId": 190,
+    "teacherId": 211,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 191,
+    "name": "Zero-Trust Rust System Programming Cohort 20 - Cohort Alpha 191",
+    "batchCode": "BATCH-ZERO-TRUST-RUST-SYSTEM-PROGRAMMING-COHORT-20_A191",
+    "courseId": 191,
+    "teacherId": 212,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 192,
+    "name": "Advanced Kubernetes Orchestration Cohort 20 - Cohort Alpha 192",
+    "batchCode": "BATCH-ADVANCED-KUBERNETES-ORCHESTRATION-COHORT-20_A192",
+    "courseId": 192,
+    "teacherId": 213,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 193,
+    "name": "Foundational Microservices with Spring Boot Cohort 20 - Cohort Alpha 193",
+    "batchCode": "BATCH-FOUNDATIONAL-MICROSERVICES-WITH-SPRING-BOOT-COHORT-20_A193",
+    "courseId": 193,
+    "teacherId": 214,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 194,
+    "name": "Enterprise Python Machine Learning Pipelines Cohort 20 - Cohort Alpha 194",
+    "batchCode": "BATCH-ENTERPRISE-PYTHON-MACHINE-LEARNING-PIPELINES-COHORT-20_A194",
+    "courseId": 194,
+    "teacherId": 215,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 195,
+    "name": "Scalable React with Next.js Cohort 20 - Cohort Alpha 195",
+    "batchCode": "BATCH-SCALABLE-REACT-WITH-NEXT-JS-COHORT-20_A195",
+    "courseId": 195,
+    "teacherId": 216,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 196,
+    "name": "Modern Ethical Hacking Methodologies Cohort 20 - Cohort Alpha 196",
+    "batchCode": "BATCH-MODERN-ETHICAL-HACKING-METHODOLOGIES-COHORT-20_A196",
+    "courseId": 196,
+    "teacherId": 217,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 197,
+    "name": "Secure PostgreSQL Query Optimization Cohort 20 - Cohort Alpha 197",
+    "batchCode": "BATCH-SECURE-POSTGRESQL-QUERY-OPTIMIZATION-COHORT-20_A197",
+    "courseId": 197,
+    "teacherId": 218,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 198,
+    "name": "High-Performance AWS Cloud Architectures Cohort 20 - Cohort Alpha 198",
+    "batchCode": "BATCH-HIGH-PERFORMANCE-AWS-CLOUD-ARCHITECTURES-COHORT-20_A198",
+    "courseId": 198,
+    "teacherId": 219,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 199,
+    "name": "Distributed Apache Kafka Streaming Cohort 20 - Cohort Alpha 199",
+    "batchCode": "BATCH-DISTRIBUTED-APACHE-KAFKA-STREAMING-COHORT-20_A199",
+    "courseId": 199,
+    "teacherId": 220,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  },
+  {
+    "id": 200,
+    "name": "Applied API Security Best Practices Cohort 21 - Cohort Alpha 200",
+    "batchCode": "BATCH-APPLIED-API-SECURITY-BEST-PRACTICES-COHORT-21_A200",
+    "courseId": 200,
+    "teacherId": 21,
+    "startDate": "2026-06-01T00:00:00",
+    "endDate": "2026-09-30T23:59:59",
+    "isActive": true
+  }
+]
